@@ -1,0 +1,50 @@
+{%- comment -%}
+  Private image block used only by the Gallery section's row.
+  Width is controlled at the row level (gallery-row "Maximum width"), so this
+  block intentionally omits the per-image max_width settings to keep the editor
+  clean for the client. For the generic, width-aware image block see image.liquid.
+{%- endcomment -%}
+
+{%- if block.settings.image != blank -%}
+  {%- if block.settings.caption != blank -%}
+    <figure {{ block.shopify_attributes }}>
+      {%- render 'media' with block.settings.image, mobile_media: block.settings.mobile_image, preload: false, block: block -%}
+      <figcaption>{{ block.settings.caption }}</figcaption>
+    </figure>
+  {%- else -%}
+    {%- render 'media' with block.settings.image, mobile_media: block.settings.mobile_image, preload: false, block: block -%}
+  {%- endif -%}
+{%- elsif request.visual_preview_mode or request.design_mode -%}
+  <figure {{ block.shopify_attributes }}>
+    {{- 'collection-apparel-1' | placeholder_svg_tag: 'placeholder-svg' -}}
+  </figure>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:blocks.image.name",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:global.image.image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "t:global.image.mobile_image"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "t:global.image.caption"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks.image.name"
+    }
+  ]
+}
+{% endschema %}

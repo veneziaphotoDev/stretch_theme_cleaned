@@ -1,0 +1,136 @@
+{%- liquid
+  assign use_color_scheme = true
+
+  if section.settings.background != blank or section.settings.text_color != blank
+    assign use_color_scheme = false
+  endif
+
+  assign heading_indent = 'none'
+
+  if article.metafields.custom.post_subheading != blank
+    assign heading_indent = 'border_top'
+  endif
+-%}
+
+{%- if section.settings.content_percentage_width != 50 -%}
+  <style>
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .section-split {
+        --section-split-grid-template-columns: minmax(0, {{ section.settings.content_percentage_width | divided_by: 100.0 }}fr) minmax(0, {{ 100 | minus: section.settings.content_percentage_width | divided_by: 100.0 }}fr);
+      }
+    }
+  </style>
+{%- endif -%}
+
+<div {% if use_color_scheme %}class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}"{% else %}style="{% render 'surface', background: section.settings.background, text_color: section.settings.text_color %}"{% endif %}>
+  <div class="section-split">
+    <div class="section-split__column edition-banner__content">
+      <div class="v-stack gap-8">
+        {%- if article.metafields.custom.post_subheading != blank -%}
+          {%- render 'subheading', content: article.metafields.custom.post_subheading, size: 'medium' -%}
+        {%- endif -%}
+
+        {%- render 'article-hero-heading', article: article, style: section.settings.heading_size, indent: heading_indent -%}
+
+        {%- if article.excerpt != blank -%}
+          <div class="edition-banner__excerpt prose">{{ article.excerpt }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if article.image != blank -%}
+      <div class="section-split__column section-split__column--image {% if section.settings.image_full_bleed %}section-split__column--flushed{% endif %}">
+        {{- article.image | image_url: width: article.image.width | image_tag: sizes: '(max-width: 999px) 100vw, 50vw', widths: '300,400,500,600,800,1000,1200,1400,1600,1800,2000', class: 'edition-banner__image size-full' -}}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Edition banner",
+  "class": "shopify-section--edition-banner",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["article"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "The heading, subheading, text and image are pulled from the article itself. Set the \"Hero heading\" and \"Hero subheading\" metafields on the article, and use the excerpt for the list of names."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "t:global.text.size",
+      "options": [
+        {
+          "value": "display-xl",
+          "label": "Display XL"
+        },
+        {
+          "value": "display-l",
+          "label": "Display L"
+        },
+        {
+          "value": "display-m",
+          "label": "Display M"
+        },
+        {
+          "value": "h1",
+          "label": "XX-Large"
+        },
+        {
+          "value": "h2",
+          "label": "X-Large"
+        },
+        {
+          "value": "h3",
+          "label": "Large"
+        },
+        {
+          "value": "h4",
+          "label": "Medium"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "range",
+      "id": "content_percentage_width",
+      "label": "t:global.sizes.content_width",
+      "min": 30,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "checkbox",
+      "id": "image_full_bleed",
+      "label": "Image bleeds to the edge",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:global.colors.category"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "t:global.colors.background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:global.colors.text"
+    }
+  ]
+}
+{% endschema %}

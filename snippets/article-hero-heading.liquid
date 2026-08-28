@@ -1,0 +1,33 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+ARTICLE HERO HEADING
+----------------------------------------------------------------------------------------------------------------------
+
+Renders the hero heading of an article. The content comes from the "Hero heading" rich text metafield when set, and
+falls back to the article title otherwise. Rich text metafields are wrapped in <p> tags, which are not valid inside a
+heading, so paragraphs are unwrapped and paragraph breaks become line breaks.
+
+Words italicised in the metafield are rendered with the italic heading font, through the "heading" snippet.
+
+********************************************
+Supported variables
+********************************************
+
+* article: the article to read the heading from
+* style: the classes applied to the heading (for instance "h2 text-center isolate")
+* indent: passed through to the "heading" snippet. Use "border_top" to draw the rule above the heading
+{%- endcomment -%}
+
+{%- liquid
+  capture hero_heading
+    echo article.metafields.custom.hero_heading
+  endcapture
+
+  assign hero_heading = hero_heading | strip_newlines | replace: '</p><p>', '<br>' | replace: '<p>', '' | replace: '</p>', '' | strip
+
+  if hero_heading == blank
+    assign hero_heading = article.title
+  endif
+
+  render 'heading', content: hero_heading, html_tag: 'h1', style: style, highlight_effect: 'italic', indent: indent
+-%}

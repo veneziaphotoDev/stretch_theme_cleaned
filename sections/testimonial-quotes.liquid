@@ -1,0 +1,152 @@
+{%- comment -%}
+  ----------------------------------------------------------------------------------------------------------------------
+  TESTIMONIAL QUOTES SECTION
+  ----------------------------------------------------------------------------------------------------------------------
+
+  Minimal, editorial testimonials layout: an optional eyebrow followed by a single quote at a time, auto-advancing
+  to the next one every few seconds with a fade transition (no cards, no images, no rating stars - see
+  sections/testimonials.liquid for that richer variant). Built on the theme's native <effect-carousel> element (the
+  same underlying engine as the Hero slideshow and the native testimonials section), so autoplay, pausing on hover,
+  swipe and keyboard navigation all come for free. Add or remove "Testimonial" blocks freely - works with a single
+  quote or as many as needed.
+{%- endcomment -%}
+
+{%- if section.blocks.size > 0 -%}
+  <div {% if section.settings.anchor != blank %}id="{{ section.settings.anchor }}"{% endif %} class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container section-spacing">
+      {%- if section.settings.subheading != blank -%}
+        <div class="testimonial-quotes__header prose prose-justify-center">
+          {%- render 'subheading', content: section.settings.subheading, size: 'medium' -%}
+        </div>
+      {%- endif -%}
+
+      {%- assign carousel_id = 'testimonial-quotes-' | append: section.id -%}
+
+      <div class="testimonial-quotes__wrapper">
+        <effect-carousel
+          id="{{ carousel_id }}"
+          cell-selector=".testimonial-quotes__item"
+          class="testimonial-quotes"
+          role="region"
+          allow-swipe
+          {% if section.settings.autoplay %}autoplay="{{ section.settings.cycle_speed }}"{% endif %}
+          {% if section.settings.pause_on_hover %}pause-on-hover{% endif %}
+        >
+          {%- for block in section.blocks -%}
+            <div class="testimonial-quotes__item{% if forloop.first %} is-selected{% endif %}" {{ block.shopify_attributes }}>
+              {%- if block.settings.quote != blank -%}
+                <blockquote class="testimonial-quotes__quote">{{ block.settings.quote }}</blockquote>
+              {%- endif -%}
+
+              {%- if block.settings.author != blank -%}
+                <p class="testimonial-quotes__author text-subdued">— {{ block.settings.author }}</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </effect-carousel>
+
+        {%- if section.blocks.size > 1 -%}
+          <div class="testimonial-quotes__nav">
+            <carousel-prev-button aria-controls="{{ carousel_id }}">
+              <button type="button" class="circle-button tap-area">
+                <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+                {%- render 'icon' with 'big-arrow-left', width: 14, direction_aware: true -%}
+              </button>
+            </carousel-prev-button>
+
+            <carousel-next-button aria-controls="{{ carousel_id }}">
+              <button type="button" class="circle-button tap-area">
+                <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+                {%- render 'icon' with 'big-arrow-right', width: 14, direction_aware: true -%}
+              </button>
+            </carousel-next-button>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Testimonial quotes",
+  "class": "shopify-section--testimonial-quotes",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Section anchor"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "What Our Guests Are Saying"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "t:sections.testimonials.auto_rotate_between_slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "cycle_speed",
+      "min": 2,
+      "max": 20,
+      "step": 1,
+      "unit": "sec",
+      "label": "t:sections.testimonials.cycle_speed",
+      "default": 4,
+      "visible_if": "{{ section.settings.autoplay }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "t:sections.scrolling_content.pause_on_hover",
+      "default": true,
+      "visible_if": "{{ section.settings.autoplay }}"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "\"Share what a guest said about their experience.\""
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "Author name"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial quotes",
+      "blocks": [
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" }
+      ]
+    }
+  ]
+}
+{% endschema %}

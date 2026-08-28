@@ -1,1309 +1,1269 @@
-/* ----------------------------------------------------------------------------------------------------
-   Custom styles
-   ----------------------------------------------------------------------------------------------------
-   Everything the theme cannot express through its own settings and variables. Prefer a native Stretch
-   setting or an existing custom property over adding a rule here.
-   ---------------------------------------------------------------------------------------------------- */
+/* ============================================
+   CUSTOM THEME VARIABLES
+   Extracted hardcoded values for maintainability
+   ============================================ */
 
 :root {
+  /* Transitions & Animations */
+  /* DO NOT RENAME --dropdown-transition - read directly by custom.js */
+  --dropdown-transition: 0.2s;
+
+  /* Colors */
+  --custom-color-black: #000000;
+  --custom-color-image-placeholder: #f5f5f5;
+  --custom-color-shadow: #1a1a1a20;
+  --custom-overlay-white: rgb(255 255 255 / .45);
+
+  /* Spacing Scale */
+  --custom-spacing-xs: 0.5rem;
+  --custom-spacing-sm: 0.75rem;
+  /* Normalized from 0.625rem */
+  --custom-spacing-base: 1rem;
+  --custom-spacing-md: 1.5rem;
+  --custom-spacing-lg: 2rem;
+  /* Normalized from 2.2rem */
+  --custom-spacing-xl: 2.5rem;
+  --custom-spacing-2xl: 3rem;
+  --custom-spacing-3xl: 3.5rem;
+
+  /* Icon & Badge Sizes */
+  --custom-icon-size-sm: 12px;
+  --custom-badge-size-desktop: 5.5rem;
+
+  /* Typography */
+  --custom-letter-spacing-base: 0.05em;
+  --custom-font-responsive-sm: clamp(.75rem, 0.5vw + .5rem, 1.25rem);
+  --custom-font-responsive-title-sm: clamp(1.45rem, 1.5vw + .25rem, 3rem);
+
+  /* Opacity Values */
+  --custom-opacity-muted: 0.9;
+  /* Normalized from 0.95 */
+  --custom-opacity-separator: 0.5;
+
+  /* Layout Dimensions */
+  --custom-max-width-sm: 36rem;
+  --custom-max-width-md: 48rem;
+  --custom-max-width-lg: 60rem;
+  --custom-modal-max-width: 30rem;
+
+  /* Component-Specific */
+  --custom-border-width-thin: 1px;
   --custom-border-width-thick: 1.5px;
-
-  /* Expressed in em so the gap scales with each heading's own font size. A fixed length reads as a
-     tight rule under a display heading and a cavernous one under an x-small heading. */
-  --custom-heading-border-spacing: 0.5em;
-
-  /* Spaces the full width rule from what sits above it: a subheading or body copy rather than a single
-     heading, so there is no font size for an em to key off. */
-  --custom-rule-spacing: 1.5rem;
-
-  /* The gap below that rule, which the heading and the second column both start from. It cannot be in
-     em: the two sit in the same grid row and have very different font sizes, so an em would offset them
-     by different amounts and they would stop being level. One shared length keeps the row aligned. */
-  --custom-rule-content-spacing: clamp(1.5rem, 1rem + 1.5vw, 3rem);
-
-  /* The opacity theme.css uses for .text-subdued, named here so the rules that fade text against a
-     color scheme do not each restate it. */
-  --custom-opacity-subdued: 0.6;
-
-  /* Brand constants, not scheme colors: a programme badge is the same color on every color scheme, so
-     its ink is pinned to a dark that stays legible on all three rather than following --text-color.
-     Sold out sits with them so the badge set reads as one palette. */
-  --custom-color-festival: #eed484;
-  --custom-color-festival-text: #2a2a2a;
-  --custom-color-academy: #a9cfe8;
-  --custom-color-academy-text: #2a2a2a;
-  --custom-color-sold-out: #e9b3ad;
-  --custom-color-sold-out-text: #2a2a2a;
-
-  /* Deliberately achromatic: R, G and B are equal. Festival and academy are the two colors that mean
-     something on a card, so the stock badge has to stay out of their way, and zero chroma is what
-     guarantees that against any pale hue rather than just against the ones on the site today. */
-  --custom-color-low-stock: #e6e6e6;
-  --custom-color-low-stock-text: #2a2a2a;
-
-  /* theme.css sets the badge size in three cascading rules and reads no variable for it, so there is
-     nothing native to turn. This is the single knob: padding is in em, so it follows the size. The
-     rem term keeps it legible when the viewport term collapses on small screens. */
-  --custom-badge-font-size: clamp(0.6875rem, 0.6rem + 0.25vw, 0.8125rem);
-
-  /* The shadow for anything that opens as a layer above the page: the header's expanding band and the
-     popover behind the country and language selectors. theme.css ships those at 5% opacity, which does
-     not register on a light background and is why they read as flat blocks. Declared here rather than on
-     the header because the popover also opens from the footer, outside any header scope. */
-  --custom-shadow-panel: 0 4px 12px -4px rgb(0 0 0 / 0.15);
-
-  /* The gap under a banner title, in em so it tracks the heading size setting rather than sitting at one
-     length for every size. 0.7em is where the theme's own capped value landed at the size in use, so the
-     banner looks unchanged today and starts responding when the setting moves. */
-  --custom-banner-title-spacing: 0.7em;
-
-  /* theme.css transitions the underline wipe on links at .3s. Anything that fades alongside it has to
-     use the same duration or the two halves of the same hover finish at different times. */
-  --custom-transition-base: 0.3s;
-
-  /* How much of the normal section spacing a seam inside a section group keeps. Grouped sections share a
-     background and should read as one block, so the seam is tighter than a boundary between two ordinary
-     sections -- but it is a fraction of the global "Section spacing" setting, not a fixed number, so the
-     whole page still scales together when that setting changes.
-
-     1 is no reduction at all, 0.5 was the original halving and read too tight under a large heading. */
-  --custom-section-group-seam-scale: 0.75;
-
-  /* Where a header dropdown opens relative to the item that owns it. Both are measured off the popover
-     the localization selectors open, which is positioned by script and so is the one of the two that
-     cannot be moved from a stylesheet. Matching it is what lines the two menus up. */
-  --custom-header-dropdown-offset: 8px;
-  --custom-header-dropdown-padding-block: 13px;
-
-  /* icon.liquid draws both marks in a 12 unit viewBox. Sizing the box here rather than passing a width
-     to the snippet keeps the two icons in step -- they are stacked on top of each other, so any drift
-     between them would show as the swap runs. */
-  --custom-plus-minus-marker-width: 10px;
-
-  /* The marker's own width plus the h-stack gap-2 beside it: how much of a menu item is control rather
-     than label, and so how far short of the end the underline stops. */
-  --custom-plus-minus-marker-space: calc(var(--custom-plus-minus-marker-width) + 0.5rem);
-
-  /* Both match what theme.css gives .link-reversed, so the nav line and its timing are unchanged. */
-  --custom-underline-thickness: 1px;
-  --custom-underline-fade: 0.2s;
-
-  /* Only for the links drawn with text-decoration, which sits on the baseline rather than at the bottom
-     of the box the gradient used. In em so it tracks the font size of whatever copy the link sits in. */
-  --custom-underline-offset: 0.2em;
-
-  /* The display titles set a word per line, so the leading is doing the work of holding a stack of words
-     together. The theme's own 1.4 reads as separate lines rather than one title. */
-  --custom-display-title-line-height: 1.05;
-
-  /* The Spread button layout. Padding is well under theme.css's 1.5rem / 2.5rem so the sides pull in as
-     the gap opens, which is what separates the label from the icon rather than just widening the box. */
-  --custom-button-spread-padding-inline: 1rem;
-  --custom-button-spread-gap: 2rem;
-
-  /* Turns the button's plus into a cross on hover. Same four fold symmetry as the accordion marker, so
-     the same 45deg, for the same reason: 90deg would map the plus onto itself and show nothing. */
-  --custom-button-icon-hover-rotation: 45deg;
-
-  /* Turns the open accordion's plus into a cross. It has to be 45deg: the plus has four fold symmetry,
-     so 90deg, the value that reads as a quarter turn, maps it onto itself and shows nothing. */
-  --custom-accordion-marker-rotation: 45deg;
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Heading: border top
-   ----------------------------------------------------------------------------------------------------
-   The "Border top" option of the native heading indent setting. Rules a line above the heading rather
-   than indenting it. currentColor keeps it correct in every color scheme, including grouped sections
-   where the heading inherits the group's text color.
-   ---------------------------------------------------------------------------------------------------- */
-
-/* ----------------------------------------------------------------------------------------------------
-   Heading: italic font override
-   ----------------------------------------------------------------------------------------------------
-   The italic override is used as a font swap, so the slant has to be controllable. theme.css:1973 hard
-   codes font-style: italic at this exact specificity, and css-variables is inlined before theme.css in
-   the head, so the same rule declared there would lose on source order. It has to live here, in the
-   stylesheet that loads after theme.css. The value comes from css-variables, which sets the variable to
-   normal for a self hosted face and italic otherwise.
-   ---------------------------------------------------------------------------------------------------- */
-
-.highlighted-heading[effect="italic"] em {
-  font-style: var(--heading-italic-font-style, italic);
-}
-
-/* Body content has no heading block to carry the effect, so the swap is reached by element instead.
-   Headings only by default: an em inside a paragraph is emphasis, not branding. */
-.prose :where(h1, h2, h3, h4, h5, h6) em {
-  font-family: var(--heading-italic-font-family);
-  font-weight: var(--heading-italic-font-weight);
-  font-style: var(--heading-italic-font-style, italic);
-}
-
-/* The "Apply to body text" setting extends the swap to every em, for content that uses italics as
-   branding rather than emphasis -- a credits list, a lineup, a pull quote. theme.liquid puts the class
-   on body, so this reaches paragraphs and list items in any section, not just prose.
-
-   The size step is the point of the calc: the branding face has a smaller cap height than the body
-   font, so at a matched font-size it reads undersized next to the roman text it sits beside. The
-   multiplier is the same one the heading effect uses, and is 0 when both faces are the same family. */
-.italic-override-paragraphs em {
-  font-family: var(--heading-italic-font-family);
-  font-weight: var(--heading-italic-font-weight);
-  font-style: var(--heading-italic-font-style, normal);
-  font-size: calc(100% + var(--heading-italic-font-size-multiplier));
-}
-
-/* Bold inside the override marks itself with color rather than weight. Gascogne has no bold cut, so a
-   heavier value would either do nothing or be synthesised into a smeared face; the branding weight is
-   deliberately the only one used. The value matches theme.css's own .text-subdued. */
-.italic-override-paragraphs :is(strong em, em strong) {
-  color: rgb(var(--text-color) / var(--custom-opacity-subdued));
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Prose: rule between a label and the heading it introduces
-   ----------------------------------------------------------------------------------------------------
-   Page body content is authored as HTML in the admin, so a heading cannot carry a class reliably -- the
-   rich text editor strips them. Matching on the sibling pair instead means any "Article N" label
-   followed by a heading gets the rule automatically, with nothing to remember when adding one.
-
-   Full width here, unlike .heading--border-top which shrinks to its text: in a legal document the rule
-   reads as a divider between articles rather than an underline on the title.
-   ---------------------------------------------------------------------------------------------------- */
-
-.prose :where(.subheading) + :where(h1, h2, h3, h4, h5, h6) {
-  border-block-start: var(--custom-border-width-thick) solid currentColor;
-
-  /* Replaces the theme's --prose-heading-spacing so the gap above and below the rule match. */
-  margin-block-start: var(--custom-rule-spacing);
-  padding-block-start: var(--custom-rule-spacing);
-}
-
-/* A label followed by a heading starts a new section, so it opens a wider gap than a label used on its
-   own. Doubling the theme's own --prose-subheading-spacing keeps this on the theme's scale, which is
-   already responsive (2.5rem, stepping to 1rem and 1.5rem at other widths).
-
-   The multiplication has to happen here rather than in a :root variable: --prose-subheading-spacing is
-   declared on .prose (theme.css:3830), so a calc referencing it at :root resolves against nothing, the
-   declaration becomes invalid, and the margin silently disappears. */
-.prose :where(.subheading):has(+ :where(h1, h2, h3, h4, h5, h6)) {
-  margin-block-start: calc(var(--prose-subheading-spacing) * 2);
-}
-
-.prose > :where(.subheading):first-child {
-  margin-block-start: 0;
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Prose: a rule above every h2
-   ----------------------------------------------------------------------------------------------------
-   Body content is authored in the admin, which emits bare elements and strips class, so it cannot opt
-   into .heading--border-top the way a section's heading block can. The element itself is the only handle
-   available, and h2 is what the editor's second heading level produces.
-
-   Unscoped on purpose. A section heading is not an h2 element: snippets/heading.liquid defaults html_tag
-   to p and every template sets it to p, so headings render as <p class="h2"> and are not matched here.
-   That leaves this rule applying to exactly one thing -- text typed into the admin editor -- whether it
-   arrives as a page body, a blog article, or a product description, which is the consistency wanted.
-
-   h2 only, not every level: h3 and below mark sub-points within an article, and ruling those turns a long
-   document into a stack of lines. One rule per article is what gives the page its rhythm.
-
-   Sized to the heading rather than the column, matching .heading--border-top below: the rule reads as
-   part of the title it sits above, not as a divider ruled across the page.
-
-   The separation that sets one article apart from the last is carried by the h2 itself, not by the label
-   above it. The pair rule further up gives that gap to a .subheading, so an article introduced by one is
-   spaced correctly, but an h2 written on its own would sit tight against the paragraph before it. Since
-   the label is optional and the heading is not, the heading is the reliable place for the gap; when a
-   label is present it takes the gap back, so the two never both apply.
-   ---------------------------------------------------------------------------------------------------- */
-
-.prose :where(h2) {
-  border-block-start: var(--custom-border-width-thick) solid currentColor;
-
-  /* Matches the gap a .subheading opens above an article (line 151), so a heading with no label above it
-     is separated from the previous block by exactly as much as one that has a label. */
-  margin-block-start: calc(var(--prose-subheading-spacing) * 2);
-
-  /* The gap between the rule and the heading text it sits above. */
-  padding-block-start: var(--custom-rule-spacing);
-
-  /* Span the text rather than the container, while still wrapping at the container's width.
-     fit-content resolves to min(max-content, available), so a heading long enough to wrap still rules
-     the full column -- there is no narrower width it could take. Mirrors .heading--border-top. */
-  width: fit-content;
-}
-
-/* A label above the heading already opened the gap, so the heading keeps only the space under its rule.
-   Has to come after the rule above to win: both are (0,1,0), so order is what decides. */
-.prose :where(.subheading) + :where(h2) {
-  margin-block-start: var(--custom-rule-spacing);
-}
-
-/* A document that opens on a heading should not start with a rule across the top of the page, nor with
-   the separation that sets one article apart from the last -- there is nothing above it to separate from.
-   The theme zeroes the first child's margin at theme.css:3893, but that rule is (0,1,0) and so is the one
-   above, which loads later and would win; this selector is (0,2,0) and settles it either way. */
-.prose > :where(h2):first-child {
-  border-block-start: 0;
-  margin-block-start: 0;
-  padding-block-start: 0;
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Ordered list as an inline row
-   ----------------------------------------------------------------------------------------------------
-   An ordered list is the only way to author a row of short items -- names, dates, credits -- in the rich
-   text editor, so it is laid out as a wrapping row with the numbering dropped rather than as a list.
-
-   The li rule is scoped to ol on purpose. Nineteen sections render li elements (header, footer, cart,
-   search, customer account), and white-space: nowrap on those would overflow any long label. No ol is
-   rendered anywhere outside prose content, so that selector needs no scoping of its own.
-   ---------------------------------------------------------------------------------------------------- */
-
-/* The selector mirrors theme.css's own :where(ol, ul):not(.unstyled-list) so it can outrank it: that
-   rule indents every list by 1em to hang its markers outside the text, and with the markers dropped the
-   indent only pushes the row off the left edge. .unstyled-list is the theme's opt out, but the ol is
-   authored in the rich text editor and cannot be given a class. */
-ol:not(.unstyled-list) {
-  /* Every length here is in em, so all of the list's spacing is derived from its own type and scales
-     with the block's size setting. None of the theme's spacing tokens can be used for these: they are
-     all flat rem or px, so one would hold at body size while the text grew two steps around it.
-
-     The lead-in is the exception that has to be restated rather than tuned: theme.css spaces a list
-     inside prose on --prose-default-spacing, a flat rem. 1.5em lands near that rem value at the
-     default size, so the rhythm is unchanged until the size setting is actually used. */
-  --prose-inline-list-row-gap: 0.3em;
-  --prose-inline-list-column-gap: 1em;
-  --prose-inline-list-lead-in: 1.5em;
-
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  margin-inline-start: 0;
-  gap: var(--prose-inline-list-row-gap) var(--prose-inline-list-column-gap);
-  margin-block-start: var(--prose-inline-list-lead-in);
-}
-
-ol li {
-  min-width: auto;
-  white-space: nowrap;
-  padding-inline-start: 0;
-}
-
-.prose-justify-center ol {
-  justify-content: center;
-}
-
-.prose-justify-end ol,
-.prose-justify-right ol {
-  justify-content: flex-end;
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Paragraph size
-   ----------------------------------------------------------------------------------------------------
-   The rich text paragraph block's size setting. .prose declares no font size of its own, so setting one
-   on the block wrapper cascades to its paragraphs and lists.
-
-   The steps borrow the theme's heading scale tokens rather than the body scale: --text-lg is only the
-   body size plus 3px, too small a step to be worth a setting, while each heading token already carries
-   its own clamp and so stays responsive. Only the size is taken -- the block keeps the body font, which
-   using the h5/h6/h7 classes directly would not, since those also carry the heading family.
-   ---------------------------------------------------------------------------------------------------- */
-
-.prose-text-lg {
-  font-size: var(--text-h7);
-}
-
-.prose-text-xl {
-  font-size: var(--text-h6);
-}
-
-.prose-text-2xl {
-  font-size: var(--text-h5);
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Rich text: two column layout
-   ----------------------------------------------------------------------------------------------------
-   When a Column delimiter block splits the section, anything before the first heading is lifted into a
-   lead row spanning both columns, so the heading and the second column start level with each other
-   rather than the second column rising to meet the subheading.
-   ---------------------------------------------------------------------------------------------------- */
-
-/* theme.css:7894 gives .rich-text a single explicit track with grid-auto-flow: column, so every extra
-   item opens a new implicit column. Two consequences: the lead and the rule would flow sideways instead
-   of stacking, and grid-column: 1 / -1 would span only the one explicit track. Declaring two explicit
-   columns and row flow fixes both. Scoped to md and up, where the two column wrapper is visible -- below
-   that the single column wrapper is the only one rendered and must keep the theme's own grid.
-   1000px is the theme's md breakpoint: it must match the one on .md\:contents in theme.css exactly, or
-   between the two values the wrapper goes live while these rules do not and every item becomes its own
-   implicit column. */
-@media screen and (min-width: 1000px) {
-  .rich-text--stacked {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-flow: row;
-  }
-
-  .rich-text--stacked .rich-text__lead,
-  .rich-text--stacked .rich-text__rule {
-    grid-column: 1 / -1;
-  }
-}
-
-/* Splitting the lead onto its own row makes the heading the first child of its column, which theme.css
-   strips the top margin from. Restore that spacing -- but from the lead, not from the heading. Both
-   columns share the row below, so a margin on column one's heading moves column one alone and leaves
-   column two riding up level with the subheading. Paying it from the lead pushes both down together,
-   the same way .rich-text__rule below already does for the border-top layout.
-
-   :has(+ .prose) keeps this off that border-top layout: there a .rich-text__rule row sits between the
-   lead and the columns and already owns the gap, so a margin here would double it. */
-.rich-text__lead:has(+ .prose) {
-  margin-block-end: var(--prose-heading-spacing);
-}
-
-/* A heading directly after a subheading is tighter than a heading on its own -- mirrors theme.css:3983.
-   The em in the theme's own version anchored to the heading's font size, which is no longer in scope
-   here; the rem half of that min() was what won at every heading size from Large up anyway. */
-.rich-text__lead:has(> .subheading:last-child):has(+ .prose) {
-  margin-block-end: var(--prose-combination-subheading-heading-spacing);
-}
-
-.rich-text__rule {
-  /* .rich-text sets justify-items to the section's alignment, which would collapse an empty div to
-     zero width and hide the rule entirely. */
-  justify-self: stretch;
-
-  border-block-start: var(--custom-border-width-thick) solid currentColor;
-
-  /* The gap below is set here rather than on the heading, so the heading and the second column, which
-     share the next grid row, are pushed down by the same amount and stay level. */
-  margin-block-start: var(--custom-rule-spacing);
-  margin-block-end: var(--custom-rule-content-spacing);
-}
-
-/* The rule is drawn by the row above, so the heading must not draw its own -- a border on the heading
-   stops at the end of column one. Scoped to the desktop wrapper: the single column layout below md has
-   no rule row, and keeps the border on the heading itself. */
-.rich-text__columns .heading--border-top {
-  border-block-start: 0;
-  padding-block-start: 0;
-  width: auto;
-
-  /* The rule row owns the gap below itself, so the heading adds none of its own -- an em here would
-     move column one further than column two and break the row's alignment. */
-  margin-block-start: 0;
-}
-
-.heading--border-top {
-  border-block-start: var(--custom-border-width-thick) solid currentColor;
-  margin-block-start: var(--custom-heading-border-spacing);
-  padding-block-start: var(--custom-heading-border-spacing);
-
-  /* Span the text rather than the container, while still wrapping at the container's width.
-     fit-content resolves to min(max-content, available), so long headings do not overflow. */
-  width: fit-content;
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Alignment of a prose child narrower than its container
-
-   theme.css:4020 already centres the children of a centred prose, but it is written as :where(), which
-   carries no specificity, and the reset at theme.css:115 sets margin: 0 on p and h1-h6 with a type
-   selector that outranks it. So the rule never reaches a heading or a paragraph -- only elements outside
-   that reset list. It goes unnoticed until a child is narrower than the container and has somewhere to
-   move: a content width set on the block, or the fit-content width above.
-
-   Restating the theme's own declarations with enough specificity to land is the whole fix. Left is left
-   out because it is what the reset already produces. Sections holding a column delimiter are excluded:
-   there the heading is a column of its own, sized by the grid, and the rule between the columns is drawn
-   by .rich-text__rule rather than by the heading.
-   ---------------------------------------------------------------------------------------------------- */
-
-.rich-text:not(:has(.rich-text__columns)) .prose-justify-center > * {
-  margin-inline: auto;
-}
-
-.rich-text:not(:has(.rich-text__columns)) .prose-justify-end > *,
-.rich-text:not(:has(.rich-text__columns)) .prose-justify-right > * {
-  margin-inline: auto 0;
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Product gallery
-   ----------------------------------------------------------------------------------------------------
-   A portrait image is taller than the space left under the sticky header, so the gallery scrolls out of
-   view before it can ever stick, and the controls below it never come into view at all. Sizing the
-   gallery to that space and letting the media absorb what the controls do not use fits the whole thing
-   on screen. Scoped to md, the breakpoint where theme.css:7465 makes it sticky.
-   ---------------------------------------------------------------------------------------------------- */
-
-@media screen and (min-width: 1000px) {
-  /* The gutter at the end stands in for the section padding the gallery would otherwise sit flush against.
-
-     No offset of its own: main-product.liquid keeps the section's top spacing off the grid at this width
-     and puts it on the info column, so the gallery already starts level with the point it pins to. */
-  .product-gallery {
-    block-size: calc(100svh - var(--sticky-area-height) - var(--container-gutter));
-    grid-template-rows: minmax(0, 1fr) auto;
-  }
-
-  /* Every wrapper between the gallery and the media has to be allowed to shrink past its content, or
-     the image keeps its natural height and pushes the controls below the fold. The theme rows are
-     content sized -- max-content on the image list, auto on the carousel -- so both need replacing. */
-  .product-gallery__image-list,
-  .product-gallery__image-list > div:first-child,
-  .product-gallery__carousel {
-    min-block-size: 0;
-    block-size: 100%;
-  }
-
-  /* The media row absorbs what is left over, the thumbnail strip keeps its own height. This has to be
-     grid-template-rows: grid-auto-rows applies one size to every row, so it split the gallery evenly
-     between the two and left the media at half the height it should have had. */
-  .product-gallery__image-list {
-    grid-template-rows: minmax(0, 1fr) auto;
-  }
-
-  /* The theme exposes the carousel grid as a variable, so the row can be swapped without restating it. */
-  .product-gallery__carousel {
-    --product-gallery-carousel-grid: minmax(0, 1fr) / auto-flow 100%;
-
-    /* Slides start at the top of the row by default; they have to fill it for the image to size to it. */
-    align-items: stretch;
-  }
-
-  .product-gallery__media {
-    block-size: 100%;
-  }
-
-  .product-gallery__media > :is(img, video) {
-    block-size: 100%;
-    object-fit: contain;
-  }
-}
-
-/* Thumbnails are sized by width alone, so mixed orientations give the strip uneven heights and put the
-   current-thumbnail underline at a different level under each one. Both fixes go through the theme's own
-   variables: the group centres on the default it already falls back to, and the marker takes its width
-   as its height. Not in the media query above, since the strip shows on mobile too. */
-.scroll-marker-group--thumbnails {
-  --scroll-marker-group-justify-content: safe center;
-}
-
-.scroll-marker-group--thumbnails .scroll-marker {
-  --scroll-marker-height: var(--scroll-marker-width);
-}
-
-/* The theme contains the thumbnail, which leaves gaps inside a square box. Cover fills it instead. */
-.scroll-marker-group--thumbnails .scroll-marker img {
-  block-size: 100%;
-  inline-size: 100%;
-  object-fit: cover;
-}
-
-/* The last underline in the theme that still animates its width: theme.css:952 grows the current
-   thumbnail's rule from 0 to full. Held at full width and faded instead, on the same timing as the
-   link underlines. */
-.scroll-marker-group--thumbnails .scroll-marker::after {
-  width: 100%;
-  opacity: 0;
-  transition: opacity var(--custom-underline-fade) ease-in-out;
-}
-
-.scroll-marker-group--thumbnails .scroll-marker[aria-current="true"]::after {
-  opacity: 1;
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Product card
-   ---------------------------------------------------------------------------------------------------- */
-
-/* Container goes on the info block, not the card: the card is a subgrid, and the layout containment a
-   container-type implies would break its row alignment. */
-.product-card__info {
-  container-type: inline-size;
-}
-
-.product-title {
-  font-family: var(--heading-italic-font-family);
-  font-weight: var(--heading-italic-font-weight);
-  font-style: var(--heading-italic-font-style, normal);
-  font-size: clamp(1.5rem, 12cqi, 3rem);
-  line-height: var(--custom-display-title-line-height);
-  text-transform: uppercase;
-
-  /* One word per line. break-word rather than the theme's anywhere: anywhere collapses min-content to
-     the widest character and breaks the title letter by letter, while break-word leaves min-content
-     word-based and only splits a word that would otherwise overflow on its own. */
-  width: min-content;
-  max-width: 100%;
-  overflow-wrap: break-word;
-}
-
-/* Gaps scale with the card like the title does, so the rhythm holds at any column count. Bounds follow
-   theme.css:3855 .prose--compact, the theme's card-scale spacing. */
-.product-card__workshop-date,
-.product-card__workshop-type {
-  font-size: clamp(0.75rem, 3.5cqi, 1.125rem);
-}
-
-/* Full strength rather than the .text-subdued 0.6 alpha it is rendered with. */
-.product-card__workshop-date {
-  color: rgb(var(--text-color));
-  text-transform: uppercase;
-  margin-block-end: clamp(0.75rem, 5cqi, 2rem);
-}
-
-/* Reserves the line when a product has no type, so titles stay level across a row. */
-.product-card__workshop-type {
-  min-height: 1lh;
-  margin-block-end: clamp(0.5rem, 3.5cqi, 1.5rem);
-}
-
-.product-card__workshop-subtitle {
-  font-size: clamp(0.8125rem, 4cqi, 1.25rem);
-  margin-block-start: clamp(0.25rem, 1.5cqi, 0.75rem);
-}
-
-/* Temporary: remove to bring the price back. */
-.product-card__info .price-list {
-  display: none;
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Workshop card
-   ----------------------------------------------------------------------------------------------------
-   An imageless recap of a workshop: type and dates on one row, then title, subtitle and badges. Used as
-   a product page block and on the funding page.
-   ---------------------------------------------------------------------------------------------------- */
-
-.workshop-card,
-.workshop-card__text-content {
-  display: grid;
-  gap: 1rem;
-}
-
-.workshop-card__header,
-.workshop-card__content {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.workshop-card__header {
-  text-transform: uppercase;
-}
-
-/* Gascogne is the branding face; the theme exposes it through the heading italic override, which is the
-   only place the family and its single supported weight are resolved. */
-.workshop-card__title,
-.workshop-card__subtitle {
-  font-family: var(--heading-italic-font-family);
-  font-weight: var(--heading-italic-font-weight);
-}
-
-.workshop-card__title {
-  margin-block-end: 0;
-  font-size: clamp(1.75rem, 5vw, 3rem);
-  text-transform: uppercase;
-
-  /* One word per line, the same way .product-title does it, so a workshop reads the same on its card and
-     at the top of its own page. See that rule for why break-word rather than anywhere. The leading comes
-     with it: the theme's 1.4 leaves the stacked words reading as separate lines. */
-  width: min-content;
-  max-width: 100%;
-  overflow-wrap: break-word;
-  line-height: var(--custom-display-title-line-height);
-}
-
-.workshop-card__subtitle {
-  text-transform: capitalize;
-}
-
-.workshop-card__pricing {
-  margin-block-start: 1rem;
-}
-
-.workshop-card__pricing > div {
-  display: flex;
-  gap: 1rem;
-  align-items: baseline;
-}
-
-/* Viewport units rather than cqi: the workshop card is not inside a container context, so cqi would
-   silently fall back to the small viewport anyway. Stated directly, it matches the title above. */
-.workshop-card__price {
-  font-size: clamp(1.125rem, 0.9rem + 0.7vw, 1.5rem);
-}
-
-.workshop-card__pricing-note {
-  display: block;
-  font-size: clamp(0.75rem, 0.7rem + 0.15vw, 0.875rem);
-  text-transform: initial;
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Badges
-   ----------------------------------------------------------------------------------------------------
-   The workshop badges render as native .badge elements, so shape, type and spacing come from theme.css
-   and follow the theme's own badge settings. Only the two colors the theme has no slot for are set
-   here; everything else stays in Theme settings > Colors.
-   ---------------------------------------------------------------------------------------------------- */
-
-/* theme.css absolutely positions .badge-list inside the figure, so the workshop list and the native one
-   would land exactly on top of each other. One wrapper takes the position instead and the two lists
-   stack inside it in normal flow. */
-.product-card__figure .product-card__badges {
-  position: absolute;
-  z-index: 1;
-  padding: var(--product-card-inner-padding);
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.product-card__figure .product-card__badges .badge-list {
-  position: static;
-  padding: 0;
-}
-
-/* line-height 1 so the block padding is measured off the text itself. theme.css trims the badge to cap
-   height with text-box, but that only lands in browsers that support it; without the explicit
-   line-height the inherited half leading makes the top and bottom read unevenly everywhere else. */
-.badge {
-  font-size: var(--custom-badge-font-size);
-  line-height: 1;
-  padding-block: 0.55em;
-  padding-inline: 0.6em;
-}
-
-/* The two programme badges have no native color slot behind them, and sold out is pinned here as well
-   so the three read as one palette rather than two of them following Theme settings > Colors. The
-   metafield custom badge is still left to the theme. */
-.badge--festival {
-  background: var(--custom-color-festival);
-  color: var(--custom-color-festival-text);
-}
-
-.badge--academy {
-  background: var(--custom-color-academy);
-  color: var(--custom-color-academy-text);
-}
-
-.badge--sold-out {
-  background: var(--custom-color-sold-out);
-  color: var(--custom-color-sold-out-text);
-}
-
-/* Pinned to a neutral rather than to the workshop's color metafield, so it never competes with the two
-   programme badges. See the variable above for why it is achromatic. */
-.badge--low-stock {
-  background: var(--custom-color-low-stock);
-  color: var(--custom-color-low-stock-text);
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Workshop selection
-   ----------------------------------------------------------------------------------------------------
-   The boxed workshop recap at the top of the funding page. The border color is set per section, so the
-   rule reads it from a variable the section writes.
-   ---------------------------------------------------------------------------------------------------- */
-
-.workshop-selection {
-  padding: var(--container-gutter);
-  margin-block: var(--container-gutter);
-  box-shadow: 0 0 0 1px rgb(var(--workshop-card-border-color)) inset;
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Inputs: underline instead of a box
-   ----------------------------------------------------------------------------------------------------
-   The previous theme got this by editing the .input rule inside theme.css, which is lost on every
-   vendor upgrade. Same result declared here instead: custom.css loads after theme.css, so these win on
-   equal specificity. The border color repeats theme.css's own expression so it keeps tracking the
-   input text color and transparent backgrounds.
-
-   Zeroing the inline start padding pulls the text flush left, so the floating label has to give up its
-   matching offset or it would sit indented from the value it labels.
-   ---------------------------------------------------------------------------------------------------- */
-
-.input,
-.textarea,
-.select {
-  padding-inline-start: 0;
-  border: none;
-  border-block-end: 1px solid rgb(var(--input-text-color) / calc(var(--has-transparent-background, 0) * 0.85 + 0.15));
-}
-
-.floating-label {
-  inset-inline-start: 0;
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Financial help form
-   ---------------------------------------------------------------------------------------------------- */
-
-/* The form is long, so its groups are spaced on --form-gap rather than the tighter --fieldset-gap the
-   theme uses for short forms. .fieldset-row is left alone: its native auto-fit already collapses two
-   columns to one below ~24rem, which is what a hand written breakpoint here would have reproduced. */
-.financial-help-form .fieldset {
-  gap: var(--form-gap);
-}
-
-.financial-help-form textarea {
-  resize: none;
-  min-height: 0;
-}
-
-.financial-help-form .button {
-  margin-block-start: var(--form-gap);
-}
-
-.financial-help-form__group-label {
-  display: block;
-  margin-block-end: var(--form-control-gap);
-}
-
-.finance-workshop-btn {
-  display: flex;
-  align-items: center;
+  --custom-border-radius-sm: 6px;
+  --custom-border-radius-md: 10px;
+  --custom-menu-drawer-height: 66.66vh;
+  --custom-footer-text-max-width: 80%;
 }
 
 /* ============================================
-   QUALIOPI BANNER
+   REFACTORING CHANGELOG
+   ============================================
+   2024-12-11: Extracted hardcoded values to CSS variables
+   - Normalized spacing: 0.625rem → 0.75rem, 2.2rem → 2rem
+   - Normalized opacity: 0.95 → 0.9
+   - All color hex values → --custom-color-* variables
+   - Icon sizes (12px) → --custom-icon-size-sm
+   - Responsive fonts (clamp) → --custom-font-responsive-*
+
+   IMPORTANT: --dropdown-transition is read by custom.js
+   Do not rename without updating JavaScript
    ============================================ */
 
-/* The spacing and max-width steps come from the previous theme's global custom
-   scale, which stretch-dev does not carry. They are declared on the section
-   itself so the banner keeps its exact proportions without reintroducing a
-   parallel set of global tokens. */
-.qualiopi-banner {
-  --qualiopi-banner-spacing: 2rem;
-  --qualiopi-banner-spacing-mobile: 1rem;
-  --qualiopi-banner-width-small: 36rem;
-  --qualiopi-banner-width-medium: 48rem;
-  --qualiopi-banner-width-large: 60rem;
-  --qualiopi-banner-hover-opacity: 0.9;
+/* ============================================
+   SCROLL REVEAL
+   Generic fade-in-on-scroll utility (paired with the small IntersectionObserver
+   in custom.js). Add `data-animate` to any element to fade it in once it enters
+   the viewport. To stagger a group of siblings one by one, set an inline
+   `style="--reveal-index: {{ forloop.index0 }}"` on each - no per-component CSS
+   or JS needed.
+   ============================================ */
 
-  padding-block: calc(var(--qualiopi-banner-spacing) * 2);
-  margin-inline: var(--container-gutter);
+[data-animate] {
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition-delay: calc(var(--reveal-index, 0) * 0.08s);
 }
 
-/* Content width variants */
-.qualiopi-banner__container--small {
-  max-width: var(--qualiopi-banner-width-small);
-  margin-inline: auto;
+[data-animate].is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.qualiopi-banner__container--medium {
-  max-width: var(--qualiopi-banner-width-medium);
-  margin-inline: auto;
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
-.qualiopi-banner__container--large {
-  max-width: var(--qualiopi-banner-width-large);
-  margin-inline: auto;
-}
+/* ============================================
+   BASE FIXES
+   ============================================ */
 
-.qualiopi-banner__container--full {
-  max-width: 100%;
-}
-
-/* Left side: image + text. Button is pushed to the far end. */
-.qualiopi-banner__content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: calc(var(--qualiopi-banner-spacing) * 2);
-}
-
-.qualiopi-banner__image img {
-  max-width: 18rem;
-  height: auto;
+/* Fix: Enable HeightObserver to measure correctly (theme.css has this commented out) */
+height-observer {
   display: block;
 }
 
-.qualiopi-banner__text {
-  flex: 1;
-  font-size: var(--subheading-font-size);
-  max-width: 24rem;
+/* ============================================
+   INTRO STATS
+   ============================================ */
+
+.intro-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--section-stack-row-gap);
 }
 
-/* The certification mark keeps its own brand colour, so the button opts out of
-   the colour scheme and the theme's rounded corners. */
-.qualiopi-banner__button .button:not(.button--sm) .button__content {
-  padding-inline-start: 0;
-  padding-inline-end: 0;
+.intro-stats__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--container-gutter);
 }
 
-.qualiopi-banner__button .button {
-  background: var(--qualiopi-banner-button-background);
-  color: var(--qualiopi-banner-button-text-color);
-  border-radius: 0;
-  border: none;
-  padding-inline-start: 1rem;
-  padding-inline-end: 1rem;
+.intro-stats__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--container-gutter) calc(var(--container-gutter) * 2);
+  border-top-width: 1px;
+  padding-top: var(--container-gutter);
 }
 
-.qualiopi-banner__button .button:hover {
-  opacity: var(--qualiopi-banner-hover-opacity);
+.intro-stats__stat-value {
+  margin: 0;
+  font-family: var(--heading-italic-font-family);
+  font-weight: var(--heading-italic-font-weight);
+  font-style: italic;
+  font-size: var(--text-h4);
 }
 
-/* Tablet: keep the horizontal layout, reduce the image */
-@media screen and (min-width: 700px) and (max-width: 999px) {
-  .qualiopi-banner__image img {
-    max-width: 14rem;
+.intro-stats__stat-label {
+  margin: 0.25rem 0 0;
+}
+
+.intro-stats__stat-label .subheading {
+  margin-block-start: 0;
+}
+
+@media screen and (min-width: 1000px) {
+  .intro-stats {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: calc(var(--container-gutter) * 4);
   }
 }
 
-/* Mobile: stack vertically, center content */
+/* ============================================
+   ACTIVITY CARDS
+   ============================================ */
+
+.activity-cards__header {
+  margin-bottom: var(--section-stack-row-gap);
+}
+
+.activity-cards {
+  display: grid;
+  grid-template-columns: repeat(var(--activity-cards-items-per-row, 3), minmax(0, 1fr));
+  gap: 1px;
+  background: rgb(var(--border-color));
+}
+
+.activity-cards__card {
+  background: rgb(var(--background));
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.activity-cards__card--highlight {
+  /* No inline-start border: the grid's 1px gap already draws a divider against the
+     previous card there, so adding one here would double up into a thicker line. */
+  border-block: 1px solid rgb(var(--border-color));
+  border-inline-end: 1px solid rgb(var(--border-color));
+}
+
+.activity-cards__badge,
+.activity-cards__title,
+.activity-cards__description,
+.activity-cards__link,
+.activity-cards__current {
+  margin: 0;
+}
+
+.activity-cards__badge,
+.activity-cards__link,
+.activity-cards__current {
+  font-size: var(--text-xs);
+  letter-spacing: var(--subheading-letter-spacing);
+  text-transform: uppercase;
+}
+
+.activity-cards__title {
+  font-family: var(--heading-italic-font-family);
+  font-weight: var(--heading-italic-font-weight);
+  font-style: italic;
+  font-size: var(--text-h6);
+}
+
+.activity-cards__description {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.activity-cards__link {
+  display: inline-block;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.15rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.activity-cards__current {
+  opacity: 0.4;
+}
+
 @media screen and (max-width: 699px) {
-  .qualiopi-banner__content {
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    gap: var(--qualiopi-banner-spacing-mobile);
-  }
-
-  .qualiopi-banner__image img {
-    max-width: 250px;
-  }
-
-  .qualiopi-banner__text {
-    text-align: center;
-  }
-
-  .qualiopi-banner__button {
-    align-self: center;
+  .activity-cards {
+    grid-template-columns: 1fr;
   }
 }
 
-/* ----------------------------------------------------------------------------------------------------
-   Header: expanding dropdown reveal
-   ----------------------------------------------------------------------------------------------------
-   Opt in through the header's "Dropdown reveal" setting. Off, none of this applies and none of the
-   supporting script is even emitted, so the theme keeps Stretch's floating dropdown box.
+/* ============================================
+   TESTIMONIAL QUOTES
+   ============================================ */
 
-   On, a full width band slides down out of the header behind the open menu, so the header reads as
-   expanding rather than as a panel dropped on top of the page. Its height comes from the inline script
-   in header.liquid, which is the only part that cannot be expressed in CSS: the open menu is absolutely
-   positioned, so nothing in the layout carries its height for a selector to read.
-
-   Only for dropdowns that open below the header on desktop. Below 1000px the navigation is the drawer,
-   which has its own slide in animation and no header to expand.
-   ---------------------------------------------------------------------------------------------------- */
-
-/* The beat lives outside the media query below because the script reads it back off the element to time
-   the parts of the sequence CSS cannot reach. Inside a min-width query it would read as an empty string
-   on mobile, and the script would have no value to parse. */
-.header--expand-dropdown {
-  /* One beat, the unit the whole sequence is expressed in. The reveal is three of them:
-
-       beat 1   the header bar fades to solid
-       beat 2   the band slides down out of it
-       beat 3   the panel's own contents animate in
-
-     Closing runs the same three in reverse. v2 used 0.2s, which puts the first menu item on screen at
-     roughly 600ms: too slow for a menu that opens on hover, where the pointer is already moving. At
-     0.15s the same choreography reads in about 300ms.
-
-     Raising this stretches every stage together, so the sequence stays proportional at any value. */
-  --header-dropdown-reveal-beat: 0.15s;
-  --header-dropdown-reveal-easing: ease;
-
-  /* The measured height stops at the panel's own bottom edge, which leaves the band ruled flush against
-     the last item. This is the breathing room below it. Set to 0px to sit flush. */
-  --header-dropdown-reveal-padding-block-end: 1rem;
-
-  /* theme.css uses .5rem on popover options and .4rem on dropdown links */
-  --header-dropdown-reveal-item-spacing: 0.25rem;
+.testimonial-quotes__header {
+  margin-bottom: var(--section-stack-row-gap);
 }
 
-@media screen and (min-width: 1000px) {
-  .header--expand-dropdown::after {
-    content: '';
-    position: absolute;
-    inset-block-start: 100%;
-    inset-inline: 0;
-
-    /* --dropdown-height is measured by the script in header.liquid */
-    height: var(--dropdown-height, 0px);
-    background: rgb(var(--background));
-    pointer-events: none;
-
-    transition: height var(--header-dropdown-reveal-beat) var(--header-dropdown-reveal-easing);
-  }
-
-  .header--expand-dropdown[dropdown-expanded]::after {
-    height: calc(var(--dropdown-height, 0px) + var(--header-dropdown-reveal-padding-block-end));
-
-    /* Held one beat so the bar finishes going solid before the band moves */
-    transition: height var(--header-dropdown-reveal-beat) var(--header-dropdown-reveal-easing) var(--header-dropdown-reveal-beat);
-  }
-
-  /* z-index keeps the panel above the band, which paints last as a generated box */
-  .header--expand-dropdown :is(.header__dropdown-menu, .mega-menu) {
-    z-index: 1;
-    outline: none;
-  }
-
-  .header--expand-dropdown[dropdown-expanded] .popover::part(content) {
-    z-index: 1;
-    border-color: transparent;
-    box-shadow: none;
-    background: none;
-  }
-
-  /* Panels line up under the parent item's text: the band is the surface now, so the inline
-     padding that framed a floating box just pushes the labels out of alignment. */
-  .header--expand-dropdown[dropdown-expanded] .popover::part(content) {
-    inset-inline: 0 auto;
-    padding-inline: 0;
-  }
-
-  .header--expand-dropdown .header__dropdown-menu a,
-  .header--expand-dropdown .popover__value-option {
-    padding-inline: 0;
-    padding-block: var(--header-dropdown-reveal-item-spacing);
-  }
+.testimonial-quotes__wrapper {
+  max-width: 40rem;
+  margin-inline: auto;
 }
 
-/* ----------------------------------------------------------------------------------------------------
-   Page body bands: only the first one answers to the section above
-   ----------------------------------------------------------------------------------------------------
-   theme.css:2229 trims the top padding of any section that follows a text-with-media image column, on
-   the reasoning that the image column already carries padding of its own. It does that by setting
-   --section-vertical-spacing-block-start on the whole .shopify-section, which is right while a section
-   holds one .section-spacing.
-
-   main-page holds one per band, so every band inherited a value meant for the section's own top edge and
-   came out at 5.5rem - 3rem = 40px against a 5.5rem bottom. The seam between two bands was lopsided:
-   88px above the colour change and 40px below it, where two real sections give 88 on both sides.
-
-   The first band keeps the theme's adjustment -- it is the section's top edge and the reasoning holds.
-   Every band after it starts at a colour change of its own and pays the full spacing.
-   ---------------------------------------------------------------------------------------------------- */
-
-.shopify-section--main-page > .color-scheme + .color-scheme > .section-spacing,
-.shopify-section--main-article > .color-scheme + .color-scheme > .section-spacing {
-  --section-vertical-spacing-block-start: var(--section-vertical-spacing);
-
-  /* The other half of the same story. When the section above genuinely shares this one's background the
-     theme collapses the top padding to nothing (theme.css:2101, driven by --section-enable-padding-
-     collapsing). On a blog post the banner above does share it, so every band was landing on 0. Right for
-     the first band, wrong for the rest -- each of those opens on a colour change of its own. */
-  --section-disable-padding-collapsing: 1;
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Header dropdown: open under the menu item, not under the whole bar
-   ----------------------------------------------------------------------------------------------------
-   theme.css:6531 anchors the panel with inset-block-start: 100%, and the item's li is static, so the
-   containing block is the header itself and 100% resolves to the full bar height. The panel therefore
-   clears the whole header while the localization popover, positioned by script against its own button,
-   opens right under its label -- the two menus sat 65px apart.
-
-   Making the li the containing block is the whole fix: 100% becomes the item's own bottom edge, and the
-   offset and padding below match what the popover uses, so both menus put their first option the same
-   distance under the thing that opened it.
-
-   Only items that own a plain dropdown are positioned. A mega menu spans the bar's full width and takes
-   its own position from an ancestor, so giving its li a containing block would pull it inline.
-   ---------------------------------------------------------------------------------------------------- */
-
-@media screen and (min-width: 1000px) {
-  .header__primary-nav > ul > li:has(> .header__dropdown-menu) {
-    position: relative;
-  }
-
-  .header__primary-nav > ul > li > .header__dropdown-menu {
-    inset-block-start: calc(100% + var(--custom-header-dropdown-offset));
-    padding-block: var(--custom-header-dropdown-padding-block);
-  }
-}
-
-/* ----------------------------------------------------------------------------------------------------
-   Plus / minus marker on anything that opens a panel
-   ----------------------------------------------------------------------------------------------------
-   Rendered by plus-minus-toggle.liquid for both the header's dropdown menus and the localization
-   selectors. Both icons are stacked in one grid cell and cross-faded, so the box never changes size and
-   the label beside it cannot shift. The quarter turn is what makes the swap read as one mark changing
-   rather than two icons trading places.
-
-   Keyed to aria-expanded on the activator, which is the only state either component exposes.
-   ---------------------------------------------------------------------------------------------------- */
-
-.plus-minus-toggle {
+.testimonial-quotes {
   display: grid;
-  place-items: center;
-  flex-shrink: 0;
 }
 
-.plus-minus-toggle > * {
-  grid-area: 1 / 1;
-  inline-size: var(--custom-plus-minus-marker-width);
-  block-size: auto;
-  transition: opacity var(--custom-transition-base) ease-in-out,
-              transform var(--custom-transition-base) ease-in-out;
+.testimonial-quotes__item {
+  grid-area: 1 / -1;
+  text-align: center;
 }
 
-.plus-minus-toggle__minus {
-  opacity: 0;
-  transform: rotate(-90deg);
+.testimonial-quotes__item:not(.is-selected) {
+  visibility: hidden;
 }
 
-[aria-expanded='true'] .plus-minus-toggle__plus {
-  opacity: 0;
-  transform: rotate(90deg);
+.testimonial-quotes__quote {
+  font-family: var(--heading-italic-font-family);
+  font-weight: var(--heading-italic-font-weight);
+  font-style: italic;
+  font-size: var(--text-lg);
+  line-height: 1.4;
+  margin: 0 0 1rem;
 }
 
-[aria-expanded='true'] .plus-minus-toggle__minus {
-  opacity: 1;
-  transform: none;
+.testimonial-quotes__author {
+  margin: 0;
+  font-size: var(--text-xs);
+  letter-spacing: var(--subheading-letter-spacing);
+  text-transform: uppercase;
 }
 
-/* The underline at custom.css:1180 spans the whole link. The marker is part of the control rather than
-   part of the label, so on an item that carries one the line stops short of it. */
-.header__primary-nav > ul > li > a:has(> .plus-minus-toggle)::after {
-  inset-inline-end: var(--custom-plus-minus-marker-space);
+.testimonial-quotes__nav {
+  display: flex;
+  justify-content: center;
+  gap: var(--container-gutter);
+  margin-top: var(--container-gutter);
 }
 
-/* ----------------------------------------------------------------------------------------------------
-   Popover: mark the selected value by weight, not by a checkmark
-   ---------------------------------------------------------------------------------------------------- */
+/* ============================================
+   GALLERY
+   ============================================ */
 
-.popover__value-option[aria-selected="true"]:after,
-.popover__value-option:has(:checked):after {
-  content: none;
+.gallery__header {
+  margin-bottom: var(--section-stack-row-gap);
 }
 
-.popover__value-option {
-  opacity: var(--custom-opacity-subdued);
-  transition: opacity 0.2s ease-in-out;
+.gallery__subtitle {
+  margin: 0.5rem 0 0;
+  font-size: var(--text-sm);
 }
 
-.popover__value-option[aria-selected="true"],
-.popover__value-option:has(:checked) {
-  opacity: 1;
+/* ============================================
+   SESSIONS GRID
+   ============================================ */
+
+.sessions-grid__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--container-gutter);
+  margin-bottom: var(--section-stack-row-gap);
 }
 
-/* theme.css fades .link-faded-reverse on hover, which would dim an already dimmed option */
-@media screen and (pointer: fine) {
-  .popover__value-option:hover {
+.sessions-grid__heading > * {
+  margin: 0;
+}
+
+.sessions-grid__subheading {
+  margin: 0;
+}
+
+.session-card__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.session-card__image-wrapper {
+  aspect-ratio: 329 / 411;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background-color: var(--custom-color-image-placeholder);
+}
+
+.session-card__image,
+.session-card__placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.session-card__type {
+  margin: 0 0 0.5rem;
+  font-size: var(--text-xs);
+  letter-spacing: var(--subheading-letter-spacing);
+  text-transform: uppercase;
+}
+
+.session-card__instructor {
+  margin: 0 0 0.25rem;
+  font-weight: var(--text-font-bold-weight);
+  font-size: var(--text-sm);
+}
+
+.session-card__title {
+  margin: 0 0 1rem;
+  font-family: var(--heading-italic-font-family);
+  font-weight: var(--heading-italic-font-weight);
+  font-style: italic;
+  font-size: var(--text-h6);
+  line-height: 1.25;
+}
+
+.session-card__date {
+  margin: 0 0 1rem;
+  font-size: var(--text-sm);
+}
+
+.session-card__cta {
+  display: inline-block;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.15rem;
+}
+
+/* ============================================
+   VIDEO CAROUSEL
+   ============================================ */
+
+.video-carousel__header {
+  margin-bottom: var(--section-stack-row-gap);
+}
+
+.video-carousel {
+  display: flex;
+  gap: var(--container-gutter);
+  padding-inline: var(--container-gutter);
+  scroll-padding-inline: var(--container-gutter);
+}
+
+.video-carousel__item {
+  position: relative;
+  flex: 0 0 auto;
+  width: calc((100% / var(--video-carousel-items-per-row, 4)) - var(--container-gutter));
+  min-width: 220px;
+}
+
+.video-carousel__media {
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.video-carousel__mute-toggle {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--rounded-full);
+  color: #fff;
+  background: rgb(0 0 0 / 0.4);
+  cursor: pointer;
+}
+
+.video-carousel__mute-icon--unmuted {
+  display: none;
+}
+
+.video-carousel__mute-toggle.is-unmuted .video-carousel__mute-icon--muted {
+  display: none;
+}
+
+.video-carousel__mute-toggle.is-unmuted .video-carousel__mute-icon--unmuted {
+  display: block;
+}
+
+.video-carousel__caption {
+  margin: 0.75rem 0 0;
+  font-size: var(--text-sm);
+}
+
+@media screen and (min-width: 1000px) {
+  .video-carousel {
+    padding-inline: 0;
+  }
+}
+
+/* ============================================
+   STEPS
+   ============================================ */
+
+.steps__header {
+  margin-bottom: var(--section-stack-row-gap);
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--container-gutter);
+}
+
+.steps--carousel {
+  flex-direction: row;
+  padding-inline: var(--container-gutter);
+  scroll-padding-inline: var(--container-gutter);
+}
+
+.steps__item {
+  border-top-width: 1px;
+  padding-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.steps--carousel .steps__item {
+  flex: 0 0 auto;
+  width: 80vw;
+  max-width: 320px;
+  scroll-snap-align: start;
+}
+
+.steps__number,
+.steps__title {
+  margin: 0;
+}
+
+.steps__number {
+  font-family: var(--heading-italic-font-family);
+  font-weight: var(--heading-italic-font-weight);
+  font-style: italic;
+  font-size: var(--text-h5);
+  opacity: 0.5;
+}
+
+.steps__title {
+  font-weight: var(--text-font-bold-weight);
+}
+
+@media screen and (min-width: 1000px) {
+  .steps,
+  .steps--carousel {
+    display: grid;
+    grid-template-columns: repeat(var(--steps-column-count, 4), minmax(0, 1fr));
+    padding-inline: 0;
+    overflow: visible;
+  }
+
+  .steps--carousel .steps__item {
+    width: auto;
+    max-width: none;
+  }
+}
+
+/* ============================================
+   RICH TEXT & TYPOGRAPHY
+   ============================================ */
+
+.rich-text--inline {
+  display: block;
+}
+
+.rich-text__subheading {
+  margin-bottom: var(--prose-default-spacing);
+  display: grid;
+}
+
+.rich-text__subheading.justify-items-center>.prose {
+  margin-inline: auto;
+}
+
+.rich-text__subheading.justify-items-end>.prose {
+  margin-inline-start: auto;
+}
+
+.rich-text__heading,
+.rich-text__content {
+  display: grid;
+}
+
+.rich-text__heading.justify-items-center>.prose,
+.rich-text__content.justify-items-center>.prose {
+  margin-inline: auto;
+}
+
+.rich-text__heading.justify-items-end>.prose,
+.rich-text__content.justify-items-end>.prose {
+  margin-inline-start: auto;
+}
+
+.rich-text__wrapper {
+  display: block;
+}
+
+.rich-text__wrapper.justify-items-start:has(.rich-text--inline-border-top),
+.rich-text__wrapper.justify-items-center:has(.rich-text--inline-border-top),
+.rich-text__wrapper.justify-items-end:has(.rich-text--inline-border-top) {
+  display: flex;
+  flex-direction: column;
+}
+
+.rich-text__wrapper.justify-items-start:has(.rich-text--inline-border-top) {
+  align-items: flex-start;
+}
+
+.rich-text__wrapper.justify-items-center:has(.rich-text--inline-border-top) {
+  align-items: center;
+}
+
+.rich-text__wrapper.justify-items-end:has(.rich-text--inline-border-top) {
+  align-items: flex-end;
+}
+
+.heading--border-top,
+.rich-text.rich-text--inline.rich-text--inline-border-top {
+  border-top: var(--custom-border-width-thick) solid currentColor;
+  margin-top: 2rem;
+  padding-top: 2rem;
+}
+
+.rich-text.rich-text--inline.rich-text--inline-border-top.rich-text--border-width-sm {
+  max-width: var(--custom-max-width-sm);
+}
+
+.rich-text.rich-text--inline.rich-text--inline-border-top.rich-text--border-width-md {
+  max-width: var(--custom-max-width-md);
+}
+
+.rich-text.rich-text--inline.rich-text--inline-border-top.rich-text--border-width-lg {
+  max-width: var(--custom-max-width-lg);
+}
+
+.rich-text.rich-text--inline.rich-text--inline-border-top.rich-text--border-width-full {
+  min-width: 100%;
+}
+
+.rich-text__subheading+.rich-text__wrapper:not(:has(.rich-text--inline-border-top)) {
+  margin-top: 2rem;
+}
+
+.prose-text-lg {
+  font-size: calc(var(--text-base) * 1.25);
+  line-height: 1.44;
+}
+
+.prose-text-xl {
+  font-size: calc(var(--text-base) * 1.5);
+  line-height: 1.44;
+}
+
+.subheading-size-medium {
+  font-size: var(--subheading-font-size);
+}
+
+.subheading-size-large {
+  font-size: calc(var(--subheading-font-size) * 1.5);
+}
+
+.subheading-size-extra-large {
+  font-size: calc(var(--subheading-font-size) * 2);
+}
+
+.slideshow__slide .prose p {
+  font-size: var(--text-base);
+  line-height: var(--text-line-height);
+}
+
+.slideshow__slide .prose-text-lg p {
+  font-size: calc(var(--text-base) * 1.25);
+}
+
+.slideshow__slide .prose-text-xl p {
+  font-size: calc(var(--text-base) * 1.5);
+}
+
+/* ============================================
+   HERO / SLIDESHOW
+
+   Tighter line-height for the big display heading (scoped to the hero only -
+   other sections keep the theme's default display-l line-height), plus a
+   one-by-one fade-in for the hero text on page load. The hero is always in
+   the initial viewport, so this runs as a plain CSS animation on `.is-selected`
+   rather than the scroll-triggered `[data-animate]` utility above. It targets
+   the direct children of `.prose` (not each nested block) so the theme's
+   native adjacent-sibling spacing rules between subheading/heading/text keep
+   working untouched.
+   ============================================ */
+
+.slideshow__slide .display-xl,
+.slideshow__slide .display-l,
+.slideshow__slide .display-m {
+  line-height: 1;
+}
+
+.slideshow__slide.is-selected .prose > * {
+  animation: hero-reveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.slideshow__slide.is-selected .prose > *:nth-child(1) { animation-delay: 0.1s; }
+.slideshow__slide.is-selected .prose > *:nth-child(2) { animation-delay: 0.2s; }
+.slideshow__slide.is-selected .prose > *:nth-child(3) { animation-delay: 0.3s; }
+.slideshow__slide.is-selected .prose > *:nth-child(4) { animation-delay: 0.4s; }
+.slideshow__slide.is-selected .prose > *:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes hero-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
     opacity: 1;
-  }
-
-  .popover__value-option.link-faded-reverse:hover {
-    color: rgb(var(--text-color));
+    transform: translateY(0);
   }
 }
 
-/* ----------------------------------------------------------------------------------------------------
-   Popover: give the shadow something to do
-   ----------------------------------------------------------------------------------------------------
-   The desktop popover is what the country and language selectors open. theme.css sets its shadow to
-   0 2px 4px at 5% opacity, which does not register against a light background, so the panel reads as a
-   flat block pasted over the page rather than as a layer above it. Same shadow as the header band, so a
-   language menu and a navigation menu look like the same component.
-
-   Left to the desktop breakpoint on purpose: below it the popover is a full width bottom sheet, where a
-   drop shadow has no edge to describe.
-   ---------------------------------------------------------------------------------------------------- */
-
-@media screen and (min-width: 1000px) {
-  .popover::part(content) {
-    box-shadow: var(--custom-shadow-panel);
+@media (prefers-reduced-motion: reduce) {
+  .slideshow__slide.is-selected .prose > * {
+    animation: none;
   }
 }
 
-/* ----------------------------------------------------------------------------------------------------
-   Blog post card: sit images on the baseline of their row
-   ----------------------------------------------------------------------------------------------------
-   At the original ratio each article keeps its own crop, so the subgrid row is as tall as the tallest
-   image and the shorter ones leave their slack underneath, against the text. Dropping them to the bottom
-   of the row moves that slack above the image instead, so every card has the same gap to its text.
+/* ============================================
+   FOOTER
+   ============================================ */
 
-   Inert once an image size is set, since the images are then all the same height, and inert without
-   subgrid support, since the container is only taller than its image because the row stretched it.
-   ---------------------------------------------------------------------------------------------------- */
-
-.blog-post-card:not(.blog-post-card--horizontal) .blog-post-card__image-container {
+.footer__block-list {
   display: grid;
-  align-content: end;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: calc(var(--container-gutter)*4) var(--container-gutter);
 }
 
-/* ----------------------------------------------------------------------------------------------------
-   Button: spread
-   ----------------------------------------------------------------------------------------------------
-   Applies only when the Button layout theme setting is Spread. On Centred nothing here matches and
-   buttons keep theme.css's own padding and gap.
-
-   Spread pulls the sides in and pushes the label and icon apart, so the button reads as two elements in
-   one box rather than one centred lockup. Padding goes through theme.css's own --button-padding-inline
-   rather than overriding padding, which also drops the 700px step it defines: one value at every width.
-
-   The small size is excluded. Its padding is already tight and a 2rem gap would be most of the button.
-   ---------------------------------------------------------------------------------------------------- */
-
-.button--spread:not(.button--sm) {
-  --button-padding-inline: var(--custom-button-spread-padding-inline);
+.footer__block--newsletter .prose {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
-.button--spread:not(.button--sm) .button__content {
-  column-gap: var(--custom-button-spread-gap);
+.footer__block--links {
+  max-width: 100%;
 }
 
-/* ----------------------------------------------------------------------------------------------------
-   Button: icon
-   ----------------------------------------------------------------------------------------------------
-   theme.css spaces every .icon inside .prose off the element above it, for the standalone icon block.
-   A button icon is a flex item next to its own label, so that spacing pushes it out of line and makes
-   the button taller than the text needs.
-   ---------------------------------------------------------------------------------------------------- */
+.footer__block--newsletter .form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--container-gutter);
+}
+
+.footer__block--newsletter .button {
+  background-color: transparent;
+  border: 1px solid currentColor;
+  color: inherit;
+}
+
+.footer__block .social-media {
+  margin-top: var(--custom-spacing-sm);
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
 
 .button .icon {
   margin-block-start: 0;
 }
 
-/* theme.css nudges a button icon to the right on hover, which reads as an arrow moving along. The plus
-   is not directional, so it turns in place instead, on theme.css's own .icon transform transition. */
+.button-content {
+  column-gap: 1.5rem;
+}
+
+/* ============================================
+   HEADER & NAVIGATION
+   ============================================ */
+
+.header__locale-toggle .icon-custom-plus-icon,
+.header__locale-toggle .icon-custom-minus-icon,
+[aria-controls][aria-expanded] .icon-custom-plus-icon,
+[aria-controls][aria-expanded] .icon-custom-minus-icon {
+  width: var(--custom-icon-size-sm);
+  min-width: var(--custom-icon-size-sm);
+}
+
+.drawer::part(header) {
+  --header-padding-top: 1.4rem;
+  padding-top: calc(var(--header-padding-top) + .25rem);
+  text-transform: initial;
+  height: var(--sticky-area-height);
+  align-items: flex-start;
+}
+
+.drawer--cart .empty-state .prose,
+.drawer--cart .subheading {
+  text-transform: initial;
+}
+
+.header nav {
+  padding-top: .25rem;
+}
+
+:is(.button, .shopify-challenge__button, .shopify-payment-button__button--unbranded) svg[viewBox="0 0 12 12"] {
+  transition: transform 0.2s ease;
+}
+
+.menu-drawer::part(content) {
+  max-width: 100%;
+  height: var(--custom-menu-drawer-height);
+}
+
+.header__menu-toggle .h-stack {
+  gap: .75rem;
+}
+
+.header__menu-toggle .icon-custom-plus-icon,
+.header__menu-toggle .icon-custom-minus-icon {
+  width: var(--custom-icon-size-sm);
+  min-width: var(--custom-icon-size-sm);
+  color: currentColor;
+}
+
+.header__menu-toggle .subheading {
+  text-transform: initial;
+}
+
+/* Plus icon for menu items with dropdowns */
+.header__primary-nav>ul>li>a .h-stack,
+.header__secondary-nav>ul>li>a .h-stack,
+.header__locale-wrapper>a .h-stack {
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.header__primary-nav>ul>li>a .icon-custom-plus-icon,
+.header__primary-nav>ul>li>a .icon-custom-minus-icon,
+.header__secondary-nav>ul>li>a .icon-custom-plus-icon,
+.header__secondary-nav>ul>li>a .icon-custom-minus-icon,
+.header__locale-wrapper>a .icon-custom-plus-icon,
+.header__locale-wrapper>a .icon-custom-minus-icon {
+  width: var(--custom-icon-size-sm);
+  min-width: var(--custom-icon-size-sm);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Minus icon hidden by default (use opacity for animation) */
+.header__primary-nav>ul>li>a:not([aria-expanded="true"]) .icon-custom-minus-icon,
+.header__secondary-nav>ul>li>a:not([aria-expanded="true"]) .icon-custom-minus-icon,
+.header__locale-wrapper>a:not([aria-expanded="true"]) .icon-custom-minus-icon {
+  display: none;
+}
+
+/* Expanded: rotate plus 180deg then hide, show minus */
+.header__primary-nav>ul>li>a[aria-expanded="true"] .icon-custom-plus-icon.icon-custom-plus-icon,
+.header__secondary-nav>ul>li>a[aria-expanded="true"] .icon-custom-plus-icon.icon-custom-plus-icon,
+.header__locale-wrapper>a[aria-expanded="true"] .icon-custom-plus-icon.icon-custom-plus-icon {
+  display: block;
+  /* Override theme.css - doubled class for higher specificity */
+  transform: rotate(90deg);
+  opacity: 0;
+  position: absolute;
+}
+
+/* Align dropdown menu items with parent text (after the icon) */
+.header__primary-nav .header__dropdown-menu,
+.header__secondary-nav .header__dropdown-menu {
+  padding-inline: calc(var(--custom-icon-size-sm) + 0.5rem);
+  padding-top: 0;
+  transform: translateY(-1.5rem);
+  background: transparent;
+  outline: none;
+}
+
+.header__dropdown-menu a {
+  padding: 0;
+}
+
+/* Align dropdown position with label text (skip past icon) */
+.header__primary-nav>ul>li>.header__dropdown-menu {
+  inset-inline-start: calc(var(--custom-icon-size-sm) + 0.5rem);
+}
+
+.header__dropdown-menu ul {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+header a,
+header button,
+footer a {
+  text-transform: none !important;
+}
+
+.header__locale-wrapper .header__dropdown-menu li {
+  line-height: 0;
+}
+
+/* Remove hover underline on header and footer menu items */
+.header__primary-nav .link-reversed,
+.header__secondary-nav .link-reversed,
+.footer .link-reversed {
+  text-decoration: none !important;
+  transition: opacity 0.2s ease-in-out;
+}
+
 @media screen and (pointer: fine) {
-  .button:has(.icon):hover .icon-custom-plus-icon {
-    transform: rotate(var(--custom-button-icon-hover-rotation));
+
+  .header__primary-nav .link-reversed:hover,
+  .header__secondary-nav .link-reversed:hover,
+  .footer .link-reversed:hover {
+    text-decoration: none !important;
+    opacity: 0.6;
   }
 }
 
-/* ----------------------------------------------------------------------------------------------------
-   Link: fade the underline out, and the text with it
-   ----------------------------------------------------------------------------------------------------
-   The other half of the wipe. These links carry the underline all the time and theme.css slides it away
-   sideways on hover; this fades it instead, so nothing in the theme animates an underline's width.
+.header__primary-nav a[href="#"]:not([aria-controls]),
+.header__secondary-nav a[href="#"]:not([aria-controls]),
+.footer a[href="#"]:not([controls]) {
+  pointer-events: none;
+  cursor: default;
+  background-image: none !important;
+}
 
-   Not the ::after used on .link-reversed. Those are single line UI links, while these sit inside body
-   copy and wrap across lines, and an absolutely positioned ::after only covers the first line fragment.
-   text-decoration-color is animatable and paints on every line box, which is what a wrapping link needs.
+.header__primary-nav a[href="#"]:not([aria-controls]):hover,
+.header__secondary-nav a[href="#"]:not([aria-controls]):hover,
+.footer a[href="#"]:not([aria-controls]):hover {
+  background-size: 0 !important;
+  transform: none !important;
+}
 
-   The selector restates theme.css:4113's exclusions rather than simplifying them: headings and buttons
-   inside prose are deliberately left without an underline and must stay that way.
-   ---------------------------------------------------------------------------------------------------- */
+.header__dropdown-menu form {
+  display: contents;
+}
 
-.link,
-.prose a:not(.display-xl, .display-l, .display-m, .h1, .h2, .h3, .h4, .h5, .h6, .h7, .button) {
+.header__dropdown-menu li button[type="submit"].link-faded-reverse {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  transition: color .2s ease-in-out;
+}
+
+.header__logo a {
+  display: flex;
+}
+
+.header__logo-svg {
+  width: var(--header-logo-width);
+  height: auto;
+  display: inline-block;
+}
+
+.header__logo-svg svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  color: rgb(var(--text-color));
+  transition: color 0.3s ease;
+}
+
+.header__logo-svg svg * {
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.header .header__logo,
+.header .header__primary-nav,
+.header .header__secondary-nav {
+  align-items: center;
+  z-index: 10;
+}
+
+.circle-button--xl,
+.product-gallery__cursor .circle-button--xl {
+  --button-size: var(--custom-badge-size-desktop);
+}
+
+.floating-controls__control .circle-button {
+  transition: opacity .2s, visibility .2s;
+  translate: 0 !important;
+  scale: 1 !important;
+}
+
+.floating-controls__control .icon-big-arrow-right,
+.floating-controls__control .icon-big-arrow-left,
+.product-gallery__cursor .icon-big-arrow-right {
+  max-width: 2rem;
+}
+
+.shopify-pc__banner__dialog {
+  padding: 0 !important;
+}
+
+.shopify-pc__banner__wrapper {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 2rem !important;
+  padding: calc(var(--container-gutter)*2) var(--container-gutter) !important;
+  color: rgb(var(--text-color)) !important;
+  background: rgb(var(--background)) !important;
+}
+
+/* ============================================
+   COOKIE BANNER
+   ============================================ */
+
+.shopify-pc__banner__btns button {
+  color: rgb(var(--text-color)) !important;
+  text-align: left !important;
+  border-radius: var(--button-border-radius) !important;
+  padding-inline-start: 1rem !important;
+  padding-inline-end: 3.5rem !important;
+  max-width: max-content !important;
+  min-width: 12rem !important;
+  margin: 0 !important;
+}
+
+.shopify-pc__banner__btns {
+  justify-content: flex-start !important;
+}
+
+#shopify-pc__banner__btn-manage-prefs {
+  color: rgb(var(--text-color)) !important;
+  border: none !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+.shopify-section--main-password form[action*="contact"] {
+  display: none !important;
+}
+
+.shopify-section--main-password hr,
+.shopify-section--main-password .v-stack.justify-items-center.gap-5 {
+  display: none !important;
+}
+
+.shopify-section--main-password .v-stack.gap-4 {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: 50vh !important;
+}
+
+.shopify-section--main-password button[aria-controls="access-storefront-modal"] {
+  font-size: 1.125rem !important;
+  padding: 1rem 2rem !important;
+}
+
+.product-list--carousel.scroll-area {
+  --product-list-carousel-column-count: calc(var(--product-list-column-count, 2) - 0.75);
+  padding-inline-start: var(--product-list-column-gap);
+  scroll-padding-inline-start: var(--product-list-column-gap);
+  --product-list-card-width: calc(((100% - var(--product-list-carousel-gap-width)) / var(--product-list-carousel-column-count)) + var(--product-list-column-gap));
+}
+
+section-container {
+  display: block;
+}
+
+section-container.color-scheme {
+  background-color: rgb(var(--background));
+  background-image: var(--background-gradient);
+  color: rgb(var(--text-color));
+}
+
+section-container.color-scheme .shopify-section>.color-scheme {
+  background-color: transparent;
   background-image: none;
-  text-decoration: underline;
-  text-decoration-thickness: var(--custom-underline-thickness);
-  text-underline-offset: var(--custom-underline-offset);
-
-  /* One declaration, since a second would replace this rather than add to it. Opacity is listed for the
-     .link rule below; prose links never change it, so it costs them nothing. */
-  transition:
-    color var(--custom-transition-base) ease-in-out,
-    opacity var(--custom-transition-base) ease-in-out,
-    text-decoration-color var(--custom-transition-base) ease-in-out;
+  color: inherit;
 }
 
-@media screen and (pointer: fine) {
-  /* The aria-current guard is theme.css's own: the current item keeps its underline through a hover. */
-  :is(.link, .prose a:not(.display-xl, .display-l, .display-m, .h1, .h2, .h3, .h4, .h5, .h6, .h7, .button)):not([aria-current="true"]):hover {
-    text-decoration-color: transparent;
-  }
-
-  /* Fading the text alongside the underline gives the hover one gesture rather than two. */
-  .link:hover {
-    opacity: var(--custom-opacity-subdued);
-  }
+section-container.color-scheme .circle-button {
+  --background: 255 255 255;
+  --text-color: 0 0 0;
+  background-color: rgb(var(--background));
+  color: rgb(var(--text-color));
 }
 
-/* ----------------------------------------------------------------------------------------------------
-   Accordion: plus marker
-   ----------------------------------------------------------------------------------------------------
-   accordion.liquid now renders the plus instead of accordion-small-arrow, which every accordion in the
-   theme goes through. theme.css keys its marker rules to the old icon class names, so the two properties
-   it set have to be restated here rather than inherited.
-   ---------------------------------------------------------------------------------------------------- */
+section-container.color-scheme .circle-button:before {
+  background: rgb(var(--background));
+}
 
-.accordion__summary .icon-custom-plus-icon {
+/* ============================================
+   PRODUCT GALLERY
+   ============================================ */
+
+.product-gallery__carousel {
+  gap: var(--container-gutter);
+}
+
+.product-gallery__media {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.product-gallery__media img {
+  width: auto !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain !important;
+}
+
+/* ============================================
+   FAQ & ACCORDIONS
+   ============================================ */
+
+.faq.prose-justify-center .accordion,
+.faq.prose-justify-center .faq__category {
+  text-align: center;
+  justify-content: center;
+}
+
+.faq.prose-justify-end .accordion,
+.faq.prose-justify-end .faq__category {
+  text-align: end;
+  justify-content: flex-end;
+}
+
+.faq.prose-justify-start .accordion,
+.faq.prose-justify-start .faq__category {
+  text-align: start;
+  justify-content: flex-start;
+}
+
+.faq.prose-justify-left .accordion,
+.faq.prose-justify-left .faq__category {
+  text-align: start;
+  justify-content: flex-start;
+}
+
+.faq.prose-justify-right .accordion,
+.faq.prose-justify-right .faq__category {
+  text-align: end;
+  justify-content: flex-end;
+}
+
+.accordion__summary {
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.75rem;
+}
+
+.accordion__summary .icon-custom-plus-icon,
+.accordion__summary .icon-custom-minus-icon {
   flex-shrink: 0;
-  transition: transform var(--custom-transition-base) ease-in-out;
+  margin-top: 0.35em;
 }
 
-.accordion.is-open .accordion__summary .icon-custom-plus-icon {
-  transform: rotate(var(--custom-accordion-marker-rotation));
+/* Indent accordion content to align with title (after the icon) */
+.accordion__content {
+  padding-left: calc(var(--custom-icon-size-sm) + 0.75rem);
+  /* icon width + gap */
 }
 
-/* ----------------------------------------------------------------------------------------------------
-   Reversed link: fade the underline, and show it on the current page
-   ----------------------------------------------------------------------------------------------------
-   theme.css animates the underline as a background gradient, which cannot be faded on its own, so the
-   line is redrawn on ::after where the gradient sat. That also gives the current page a marker: the
-   header writes aria-current="page", but theme.css only styles [aria-current="true"].
+/* ============================================
+   COLLECTIONS
+   ============================================ */
 
-   Every .link-reversed in the theme except the timeline's left nav, which repositions the same gradient
-   into a vertical rule down the side of each item and would lose it here.
-   ---------------------------------------------------------------------------------------------------- */
+.collection__toolbar {
+  border-top: none;
+}
 
-.link-reversed:not(.timeline__nav *) {
-  background-image: none;
+.header__separator {
   position: relative;
+  width: 1px;
+  /* Largeur du séparateur */
+  height: 20px;
+  /* Ajuste selon la hauteur désirée */
+  opacity: var(--custom-opacity-separator);
 }
 
-.link-reversed:not(.timeline__nav *)::after {
+.header__separator::before {
   content: '';
   position: absolute;
-  inset-inline: 0;
-  inset-block-end: 0;
-  block-size: var(--custom-underline-thickness);
-  background-color: currentColor;
-  opacity: 0;
-  transition: opacity var(--custom-underline-fade) ease-in-out;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  border-right: 1px solid currentColor;
+  /* Utilise la couleur du texte parent */
 }
 
-/* "page" is the header's markup, "true" is what the sidebar menu script sets, aria-selected is for tabs. */
-.link-reversed:not(.timeline__nav *):is([aria-current="page"], [aria-current="true"], [aria-selected="true"])::after,
-.link-reversed:not(.timeline__nav *):has(+ [open])::after {
-  opacity: 1;
+.buy-buttons__payment-row {
+  display: flex;
+  gap: var(--custom-spacing-sm);
 }
 
-@media screen and (pointer: fine) {
-  .link-reversed:not(.timeline__nav *):hover::after {
-    opacity: 1;
-  }
+.buy-buttons__payment-row>* {
+  flex: 1 1 0;
+  min-width: 0;
 }
 
-/* ----------------------------------------------------------------------------------------------------
-   Footer: a column grid instead of a flex row
-   ----------------------------------------------------------------------------------------------------
-   From 700px theme.css lays the block list out as a wrapping flex row with space-between, which sizes
-   each block to its own content: a menu of two links sits under a narrow column, a menu of six under a
-   wide one, and the whole row shifts every time a menu changes length. A grid fixes the columns instead,
-   so the menus line up with each other and stay put.
+/* .product-gallery__buy-buttons {
+  max-width: 24rem;
+} */
 
-   Below 700px nothing here applies -- theme.css already lays the blocks out two to a row, which is what
-   this wants on a phone. It relies on collapse_on_mobile being off for every links block: leave it on
-   and theme.css wraps the menu in an accordion, then gives it the full row and a negative top margin.
-   ---------------------------------------------------------------------------------------------------- */
+/* Fit-screen: subtract header group height for consistent viewport calculations */
+.rich-text--fit-screen {
+  min-height: calc(100svh - var(--sticky-area-height, 0px));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-.footer__block-list {
+/* First section WITH transparent header - only subtract announcement/countdown (header overlays) */
+.shopify-section:first-child:has([allow-transparent-header]) .rich-text--fit-screen {
+  min-height: calc(100svh - var(--announcement-bar-height, 0px) - var(--countdown-condensed-height, 0px));
+}
+
+/* ============================================
+   MODALS & DRAWERS
+   ============================================ */
+
+.drawer::part(close-button):before,
+.drawer-popover::part(close-button):before,
+.modal::part(close-button):before,
+.popover::part(close-button):before {
+  background: var(--custom-overlay-white);
+}
+
+.modal:has([slot="image"])::part(close-button):before {
+  background: var(--custom-overlay-white);
+}
+
+.modal--newsletter .fieldset {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-
-  /* A row gap far wider than the column gap: the rows are separate groups, the columns are one group
-     read across. The gutter is the theme's own page margin, so the columns sit on the page's rhythm. */
-  gap: calc(var(--container-gutter) * 4) var(--container-gutter);
+  grid-template-columns: 1fr 1fr;
+  margin-top: 1.5rem;
+  gap: 2rem;
 }
 
-@media screen and (min-width: 700px) {
-  /* theme.css caps a block at 24rem and a menu at 10rem, which is how the flex row keeps its columns
-     from stretching. In a grid the track already sets the width, and the caps only stop a column from
-     filling it. */
-  .footer__block,
-  .footer__block--links {
-    max-width: 100%;
+.modal--newsletter>div>p {
+  max-width: var(--custom-modal-max-width);
+}
+
+.prose {
+  --prose-media-spacing: var(--custom-spacing-xl);
+}
+
+:where(.prose-justify-start, .sm\:prose-justify-start)>.heading--border-top {
+  margin-inline: 0;
+}
+
+:where(.prose-justify-center, .sm\:prose-justify-center)>.heading--border-top {
+  margin-inline: auto;
+}
+
+:where(.prose-justify-end, .sm\:prose-justify-end)>.heading--border-top {
+  margin-inline: auto 0;
+}
+
+/* ============================================
+   MEDIA QUERIES
+   ============================================ */
+
+@media screen and (max-width: 699px) {
+
+  .modal--newsletter .fieldset {
+    /* display: grid; */
+    grid-template-columns: 1fr;
+    /* margin-top: 1.5rem; */
+    /* gap: 2rem; */
+  }
+
+  .rich-text--inline .rich-text__heading {
+    margin-bottom: 1.5rem;
+  }
+
+  .heading--border-top,
+  .rich-text.rich-text--inline.rich-text--inline-border-top {
+    border-top-width: 1px;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+
+  .footer__block--newsletter .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .header__secondary-nav {
+    align-items: initial;
+  }
+
+  .shopify-pc__banner__wrapper {
+    gap: 1.5rem !important;
+  }
+
+  .shopify-pc__banner__btns {
+    flex-direction: column !important;
+    gap: calc(var(--container-gutter) * 1.5) !important;
+  }
+
+  .shopify-pc__banner__btns button {
+    width: 100% !important;
+  }
+
+  .product-list--carousel.scroll-area {
+    --product-list-column-gap: var(--container-gutter);
+    --product-list-card-width: 85%;
+    padding-inline-start: var(--container-gutter);
+    padding-inline-end: var(--container-gutter);
+    scroll-padding-inline-start: var(--container-gutter);
+  }
+
+  .collection__results {
+    padding-inline: var(--container-gutter);
+  }
+
+  .content-box {
+    --content-box-inline-spacing: var(--container-gutter);
+  }
+
+  .product-sticky-add-to-cart {
+    background: rgb(var(--background));
   }
 }
 
@@ -1311,252 +1271,488 @@ ol li {
   .footer__block-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-}
 
-/* Set per block in the editor, on a menu whose items are addresses or sentences rather than one-word
-   labels, or on a logo that needs room to read. Only above 1000px: the grid is two columns below that,
-   where a single track is already half the width this asks for.
-
-   The newsletter and text blocks are not settable -- theme.css spans them two at every width. */
-@media screen and (min-width: 1000px) {
-  .footer__block--wide {
+  .footer__block--created_by {
     grid-column: span 2;
   }
-}
 
-/* The newsletter form is the theme's only .form-row. theme.css lays it out as a flex row that sizes the
-   button to its label and lets the input take the rest, which leaves the button too small to hold the
-   corner of a block that spans two columns. Two equal tracks split it on the same gutter as the grid
-   above, so the input and the button line up with the column edges either side of them. */
-.footer__block--newsletter .form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--container-gutter);
-}
+  .section-split__column.section-split__column--image+.section-split__column {
+    padding-block-start: var(--section-stack-row-gap);
+  }
 
-/* One column below 700px: at half of a phone's width the email field is too narrow to read what is
-   typed into it. */
-@media screen and (max-width: 699px) {
-  .footer__block--newsletter .form-row {
+  .product {
     grid-template-columns: 1fr;
   }
 }
 
-/* ----------------------------------------------------------------------------------------------------
-   Fit screen across a section group
+@media screen and (min-width: 700px) {
+  .rich-text--inline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: flex-start;
+  }
 
-   A section that fits the screen uses the theme's own md:min-h-fill utility. That breaks down once the
-   section is also grouped: section-group.js lifts the run into a <section-group>, so the section is no
-   longer main's first child and theme.css:9744 stops compensating for the header, and each member would
-   claim a viewport of its own anyway, making a two-section group two screens tall.
+  .rich-text--inline .rich-text__heading {
+    align-self: start;
+  }
 
-   So the height moves to the group container. It reads the same variables theme.css:9740 does, at the
-   same 1000px breakpoint, where the split sections lay out in columns and there is a screen's worth of
-   height to share out in the first place.
-   ---------------------------------------------------------------------------------------------------- */
+  .rich-text--inline-reverse .rich-text__heading {
+    order: 2;
+  }
 
-section-group.section-group--fit {
-  display: block;
-}
+  .rich-text--inline-reverse .rich-text__content {
+    order: 1;
+  }
 
-@media screen and (min-width: 1000px) {
-  /* Column flex rather than a grid with an fr row. An fr track only shares out leftover space when the
-     container's height is definite, and a min height alone does not make it definite -- the row sized
-     itself to its content and the group overflowed the screen. Giving the container a fixed height would
-     fix that but leaves a member taller than the screen spilling over the section after it.
+  .prose-text-xl {
+    font-size: calc(var(--text-base) * 1.75);
+  }
 
-     Flex resolves both against the same min height: the starter takes what the members below it leave,
-     and if they come to more than a screen on their own the starter reaches zero and the group grows
-     with them instead of overlapping what follows. */
-  section-group.section-group--fit {
+  .slideshow__slide .prose-text-xl p {
+    font-size: calc(var(--text-base) * 1.75);
+  }
+
+  .floating-controls__control .icon-big-arrow-right,
+  .floating-controls__control .icon-big-arrow-left,
+  .product-gallery__cursor .icon-big-arrow-right {
+    width: 2rem;
+  }
+
+  section-container.section-container--fit-screen {
     display: flex;
     flex-direction: column;
-    min-block-size: calc(100svh - var(--sticky-area-height, 0px));
+    min-height: calc(100svh - var(--sticky-area-height, 0px));
   }
 
-  section-group.section-group--fit:first-child:has([allow-transparent-header]) {
-    min-block-size: calc(100svh - var(--announcement-bar-height, 0px) - var(--countdown-condensed-height, 0px));
+  section-container.section-container--fit-screen>.shopify-section:first-child {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
 
-  section-group.section-group--fit:first-child:not(:has([allow-transparent-header])) {
-    min-block-size: calc(100svh - var(--header-group-height, 0px));
+  section-container.section-container--fit-screen>.shopify-section:first-child>* {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
 
-  /* The grid stretches the section to its row, but every wrapper between it and the content is a plain
-     block that would otherwise stay content sized and leave the row's spare height empty below. Split
-     sections nest theirs inside a color scheme element; the slideshow is its own root and has neither. */
-  section-group.section-group--fit > .shopify-section:first-child > .color-scheme,
-  section-group.section-group--fit > .shopify-section:first-child .section-split,
-  section-group.section-group--fit > .shopify-section:first-child > .slideshow {
-    block-size: 100%;
+  section-container.section-container--fit-screen>.shopify-section:last-child {
+    flex-shrink: 0;
   }
 
-  /* The starter asked to fill the screen, and the group is now the thing doing it, so the height floors
-     inside it have to give way -- the image size on a slideshow or a split section sets one, and it kept
-     the starter from shrinking into the space the members below it left. Matched on the class prefix
-     because every step of the scale is its own utility, responsive variants included. */
-  section-group.section-group--fit > .shopify-section:first-child [class*="min-h-"] {
-    min-block-size: 0;
+  .shopify-section--text-with-media:has(.section--fit-screen) {
+    min-height: calc(100svh - var(--sticky-area-height, 0px));
+    display: flex;
+    flex-direction: column;
   }
 
-  /* The starter is the one that gives way. A basis of zero rather than auto keeps its own content out of
-     the sum, so what the members below it need is all that is measured, and the min block size stops it
-     refusing to shrink past its contents. */
-  section-group.section-group--fit > .shopify-section:first-child {
-    flex: 1 1 0;
-    min-block-size: 0;
+  .shopify-section--text-with-media .section--fit-screen {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
 
-  /* Everything below it keeps its natural height and is never squeezed to make room. */
-  section-group.section-group--fit > .shopify-section:not(:first-child) {
-    flex: 0 0 auto;
+  .shopify-section--text-with-media .section--fit-screen .section-split {
+    flex-grow: 1;
   }
-}
 
-/* ----------------------------------------------------------------------------------------------------
-   Seam spacing inside a section group
-
-   The theme already zeroes the top padding of the section that follows, so the seam is whatever bottom
-   padding the section above it keeps. Halving that is the whole of this: the run reads as one block
-   without departing far from the spacing everywhere else. Only members that have a section below them
-   are touched, so the group's outer spacing against the rest of the page is stock.
-   ---------------------------------------------------------------------------------------------------- */
-
-/* That only holds when the section above has padding to halve. A full-bleed member has none -- the
-   slideshow is a carousel at the section root, with neither .section-spacing nor .section-split -- so
-   theme.css:2225 never fires for the follower and it keeps a full top padding against an image that
-   ends flush. Collapsing it outright is the wrong end of the same problem: with nothing above to carry
-   the seam, the heading would sit on the image edge.
-
-   So the follower halves its own top padding instead, landing on the same seam every other pair in the
-   group gets, just paid by the section below rather than the one above. */
-section-group > .shopify-section:not(:has(.section-spacing, .section-split)) + .shopify-section .section-spacing {
-  padding-block-start: calc(var(--section-vertical-spacing-block-start, var(--section-vertical-spacing)) * var(--custom-section-group-seam-scale));
-}
-
-section-group > .shopify-section:not(:last-child) .section-spacing {
-  padding-block-end: calc(var(--section-vertical-spacing-block-end, var(--section-vertical-spacing)) * var(--custom-section-group-seam-scale));
-}
-
-/* Split sections carry their spacing on the columns instead. Stacked, only the last column forms the
-   section edge -- the padding above it separates the text from the media below and has to survive. */
-section-group > .shopify-section:not(:last-child) .section-split .section-split__column:not(.section-split__column--flushed):last-child {
-  padding-block-end: calc(var(--section-vertical-spacing) * var(--custom-section-group-seam-scale));
-}
-
-/* Side by side, both columns run to the edge, so both halve or the media ends up short of the text
-   beside it. Their padding here is a gutter rather than section spacing (theme.css:2160, 2194), and the
-   selector is spelled out in full to outweigh that second rule, which is one class heavier. */
-@media screen and (min-width: 1000px) {
-  section-group > .shopify-section:not(:last-child) .section-split:has(.section-split__column--image) .section-split__column:not(.section-split__column--flushed) {
-    padding-block-end: calc(var(--container-gutter) * var(--custom-section-group-seam-scale));
+  .modal--newsletter::part(content),
+  .modal--default::part(content) {
+    place-self: center center;
   }
 }
-
-/* ----------------------------------------------------------------------------------------------------
-   Utilities: md:min-h-auto and md:min-h-full
-
-   The theme ships both at the base width only (theme.css:9599, 9603). Every breakpoint variant covers the
-   sized steps and fill but neither of these (theme.css:9674, 9736), so a box given a mobile height has no
-   way to let go of it at desktop. text-with-media needs both: auto where the image is meant to size the
-   box, full where the box is meant to fill its column. Named and scoped the way the theme names its own.
-
-   The third rule is the exclusion theme.css:785 already makes at the base width, and that theme.css:813
-   could not make at md because md:min-h-auto did not exist for it to exclude. Auto is the theme's signal
-   that the media sizes the box, so it stays in flow and keeps its ratio; every other min-h value, full
-   included, takes the media out of flow to fill a box that is already sized. Without this rule
-   [class*="md:min-h-"] matches auto as well and "Original image ratio" is cropped to its column.
-
-   That is also why the fit-screen path uses full and not auto for the media box: auto would hand the
-   height back to the image, and a portrait one would push the section past the screen the fill was
-   meant to fit it to.
-
-   The exclusion ties on specificity with the theme rule and wins on source order: custom.css loads after
-   theme.css (theme.liquid:54-55). The stock Video section has the same gap one breakpoint down, at
-   sm:min-h-auto (video.liquid:3), which nothing here reaches.
-   ---------------------------------------------------------------------------------------------------- */
 
 @media screen and (min-width: 1000px) {
-  .md\:min-h-auto {
-    min-height: auto;
+  .prose {
+    --prose-media-spacing: var(--custom-spacing-3xl);
   }
 
-  .md\:min-h-full {
-    min-height: 100%;
+  .header__secondary-nav {
+    column-gap: 1.5rem;
   }
 
-  .content-box.md\:min-h-auto .content-box__background-media {
-    position: static;
-    inset: auto;
+
+
+
+  .shopify-section--main-product product-gallery {
+    height: calc(100svh - var(--sticky-area-height, 0px) - var(--container-gutter));
+    /* max-height: calc(100svh - var(--sticky-area-height, 0px) - var(--container-gutter) * 2); */
+  }
+
+  product-gallery.product-gallery {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* gap: calc(var(--container-gutter) * 4); */
+  }
+
+  .product-gallery__image-list {
+    flex: 0 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-gallery__image-list>div:first-child {
+    flex: 0 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+
+}
+
+
+
+.product-sticky-add-to-cart .h-stack {
+  align-items: flex-start;
+}
+
+
+.product-gallery__thumbnail-list .scroll-marker-group--thumbnails {
+  --scroll-marker-group-justify-content: center;
+}
+
+.product-gallery__thumbnail-list button {
+  aspect-ratio: 4/3;
+}
+
+.product-gallery__thumbnail-list button img {
+  object-fit: cover;
+  height: 100%;
+}
+
+.scroll-marker-group--thumbnails .scroll-marker:after {
+  transition: none;
+}
+
+
+@media (pointer: fine) {
+  :is(.button, .shopify-challenge__button, .shopify-payment-button__button--unbranded):hover svg[viewBox="0 0 12 12"] {
+    transform: rotate(90deg) !important;
+  }
+
+  .header__menu-toggle:hover {
+    opacity: 1;
+  }
+
+  .header__dropdown-menu li button[type="submit"].link-faded-reverse:hover {
+    color: rgb(var(--text-color) / .6);
+  }
+
+  :is(.circle-button:not([disabled]):hover, .circle-button .group\:circle-button:hover):before {
+    transform: scale(1);
   }
 }
 
-/* ----------------------------------------------------------------------------------------------------
-   Blog post banner: space the image the way prose spaces media
-   ----------------------------------------------------------------------------------------------------
-   theme.css:5333 tucks this image up with a flat -3.75rem, a value that assumes there is leading below the
-   title for it to eat into. Theme settings run heading line height at 1, so a heading's box is exactly its
-   font size and there is no leading at all -- the tuck went into the glyphs of a display-m title instead.
-
-   The stacked banner now sits in a .prose, so the image takes the same media spacing every other image in
-   the theme gets and stops being a special case. Raising heading line height in Theme settings would also
-   have solved the overlap, but that moves every heading on the site to fix one banner.
-   ---------------------------------------------------------------------------------------------------- */
-
-/* The gap under the title is the title's to give, not the image's: an em on the image resolves against
-   body copy, while on the heading it resolves against the heading, which is the whole point.
-
-   Not --prose-heading-spacing, which is what a heading takes inside body copy: its clamp tops out at
-   3.5rem, so every size from X-Large up lands on the same 56px and the heading size setting stops moving
-   the gap at exactly the sizes a banner uses. A plain em keeps it proportional across the whole range. */
-.shopify-section--blog-post-banner .prose > h1 {
-  margin-block-end: var(--custom-banner-title-spacing);
+.product-info {
+  max-width: 100%;
+  margin-inline: 0;
 }
+
+/* ============================================
+   CART DRAWER CUSTOMIZATIONS
+   ============================================ */
+
+/* 2. Line item align to top */
+.line-item {
+  align-items: flex-start;
+}
+
+/* 3. Quantity selector smaller border radius */
+.quantity-selector--line-item {
+  border-radius: var(--custom-border-radius-sm);
+}
+
+/* 4. Shipping text left aligned */
+.drawer--cart .cart-drawer__footer-inner .text-subdued.text-xs {
+  text-align: left;
+}
+
+.price-wrapper {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Featured collections header - button inline with heading */
+.featured-collections-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--container-gutter);
+}
+
+/* ============================================
+   MENU DRAWER CUSTOMIZATIONS
+   ============================================ */
+
+/* Use container-gutter for consistent x-padding + flex layout for bottom languages */
+.menu-drawer__panel-body {
+  padding: var(--custom-spacing-lg) var(--container-gutter);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Menu drawer - secondary menu sub-links */
+.menu-drawer__sublinks {
+  margin-top: 0.75rem;
+  padding-left: 0;
+}
+
+/* Push language selector to bottom of drawer */
+.menu-drawer__locale-selector--bottom {
+  margin-top: auto;
+  padding-top: var(--custom-spacing-lg);
+}
+
+/* ============================================
+   ICON SWAP TRANSITIONS (Plus/Minus)
+   Unified animation for all expandable elements
+   ============================================ */
+
+/* Base transition for all icon swap elements */
+.header__menu-toggle .icon-custom-plus-icon,
+.header__menu-toggle .icon-custom-minus-icon,
+.accordion__summary .icon-custom-plus-icon,
+.accordion__summary .icon-custom-minus-icon,
+[aria-controls][aria-expanded] .icon-custom-plus-icon,
+[aria-controls][aria-expanded] .icon-custom-minus-icon {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Expanded state: rotate plus icon and fade out */
+/* Override theme.css display:none to allow animation */
+.header__menu-toggle[aria-expanded="true"] .icon-custom-plus-icon,
+.accordion.is-open .accordion__summary .icon-custom-plus-icon,
+[aria-controls][aria-expanded="true"] .icon-custom-plus-icon {
+  display: block;
+  transform: rotate(90deg);
+  opacity: 0;
+  position: absolute;
+}
+
+/* Collapsed state: hide minus icon */
+.header__menu-toggle:not([aria-expanded="true"]) .icon-custom-minus-icon,
+.accordion:not(.is-open) .icon-custom-minus-icon,
+[aria-controls][aria-expanded="false"] .icon-custom-minus-icon,
+[aria-controls]:not([aria-expanded="true"]) .icon-custom-minus-icon {
+  display: none;
+}
+
+/* Ensure parent has relative positioning for absolute plus icon */
+.header__menu-toggle .h-stack,
+.accordion__summary,
+[aria-controls][aria-expanded] {
+  position: relative;
+}
+
+/* ============================================
+   HEADER DROPDOWN WHITE STRIPE
+   Full-width white bar that appears below header
+   when a nested menu is open
+   ============================================ */
+
+.header::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100vw;
+  height: var(--dropdown-height, 0px);
+  background-color: rgb(var(--background));
+  box-shadow: 0 4px 8px -2px var(--custom-color-shadow);
+  /* Close: slide up, then fade background after 2× base */
+  transition:
+    height var(--dropdown-transition) ease,
+    background-color var(--dropdown-transition) ease calc(var(--dropdown-transition) * 2);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Opening: delay stripe slide by 1× base (wait for solid) */
+.header:has([open])::after {
+  transition:
+    height var(--dropdown-transition) ease var(--dropdown-transition),
+    background-color 0s ease;
+}
+
+
+.footer__block--text {
+  max-width: var(--custom-footer-text-max-width);
+}
+
+.footer__block--image,
+.footer__block--newsletter {
+  grid-column: span 2;
+  max-width: 100%;
+}
+
+/* ============================================
+   CREATED BY CREDITS
+   ============================================ */
+
+.footer__block--created_by {
+  max-width: 100%;
+}
+
+@media screen and (min-width: 1000px) {
+  .footer__block--created_by {
+    grid-column: span 4;
+  }
+}
+
+.created-by-credits {
+  display: flex;
+  justify-self: center;
+  align-items: baseline;
+  gap: var(--custom-spacing-md);
+  flex-wrap: wrap;
+}
+
+.created-by-credits__text {
+  font-size: var(--custom-font-responsive-sm);
+  text-transform: lowercase;
+}
+
+.created-by-credits__logo {
+  width: auto;
+  display: inline-block;
+  filter: brightness(0) invert(1) contrast(100);
+  height: 3rem;
+}
+
+.created-by-credits__logo--campus-mana {
+  height: 3.2rem;
+}
+
+
+.created-by-credits__placeholder {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background: var(--custom-color-image-placeholder);
+  font-size: 0.625rem;
+  letter-spacing: var(--custom-letter-spacing-base);
+  text-transform: uppercase;
+}
+
+/* Tablet: reduce logo size */
+@media screen and (min-width: 700px) and (max-width: 999px) {
+  .created-by-credits__logo {
+    height: 2.5rem;
+  }
+
+  .created-by-credits__logo--campus-mana {
+    height: 2.7rem;
+  }
+}
+
+@media screen and (max-width: 699px) {
+
+  .footer__block--newsletter .prose {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  /* .footer__block {
+    text-align: center;
+    grid-column: span 1;
+    max-width: 100%;
+  } */
+
+  .footer__block--image {
+    order: -1;
+  }
+
+  .footer__block {
+    grid-column: span 2;
+  }
+
+  .footer__block--created_by {
+    grid-column: span 2;
+  }
+
+  /* Reduce created-by logo sizes on mobile */
+  .created-by-credits__logo {
+    height: 2rem;
+  }
+
+  .created-by-credits__logo--campus-mana {
+    height: 2.2rem;
+  }
+
+  /*
+  .footer__block>div {
+    text-align: center;
+    justify-content: center;
+  } */
+
+
+  .featured-collections-products>div {
+    gap: 3rem;
+  }
+}
+
+
+
+
+
+
+.product-info__block-list>div:not([data-block-type="separator"]) {
+  max-width: var(--custom-max-width-sm);
+}
+
+.trust-icons {
+  padding-block: 0;
+  border: 0;
+}
+
+/* =============================================================================
+   BUTTON LINK HOVER EFFECT
+   ============================================================================= */
+
+/* Add opacity transition to all button.link elements */
+.link {
+  transition: opacity 0.3s;
+}
+
+/* On hover: remove underline and fade opacity for all button.link instances */
+@media screen and (pointer: fine) {
+  .link:hover {
+    background: linear-gradient(to right, transparent, transparent) 0 100% / 100% 1px no-repeat !important;
+    opacity: 0.6;
+  }
+}
+
+@supports (-webkit-hyphens:none) {
+  .button .icon-custom-minus-icon,
+  .button .icon-custom-plus-icon,
+  a .icon-custom-minus-icon,
+  a .icon-custom-plus-icon {
+    margin-top: var(--safari-text-margin, 0)
+  }
+}
+
+/* =============================================================================
+   ITALIC FONT OVERRIDE - GASCOGNE
+   ============================================================================= */
+
+/* Override theme.css paragraph italic rules to work in all contexts */
+.italic-override-paragraphs em {
+  font-family: var(--heading-italic-font-family);
+  font-weight: 200;  /* gascogne-extra-light */
+  font-style: normal;
+  font-size: calc(100% + var(--heading-italic-font-size-multiplier));
+}
+
+/* Bold + italic uses gascogne-light (weight 300) */
+.italic-override-paragraphs strong em,
+.italic-override-paragraphs em strong {
+  font-weight: 300;  /* gascogne-light */
+}
+
 
 .blog-post-banner__image {
-  /* Both sides zeroed. Prose gives media a margin on each side, which normally collapses with its
-     neighbours; the fit layout makes this prose a flex column and flex margins do not collapse, so they
-     were adding up. The title owns the gap above, the meta line the gap below. */
-  margin-block: 0;
-}
-
-/* theme.css:3999 flushes whatever follows an image in prose hard against it, which is what a caption
-   wants. The banner's date line is not a caption -- it is its own piece of information -- so it gets a gap
-   back. The paragraph spacing rather than the subheading spacing: a subheading opens a new idea and is
-   spaced to say so, while this line closes the one above it. */
-.blog-post-banner__image + .meta-information {
-  margin-block-start: var(--prose-default-spacing);
-}
-
-/* Fit screen. The container is a grid holding one item, so the prose stretches to the full height the
-   padding leaves behind, and a flex column inside it centres the stack the way content-center would.
-
-   The image is the only element in the banner with any slack, so it is the one that gives when the stack
-   is taller than the screen. min-block-size: 0 is what allows a replaced element to shrink below its
-   intrinsic height in a flex column -- without it the image holds its size and pushes the rest past the
-   fold. object-fit keeps the whole picture visible while it shrinks rather than cropping it. */
-@media screen and (min-width: 1000px) {
-  /* min-h-fill is a floor, not a ceiling: on its own the container just grows past the screen and the
-     image never has to give anything up. Matching it with a ceiling makes the box exactly one screen, so
-     the flex column below has a height to distribute and something to take back from. The expression is
-     theme.css's own, restated because there is no utility for the max. */
-  .container:has(> .blog-post-banner__fit) {
-    max-block-size: calc(100svh - var(--sticky-area-height, 0px));
-
-    /* A grid row sizes to its content by default, so capping the container alone just makes the row
-       overflow it. minmax(0, 1fr) binds the row to the container instead, which is what gives the stack
-       inside a height it has to fit into. */
-    grid-template-rows: minmax(0, 1fr);
-  }
-
-  .blog-post-banner__fit {
-    flex-direction: column;
-    justify-content: center;
-    display: flex;
-  }
-
-  .blog-post-banner__fit .blog-post-banner__image {
-    min-block-size: 0;
-    object-fit: contain;
-  }
+  margin-block-start: 0;
 }

@@ -1,0 +1,107 @@
+{%- liquid
+  assign cols = block.settings.columns
+  assign mobile_cols = cols | at_most: 2
+  assign tablet_cols = cols | at_most: 3
+-%}
+
+<style>
+  #shopify-block-{{ block.id }} {
+    grid-template-columns: repeat({{ mobile_cols }}, minmax(0, 1fr));
+    width: 100%;
+    margin-inline: auto;
+    {% unless section.settings.aspect_ratio == 'cover' %}align-items: center;{% endunless %}
+  }
+  @media screen and (min-width: 700px) {
+    #shopify-block-{{ block.id }} {
+      grid-template-columns: repeat({{ tablet_cols }}, minmax(0, 1fr));
+    }
+  }
+  @media screen and (min-width: 1000px) {
+    #shopify-block-{{ block.id }} {
+      grid-template-columns: repeat({{ cols }}, minmax(0, 1fr));
+    }
+  }
+  #shopify-block-{{ block.id }} img {
+    display: block;
+    {% if section.settings.aspect_ratio == 'cover' %}width: 100%; height: 100%; object-fit: cover;{% else %}min-width: 100%; height: auto;{% endif %}
+  }
+  /* Captioned cells stack the image and caption. */
+  #shopify-block-{{ block.id }} figure {
+    margin: 0;
+    {% if section.settings.aspect_ratio == 'cover' %}display: flex; flex-direction: column; height: 100%;{% endif %}
+  }
+  {% if section.settings.aspect_ratio == 'cover' %}
+    /* In cover mode the figure fills the cell; the image takes the remaining
+       space and crops, the caption sits below. */
+    #shopify-block-{{ block.id }} figure > img,
+    #shopify-block-{{ block.id }} figure > picture {
+      flex: 1;
+      min-height: 0;
+    }
+  {% else %}
+    /* In natural mode the image keeps its own ratio (no crop). */
+    #shopify-block-{{ block.id }} figure img {
+      height: auto;
+      object-fit: initial;
+    }
+  {% endif %}
+</style>
+
+<div id="shopify-block-{{ block.id }}" class="max-w-full sm:max-w-{{ block.settings.content_width }}" style="display: grid; gap: var(--gallery-gap);" {{ block.shopify_attributes }}>
+  {%- content_for 'blocks' -%}
+</div>
+
+{% schema %}
+{
+  "name": "Row",
+  "tag": null,
+  "settings": [
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "Number of columns"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "t:global.sizes.content_width",
+      "options": [
+        {
+          "value": "sm",
+          "label": "t:global.sizes.small"
+        },
+        {
+          "value": "md",
+          "label": "t:global.sizes.medium"
+        },
+        {
+          "value": "lg",
+          "label": "t:global.sizes.large"
+        },
+        {
+          "value": "full",
+          "label": "t:global.sizes.full_width"
+        }
+      ],
+      "default": "full"
+    }
+  ],
+  "blocks": [
+    { "type": "_gallery-image" }
+  ],
+  "presets": [
+    {
+      "name": "Row",
+      "blocks": [
+        { "type": "_gallery-image" },
+        { "type": "_gallery-image" },
+        { "type": "_gallery-image" }
+      ]
+    }
+  ]
+}
+{% endschema %}
