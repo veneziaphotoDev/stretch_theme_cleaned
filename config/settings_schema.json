@@ -387,6 +387,23 @@
         "default": "helvetica_n4"
       },
       {
+        "type": "select",
+        "id": "heading_custom_font",
+        "label": "Custom font override",
+        "info": "Overrides the font picker above with a font uploaded to Settings > Files. The picker only lists Shopify's font library, so custom fonts have to be selected here.",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default (use font picker)"
+          },
+          {
+            "value": "gascogne",
+            "label": "Gascogne"
+          }
+        ],
+        "default": "default"
+      },
+      {
         "type": "range",
         "id": "heading_font_size_factor",
         "min": 0.5,

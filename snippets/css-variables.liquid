@@ -30,15 +30,18 @@ note that this may have impact on different places.
     endif
 
     # Typography (heading)
-    echo settings.heading_font | font_face: font_display: 'fallback'
+    # Skipped when a custom font overrides the picker, so its webfont is not downloaded unused
+    unless settings.heading_custom_font == 'gascogne'
+      echo settings.heading_font | font_face: font_display: 'fallback'
 
-    if heading_font_italic
-      echo heading_font_italic | font_face: font_display: 'fallback'
-    endif
+      if heading_font_italic
+        echo heading_font_italic | font_face: font_display: 'fallback'
+      endif
 
-    if heading_font_bold
-      echo heading_font_bold | font_face: font_display: 'fallback'
-    endif
+      if heading_font_bold
+        echo heading_font_bold | font_face: font_display: 'fallback'
+      endif
+    endunless
 
     # Skipped when a custom font overrides the picker, so its webfont is not downloaded unused
     if heading_font_italic_override and settings.heading_italic_custom_font == 'default'
@@ -66,12 +69,12 @@ note that this may have impact on different places.
   -%}
 
   {%- comment -%}
-    Custom fonts for the heading italic override. The theme's heading_italic_font is a font_picker, which
-    can only offer Shopify's font library, so a self-hosted face needs its own setting and @font-face.
-    Files are read from Settings > Files; file_url returns blank if a file is missing, in which case the
-    browser falls back to the families listed after it.
+    Custom fonts for the heading and heading italic overrides. The theme's heading_font and heading_italic_font
+    are font_pickers, which can only offer Shopify's font library, so a self-hosted face needs its own setting
+    and @font-face. Files are read from Settings > Files; file_url returns blank if a file is missing, in which
+    case the browser falls back to the families listed after it. Declared once and shared by both overrides.
   {%- endcomment -%}
-  {%- if settings.heading_italic_custom_font == 'gascogne' -%}
+  {%- if settings.heading_custom_font == 'gascogne' or settings.heading_italic_custom_font == 'gascogne' -%}
     @font-face {
       font-family: 'Gascogne';
       src: url('{{ 'gascogne-xlight.woff2' | file_url }}') format('woff2'),
@@ -159,21 +162,29 @@ note that this may have impact on different places.
     --subheading-font-size: {{ settings.subheading_font_size | minus: 1 | divided_by: 16.0 }}rem;
     --subheading-text-transform: {{ settings.subheading_text_transform }};
     --subheading-letter-spacing: {% if language_code == 'ar' %}0{% else %}{{ settings.subheading_letter_spacing | divided_by: 100.0 }}{% endif %}em;
-    --heading-font-family: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
-    --heading-font-weight: {{ settings.heading_font.weight }};
-    --heading-font-style: {{ settings.heading_font.style }};
+    {%- if settings.heading_custom_font == 'gascogne' -%}
+      --heading-font-family: 'Gascogne', Georgia, serif;
+      {%- comment -%}Gascogne is always set in its thin (extra light) cut{%- endcomment -%}
+      --heading-font-weight: 200;
+      --heading-font-style: normal;
+    {%- else -%}
+      --heading-font-family: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+      --heading-font-weight: {{ settings.heading_font.weight }};
+      --heading-font-style: {{ settings.heading_font.style }};
+    {%- endif -%}
     --heading-text-transform: {{ settings.heading_text_transform }};
     --heading-letter-spacing: {% if language_code == 'ar' %}0{% else %}{{ settings.heading_letter_spacing | divided_by: 100.0 }}{% endif %}em;
     --heading-line-height: {{ settings.heading_line_height }};
     {%- comment -%}
       A custom font override replaces the picker's family and weight. The size multiplier normally only
-      applies when the two families differ; a custom font is always a different family, so it applies.
+      applies when the two families differ; a custom font is always a different family, so it applies --
+      unless the main heading font is the same custom override, in which case there is no swap to size for.
     {%- endcomment -%}
     {%- if settings.heading_italic_custom_font == 'gascogne' -%}
       --heading-italic-font-family: 'Gascogne', Georgia, serif;
       {%- comment -%}Gascogne is always set in its thin (extra light) cut{%- endcomment -%}
       --heading-italic-font-weight: 200;
-      --heading-italic-font-size-multiplier: {{ settings.heading_italic_font_size_multiplier }}%;
+      --heading-italic-font-size-multiplier: {% if settings.heading_custom_font == 'gascogne' %}0{% else %}{{ settings.heading_italic_font_size_multiplier }}{% endif %}%;
 
       {%- comment -%}
         Gascogne is used as a font swap, not to set text in italics, and ships only as a normal face.
