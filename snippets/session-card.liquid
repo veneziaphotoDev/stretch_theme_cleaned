@@ -1,0 +1,72 @@
+{%- comment -%}
+  ----------------------------------------------------------------------------------------------------------------------
+  SESSION CARD COMPONENT
+  ----------------------------------------------------------------------------------------------------------------------
+
+  Renders a single bookable session (product) for the Sessions Grid: image, session type, photographer, title, date
+  and a "Book my place" link. Unlike the standard product-card, it has no price/add-to-cart — sessions are booked via
+  the product page.
+
+  ********************************************
+  Supported variables
+  ********************************************
+
+  * product: the product to render (REQUIRED)
+  * position: the position of the card in the list. If specified, the theme will eagerly load the first 3 cards images
+  * sizes: the value of the sizes attribute for responsive images
+
+  ********************************************
+  Product data used
+  ********************************************
+
+  * product.type: session type (e.g. "Sunrise Session", "Sunset Session")
+  * product.metafields.custom.instructor: photographer/guide name (optional)
+  * product.metafields.custom.date: formatted date/time text (optional, merchant-entered)
+{%- endcomment -%}
+
+{%- liquid
+  assign sizes = sizes | default: '(max-width: 699px) 100vw, (max-width: 999px) 50vw, 25vw'
+
+  assign loading_strategy = 'lazy'
+  if position <= 3
+    assign loading_strategy = null
+  endif
+-%}
+
+<div class="session-card" data-animate style="--reveal-index: {{ position | default: 1 | minus: 1 }}">
+  <a href="{{ product.url }}" class="session-card__link" data-instant>
+    <div class="session-card__image-wrapper">
+      {%- if product.featured_media -%}
+        {{-
+          product.featured_media
+          | image_url: width: product.featured_media.width
+          | image_tag:
+            loading: loading_strategy,
+            sizes: sizes,
+            widths: '200,300,400,500,600,700,800,900,1000',
+            class: 'session-card__image'
+        -}}
+      {%- else -%}
+        {{- 'image' | placeholder_svg_tag: 'session-card__placeholder' -}}
+      {%- endif -%}
+    </div>
+
+    {%- if product.type != blank -%}
+      <p class="session-card__type text-subdued">{{ product.type }}</p>
+    {%- endif -%}
+
+    {%- if product.metafields.custom.instructor != blank -%}
+      <p class="session-card__instructor">{{ product.metafields.custom.instructor }}</p>
+    {%- endif -%}
+
+    <p class="session-card__title">{{ product.title }}</p>
+
+    {%- if product.metafields.custom.date != blank -%}
+      <p class="session-card__date text-subdued">{{ product.metafields.custom.date }}</p>
+    {%- endif -%}
+
+    <span class="session-card__cta subheading">
+      {{- 'product.general.book_session_button' | t -}}
+    </span>
+  </a>
+</div>

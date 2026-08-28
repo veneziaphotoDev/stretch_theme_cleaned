@@ -1,0 +1,118 @@
+{%- if section.blocks.size > 0 -%}
+  <style>
+    #shopify-section-{{ section.id }} {
+      --gallery-gap: {% if section.settings.gap == 'none' %}0px{% elsif section.settings.gap == 'sm' %}calc(var(--container-gutter) / 2){% elsif section.settings.gap == 'md' %}var(--container-gutter){% elsif section.settings.gap == 'lg' %}calc(var(--container-gutter) * 1.5){% endif %};
+    }
+  </style>
+
+  {%- liquid
+    assign text_align = section.settings.text_alignment | replace: 'left', 'start' | replace: 'right', 'end'
+  -%}
+
+  <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="{% unless section.settings.full_width %}container {% endunless %}section-spacing">
+      {%- if section.settings.title != blank or section.settings.subtitle != blank -%}
+        <div class="gallery__header prose prose-justify-{{ section.settings.text_alignment }} justify-items-{{ text_align }}">
+          {%- if section.settings.title != blank -%}
+            {%- render 'heading', content: section.settings.title, style: section.settings.heading_tag, html_tag: 'h2' -%}
+          {%- endif -%}
+
+          {%- if section.settings.subtitle != blank -%}
+            <p class="gallery__subtitle text-subdued">{{ section.settings.subtitle }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div style="display: flex; flex-direction: column; gap: var(--gallery-gap);">
+        {%- content_for 'blocks' -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Gallery",
+  "class": "shopify-section--gallery",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "gap",
+      "label": "Gap between images",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "sm", "label": "Small" },
+        { "value": "md", "label": "Medium" },
+        { "value": "lg", "label": "Large" }
+      ],
+      "default": "md"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Image display",
+      "options": [
+        { "value": "natural", "label": "Natural (keep image ratio)" },
+        { "value": "cover", "label": "Cover (fill grid, may crop)" }
+      ],
+      "default": "natural"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "t:global.text.heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "t:global.text.heading_size",
+      "options": [
+        { "value": "h2", "label": "X-Large" },
+        { "value": "h3", "label": "Large" },
+        { "value": "h4", "label": "Medium" },
+        { "value": "h5", "label": "Small" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "text_alignment",
+      "id": "text_alignment",
+      "label": "t:global.text.alignment",
+      "default": "left"
+    }
+  ],
+  "blocks": [
+    { "type": "gallery-row" }
+  ],
+  "presets": [
+    {
+      "name": "Gallery",
+      "category": "Media",
+      "blocks": [
+        { "type": "gallery-row" }
+      ]
+    }
+  ]
+}
+{% endschema %}

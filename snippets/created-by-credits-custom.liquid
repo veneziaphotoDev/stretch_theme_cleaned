@@ -1,0 +1,54 @@
+{% comment %}
+  Created by credits for ADAP and Campus Mana
+
+  Usage:
+    {% render 'created-by-credits-custom' %}
+{% endcomment %}
+
+{%- assign adap_logo_url = 'adap--logo.png' | file_url -%}
+{%- assign campus_mana_logo_url = 'campus-mana--logo.png' | file_url -%}
+{%- assign san_servolo_logo_url = 'san-servolo--logo.png' | file_url -%}
+
+<div class="created-by-credits">
+  <span class="created-by-credits__text">created by</span>
+
+  <img
+    src="{{ adap_logo_url }}"
+    alt="ADAP"
+    width="auto"
+    height="100%"
+    class="
+      created-by-credits__logo
+      created-by-credits__logo--adap
+    "
+    loading="lazy"
+  >
+
+  <span class="created-by-credits__text">and</span>
+
+  <img
+    src="{{ san_servolo_logo_url }}"
+    alt="San Servolo"
+    width="auto"
+    height="100%"
+    class="
+      created-by-credits__logo
+      created-by-credits__logo--san-servolo
+    "
+    loading="lazy"
+  >
+
+  <span class="created-by-credits__text">in partnership with</span>
+
+  <img
+    src="{{ campus_mana_logo_url }}"
+    alt="Campus Mana"
+    width="auto"
+    height="100%"
+    class="
+      created-by-credits__logo
+      created-by-credits__logo--campus-mana
+    "
+    loading="lazy"
+  >
+</div>

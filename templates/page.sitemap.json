@@ -1,0 +1,63 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "color_scheme": "",
+        "show_title": true,
+        "content_width": "lg"
+      }
+    },
+    "sitemap_intro": {
+      "type": "rich-text",
+      "blocks": {
+        "intro_text": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p>Browse the complete list of pages on our website.</p>",
+            "content_width": "lg",
+            "text_size": "default"
+          }
+        }
+      },
+      "block_order": [
+        "intro_text"
+      ],
+      "settings": {
+        "anchor": "",
+        "fit_screen": false,
+        "color_scheme": "",
+        "content_width": "lg",
+        "text_alignment": "center",
+        "layout": "default",
+        "reverse_columns": false,
+        "group_with_next": false,
+        "group_color_scheme": ""
+      }
+    },
+    "sitemap_pages": {
+      "type": "custom-liquid",
+      "settings": {
+        "color_scheme": "",
+        "liquid": "<div class=\"prose\">\n  <ul>\n    <li><a href=\"{{ routes.root_url }}\">Home</a></li>\n    {%- assign sorted_pages = pages | sort: 'title' -%}\n    {%- for page in sorted_pages -%}\n      {%- unless page.handle == 'sitemap' -%}\n        <li><a href=\"{{ page.url }}\">{{ page.title }}</a></li>\n      {%- endunless -%}\n    {%- endfor -%}\n  </ul>\n</div>",
+        "text_alignment": "left",
+        "add_vertical_spacing": false,
+        "add_horizontal_spacing": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "sitemap_intro",
+    "sitemap_pages"
+  ]
+}

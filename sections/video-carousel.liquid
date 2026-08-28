@@ -1,0 +1,194 @@
+{%- comment -%}
+  ----------------------------------------------------------------------------------------------------------------------
+  VIDEO CAROUSEL SECTION
+  ----------------------------------------------------------------------------------------------------------------------
+
+  Generic horizontally-scrollable carousel of videos (poster image until hovered, muted preview, per-video sound
+  toggle). Not tied to a specific use case ("Community gallery", "Behind the scenes"...) - add or remove "Video"
+  blocks freely to reuse it anywhere.
+
+  On hover (desktop), a video plays muted in place of its poster. On touch devices (no hover), tapping the video
+  plays it instead. A button on each video lets visitors turn the sound on or off.
+{%- endcomment -%}
+
+{%- if section.blocks.size > 0 -%}
+  <style>
+    #shopify-section-{{ section.id }} {
+      --video-carousel-items-per-row: {{ section.settings.items_per_row }};
+    }
+  </style>
+
+  <div {% if section.settings.anchor != blank %}id="{{ section.settings.anchor }}"{% endif %} class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container section-spacing">
+      {%- if section.settings.subheading != blank or section.settings.heading != blank -%}
+        <div class="video-carousel__header prose prose-justify-start">
+          {%- if section.settings.subheading != blank -%}
+            {%- render 'subheading', content: section.settings.subheading, size: 'medium' -%}
+          {%- endif -%}
+
+          {%- if section.settings.heading != blank -%}
+            <div class="max-w-{{ section.settings.content_width }}">
+              {%- render 'heading', content: section.settings.heading, style: section.settings.heading_tag, indent: 'none', highlight_effect: 'default', balance_text: true -%}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- assign carousel_id = section.id | append: '-carousel' -%}
+
+      <div class="floating-controls-container">
+        <scroll-carousel id="{{ carousel_id }}" allow-swipe cell-selector=".video-carousel__item" class="video-carousel scroll-area snap-x bleed md:unbleed">
+          {%- for block in section.blocks -%}
+            <div class="video-carousel__item" data-animate style="--reveal-index: {{ forloop.index0 }}" {{ block.shopify_attributes }}>
+              {%- if block.settings.video != blank -%}
+                {%- assign video_media_id = carousel_id | append: '-video-' | append: forloop.index -%}
+                {%- render 'media',
+                  media: block.settings.video,
+                  id: video_media_id,
+                  class: 'video-carousel__media',
+                  autoplay: false,
+                  muted: true,
+                  loop: true,
+                  controls: false,
+                  playsinline: true,
+                  show_play_button: false,
+                  group: carousel_id,
+                  poster: block.settings.poster
+                -%}
+
+                <button type="button" class="video-carousel__mute-toggle" data-mute-label="{{ 'general.accessibility.mute_video' | t | escape }}" data-unmute-label="{{ 'general.accessibility.unmute_video' | t | escape }}" aria-label="{{ 'general.accessibility.unmute_video' | t | escape }}">
+                  <span class="video-carousel__mute-icon video-carousel__mute-icon--muted">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M4 9v6h4l5 5V4L8 9H4Z" fill="currentColor"/><path d="m16 9 5 6m0-6-5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  </span>
+                  <span class="video-carousel__mute-icon video-carousel__mute-icon--unmuted">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M4 9v6h4l5 5V4L8 9H4Z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a9 9 0 0 1 0 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  </span>
+                </button>
+              {%- endif -%}
+
+              {%- if block.settings.caption != blank -%}
+                <p class="video-carousel__caption text-subdued">{{ block.settings.caption }}</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </scroll-carousel>
+
+        <carousel-prev-button class="floating-controls__control" aria-controls="{{ carousel_id }}">
+          <button class="circle-button circle-button--xl">
+            <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+            {%- render 'icon' with 'big-arrow-left', direction_aware: true, width: 14 -%}
+          </button>
+        </carousel-prev-button>
+
+        <carousel-next-button class="floating-controls__control" aria-controls="{{ carousel_id }}">
+          <button class="circle-button circle-button--xl">
+            <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+            {%- render 'icon' with 'big-arrow-right', direction_aware: true, width: 14 -%}
+          </button>
+        </carousel-next-button>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Video carousel",
+  "class": "shopify-section--video-carousel",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Section anchor",
+      "info": "For menu links (e.g., #community-gallery)"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "t:global.text.heading_size",
+      "options": [
+        { "value": "h2", "label": "X-Large" },
+        { "value": "h3", "label": "Large" },
+        { "value": "h4", "label": "Medium" },
+        { "value": "h5", "label": "Small" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "t:global.sizes.content_width",
+      "options": [
+        { "value": "sm", "label": "t:global.sizes.small" },
+        { "value": "md", "label": "t:global.sizes.medium" },
+        { "value": "lg", "label": "t:global.sizes.large" },
+        { "value": "full", "label": "t:global.sizes.full_width" }
+      ],
+      "default": "md"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "label": "Videos per row (desktop)",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "t:global.video.video"
+        },
+        {
+          "type": "image_picker",
+          "id": "poster",
+          "label": "Poster image",
+          "info": "Optional. Defaults to the video's own thumbnail."
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video carousel",
+      "blocks": [
+        { "type": "video" },
+        { "type": "video" },
+        { "type": "video" }
+      ]
+    }
+  ]
+}
+{% endschema %}

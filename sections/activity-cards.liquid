@@ -1,0 +1,195 @@
+{%- comment -%}
+  ----------------------------------------------------------------------------------------------------------------------
+  ACTIVITY CARDS SECTION
+  ----------------------------------------------------------------------------------------------------------------------
+
+  Self-contained "our other activities" component: an eyebrow/heading followed by a row of cards (badge, title,
+  description, and either a link or a "Current page" static label). Built to present related sites/brands/activities
+  (e.g. sister businesses under the same umbrella brand), but generic enough to reuse for any small set of linked
+  cards. Add or remove "Card" blocks freely.
+{%- endcomment -%}
+
+{%- if section.blocks.size > 0 -%}
+  <style>
+    #shopify-section-{{ section.id }} {
+      --activity-cards-items-per-row: {{ section.settings.items_per_row | at_most: section.blocks.size }};
+    }
+  </style>
+
+  <div {% if section.settings.anchor != blank %}id="{{ section.settings.anchor }}"{% endif %} class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container section-spacing">
+      {%- if section.settings.subheading != blank or section.settings.heading != blank -%}
+        <div class="activity-cards__header prose prose-justify-center">
+          {%- if section.settings.subheading != blank -%}
+            {%- render 'subheading', content: section.settings.subheading, size: 'medium' -%}
+          {%- endif -%}
+
+          {%- if section.settings.heading != blank -%}
+            <div class="max-w-{{ section.settings.content_width }}">
+              {%- render 'heading', content: section.settings.heading, style: section.settings.heading_tag, indent: 'none', highlight_effect: 'default', balance_text: true -%}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="activity-cards">
+        {%- for block in section.blocks -%}
+          <div class="activity-cards__card{% if block.settings.highlight %} activity-cards__card--highlight{% endif %}" data-animate style="--reveal-index: {{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.badge != blank -%}
+              <p class="activity-cards__badge text-subdued">{{ block.settings.badge }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.title != blank -%}
+              <p class="activity-cards__title">{{ block.settings.title }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.description != blank -%}
+              <div class="activity-cards__description text-subdued">{{ block.settings.description }}</div>
+            {%- endif -%}
+
+            {%- if block.settings.highlight -%}
+              <p class="activity-cards__current">{{ block.settings.current_page_label | default: 'Current page' }}</p>
+            {%- elsif block.settings.link_text != blank and block.settings.link_url != blank -%}
+              <a href="{{ block.settings.link_url }}" class="activity-cards__link" data-instant>{{ block.settings.link_text }}</a>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Activity cards",
+  "class": "shopify-section--activity-cards",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Section anchor"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "The Venezia Photo World"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "One passion for photography, three ways to live it in Venice."
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "t:global.text.heading_size",
+      "options": [
+        { "value": "h2", "label": "X-Large" },
+        { "value": "h3", "label": "Large" },
+        { "value": "h4", "label": "Medium" },
+        { "value": "h5", "label": "Small" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "t:global.sizes.content_width",
+      "options": [
+        { "value": "sm", "label": "t:global.sizes.small" },
+        { "value": "md", "label": "t:global.sizes.medium" },
+        { "value": "lg", "label": "t:global.sizes.large" },
+        { "value": "full", "label": "t:global.sizes.full_width" }
+      ],
+      "default": "md"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "label": "Cards per row (desktop)",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge text",
+          "info": "Small label above the title (e.g. \"Since 2017\", \"You are here\")"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Activity name"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "header",
+          "content": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight",
+          "label": "This is the current page",
+          "info": "Shows a border around the card and a \"Current page\" label instead of a link",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "current_page_label",
+          "label": "Current page label",
+          "default": "Current page",
+          "visible_if": "{{ block.settings.highlight }}"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text",
+          "default": "Discover",
+          "visible_if": "{{ block.settings.highlight == false }}"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link",
+          "visible_if": "{{ block.settings.highlight == false }}"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Activity cards",
+      "blocks": [
+        { "type": "card" },
+        { "type": "card" },
+        { "type": "card", "settings": { "highlight": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}

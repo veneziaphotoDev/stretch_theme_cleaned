@@ -1,0 +1,167 @@
+{%- comment -%}
+  ----------------------------------------------------------------------------------------------------------------------
+  STEPS SECTION
+  ----------------------------------------------------------------------------------------------------------------------
+
+  Generic numbered-steps component: a subheading/heading pair followed by a merchant-defined number of steps (each
+  with a title and description, auto-numbered by position). Not tied to any specific use case ("How it works",
+  "Booking process", "Care instructions"...) - add or remove "Step" blocks freely to reuse it anywhere.
+
+  On mobile/tablet, steps scroll horizontally by default (see "Mobile layout" setting) instead of stacking, to keep
+  each step readable without excessive vertical scrolling.
+{%- endcomment -%}
+
+{%- if section.blocks.size > 0 -%}
+  <style>
+    #shopify-section-{{ section.id }} {
+      --steps-column-count: {{ section.blocks.size | at_most: section.settings.items_per_row }};
+    }
+  </style>
+
+  <div {% if section.settings.anchor != blank %}id="{{ section.settings.anchor }}"{% endif %} class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container section-spacing">
+      {%- if section.settings.subheading != blank or section.settings.heading != blank -%}
+        <div class="steps__header prose prose-justify-start">
+          {%- if section.settings.subheading != blank -%}
+            {%- render 'subheading', content: section.settings.subheading, size: 'medium' -%}
+          {%- endif -%}
+
+          {%- if section.settings.heading != blank -%}
+            <div class="max-w-{{ section.settings.content_width }}">
+              {%- render 'heading', content: section.settings.heading, style: section.settings.heading_tag, indent: 'none', highlight_effect: 'default', balance_text: true -%}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="steps {% if section.settings.mobile_layout == 'carousel' %}steps--carousel scroll-area snap-x bleed md:unbleed{% endif %}">
+        {%- for block in section.blocks -%}
+          <div class="steps__item" data-animate style="--reveal-index: {{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            <p class="steps__number">
+              {%- if forloop.index < 10 -%}0{%- endif -%}{{- forloop.index -}}
+            </p>
+
+            {%- if block.settings.title != blank -%}
+              <p class="steps__title">{{ block.settings.title }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.description != blank -%}
+              <div class="steps__description text-subdued">{{ block.settings.description }}</div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Steps",
+  "class": "shopify-section--steps",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Section anchor",
+      "info": "For menu links (e.g., #how-it-works)"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "How It Works"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "From start to finish."
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "t:global.text.heading_size",
+      "options": [
+        { "value": "h2", "label": "X-Large" },
+        { "value": "h3", "label": "Large" },
+        { "value": "h4", "label": "Medium" },
+        { "value": "h5", "label": "Small" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "t:global.sizes.content_width",
+      "options": [
+        { "value": "sm", "label": "t:global.sizes.small" },
+        { "value": "md", "label": "t:global.sizes.medium" },
+        { "value": "lg", "label": "t:global.sizes.large" },
+        { "value": "full", "label": "t:global.sizes.full_width" }
+      ],
+      "default": "md"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "label": "Steps per row (desktop)",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "options": [
+        { "value": "carousel", "label": "Horizontal scroll" },
+        { "value": "stacked", "label": "Stacked" }
+      ],
+      "default": "carousel"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Step title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Describe this step.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Steps",
+      "blocks": [
+        { "type": "step" },
+        { "type": "step" },
+        { "type": "step" },
+        { "type": "step" }
+      ]
+    }
+  ]
+}
+{% endschema %}

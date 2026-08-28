@@ -1,0 +1,146 @@
+{%- comment -%}
+  ----------------------------------------------------------------------------------------------------------------------
+  INTRO STATS SECTION
+  ----------------------------------------------------------------------------------------------------------------------
+
+  Two-column intro: a narrow eyebrow/heading column next to a description with a row of stats. Everything (heading,
+  description, each stat) fades in once it scrolls into view. Add or remove "Stat" blocks freely - works with any
+  number of stats.
+{%- endcomment -%}
+
+{%- if section.settings.heading != blank or section.blocks.size > 0 -%}
+  <div {% if section.settings.anchor != blank %}id="{{ section.settings.anchor }}"{% endif %} class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container section-spacing">
+      <div class="intro-stats">
+        <div class="intro-stats__heading" data-animate>
+          {%- if section.settings.subheading != blank -%}
+            {%- render 'subheading', content: section.settings.subheading, size: 'medium' -%}
+          {%- endif -%}
+
+          {%- if section.settings.heading != blank -%}
+            <div class="max-w-{{ section.settings.heading_content_width }}">
+              {%- render 'heading', content: section.settings.heading, style: section.settings.heading_tag, indent: 'none', highlight_effect: 'default', balance_text: true -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="intro-stats__content">
+          {%- if section.settings.description != blank -%}
+            <div class="intro-stats__description" data-animate style="--reveal-index: 1">
+              {{- section.settings.description -}}
+            </div>
+          {%- endif -%}
+
+          {%- if section.blocks.size > 0 -%}
+            <div class="intro-stats__stats">
+              {%- for block in section.blocks -%}
+                <div class="intro-stats__stat" data-animate style="--reveal-index: {{ forloop.index0 | plus: 2 }}" {{ block.shopify_attributes }}>
+                  <p class="intro-stats__stat-value">{{ block.settings.value }}</p>
+
+                  {%- if block.settings.label != blank -%}
+                    <p class="intro-stats__stat-label">
+                      {%- render 'subheading', content: block.settings.label, size: 'medium' -%}
+                    </p>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Intro stats",
+  "class": "shopify-section--intro-stats",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Section anchor"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "t:global.text.heading_size",
+      "options": [
+        { "value": "h2", "label": "X-Large" },
+        { "value": "h3", "label": "Large" },
+        { "value": "h4", "label": "Medium" },
+        { "value": "h5", "label": "Small" }
+      ],
+      "default": "h4"
+    },
+    {
+      "type": "select",
+      "id": "heading_content_width",
+      "label": "Heading column width",
+      "options": [
+        { "value": "sm", "label": "t:global.sizes.small" },
+        { "value": "md", "label": "t:global.sizes.medium" },
+        { "value": "lg", "label": "t:global.sizes.large" },
+        { "value": "full", "label": "t:global.sizes.full_width" }
+      ],
+      "default": "sm"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "8"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Stat label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Intro stats",
+      "blocks": [
+        { "type": "stat" },
+        { "type": "stat" },
+        { "type": "stat" }
+      ]
+    }
+  ]
+}
+{% endschema %}
