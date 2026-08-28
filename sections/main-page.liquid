@@ -1,0 +1,122 @@
+{%- liquid
+  comment
+    The page body renders as one flat run of siblings, so a background has nothing to attach to. Bands are
+    the markup that fixes that: each one is a colour-scheme wrapper at the section root, outside the
+    container, so the background runs edge to edge while the text stays in the same column it was in. The
+    theme's own .full-bleed cannot do this from inside .max-w-*: its --distance-to-bleed (theme.css:2251)
+    is measured against the container, not the narrowed column.
+
+    Where the breaks fall is prose-band-split's business -- main-article renders the same bands and the
+    rule is subtle enough that a second copy of it would drift.
+  endcomment
+-%}
+
+{%- capture banded -%}
+  {%- render 'prose-band-split', content: page.content -%}
+{%- endcapture -%}
+
+{%- assign bands = banded | split: '<!--prose-band-->' -%}
+{%- assign band_count = 0 -%}
+
+{%- comment -%} Vendor had section-spacing--tight here, capping padding at 48px {%- endcomment -%}
+
+{%- if page.content == blank and section.settings.show_title -%}
+  <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="section-spacing">
+      <div class="container">
+        <div class="max-w-{{ section.settings.content_width }} mx-auto">
+          <h1 class="h2 text-center">{{ page.title }}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{%- for body in bands -%}
+  {%- liquid
+    assign band_count = band_count | plus: 1
+    assign band_scheme = section.settings.color_scheme
+    assign alternate = band_count | modulo: 2
+
+    if section.settings.alternate_backgrounds and alternate == 0
+      assign band_scheme = section.settings.alternate_color_scheme
+    endif
+  -%}
+
+  <div class="color-scheme color-scheme--{{ band_scheme.id }}">
+    <div class="section-spacing">
+      <div class="container">
+        <div class="max-w-{{ section.settings.content_width }} mx-auto">
+          <div class="section-stack">
+            {%- if section.settings.show_title and forloop.first -%}
+              <h1 class="h2 text-center">{{ page.title }}</h1>
+            {%- endif -%}
+
+            <div class="prose">
+              {{- body -}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endfor -%}
+
+{% schema %}
+{
+  "name": "t:sections.main_page.name",
+  "class": "shopify-section--main-page",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "alternate_backgrounds",
+      "label": "Alternate body backgrounds",
+      "info": "Splits the page body at each Heading 2 and gives every second part its own colour scheme.",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "alternate_color_scheme",
+      "label": "Alternating scheme",
+      "default": "scheme-2884de24-bd72-4bca-935e-2ca635a94748"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "t:sections.main_page.show_title",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "t:global.sizes.content_width",
+      "options": [
+        {
+          "value": "sm",
+          "label": "t:global.sizes.small"
+        },
+        {
+          "value": "md",
+          "label": "t:global.sizes.medium"
+        },
+        {
+          "value": "lg",
+          "label": "t:global.sizes.large"
+        },
+        {
+          "value": "full",
+          "label": "t:global.sizes.full_width"
+        }
+      ],
+      "default": "lg"
+    }
+  ]
+}
+{% endschema %}

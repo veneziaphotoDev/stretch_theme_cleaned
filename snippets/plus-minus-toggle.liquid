@@ -1,0 +1,13 @@
+{%- doc -%}
+The open/closed marker shared by the header's dropdown menus and the localization selectors, so a
+navigation menu and a language menu read as the same control.
+
+Both icons are rendered and the stylesheet swaps them on the activator's aria-expanded, which is the
+only state either component exposes -- header-dropdown-menu and x-popover both set it, and neither
+gives the marker a hook of its own.
+{%- enddoc -%}
+
+<span class="plus-minus-toggle" aria-hidden="true">
+  {%- render 'icon' with 'custom-plus-icon', class: 'plus-minus-toggle__plus' -%}
+  {%- render 'icon' with 'custom-minus-icon', class: 'plus-minus-toggle__minus' -%}
+</span>

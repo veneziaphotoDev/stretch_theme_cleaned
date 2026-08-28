@@ -1,0 +1,58 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "blog-post-banner": {
+      "type": "blog-post-banner",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "allow_transparent_header": false,
+        "transparent_header_use_primary_colors": false,
+        "image_layout": "stacked",
+        "fit_screen": true,
+        "add_image_spacing": false,
+        "heading_size": "h3",
+        "show_category": true,
+        "show_date": true,
+        "show_reading_time": true,
+        "show_excerpt": true,
+        "excerpt_length": 400,
+        "background": "",
+        "text_color": ""
+      }
+    },
+    "main": {
+      "type": "main-article",
+      "settings": {
+        "color_scheme": "",
+        "alternate_backgrounds": true,
+        "alternate_color_scheme": "scheme-2884de24-bd72-4bca-935e-2ca635a94748",
+        "content_width": "md",
+        "show_share_buttons": true
+      }
+    },
+    "blog-post-prev-next": {
+      "type": "blog-post-prev-next",
+      "settings": {
+        "color_scheme": "",
+        "heading_size": "h3",
+        "show_category": true,
+        "show_date": true,
+        "show_reading_time": true,
+        "show_excerpt": true
+      }
+    }
+  },
+  "order": [
+    "blog-post-banner",
+    "main",
+    "blog-post-prev-next"
+  ]
+}

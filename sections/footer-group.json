@@ -1,0 +1,166 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "trust-icons": {
+      "type": "trust-icons",
+      "blocks": {
+        "item-1": {
+          "type": "item",
+          "settings": {
+            "icon": "none",
+            "icon_width": 24,
+            "mobile_icon_width": 20,
+            "title": "Worldwide delivery",
+            "content": "Receive your order anywhere in the world."
+          }
+        },
+        "item-2": {
+          "type": "item",
+          "settings": {
+            "icon": "none",
+            "icon_width": 24,
+            "mobile_icon_width": 20,
+            "title": "Fast shipping",
+            "content": "Super fast shipping in 48 hours."
+          }
+        },
+        "item-3": {
+          "type": "item",
+          "settings": {
+            "icon": "none",
+            "icon_width": 24,
+            "mobile_icon_width": 20,
+            "title": "Customer service",
+            "content": "We are available from monday to friday to answer your questions."
+          }
+        },
+        "item-4": {
+          "type": "item",
+          "settings": {
+            "icon": "none",
+            "icon_width": 24,
+            "mobile_icon_width": 20,
+            "title": "Secure payment",
+            "content": "Your payment information is processed securely."
+          }
+        }
+      },
+      "block_order": [
+        "item-1",
+        "item-2",
+        "item-3",
+        "item-4"
+      ],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-1",
+        "item_heading_style": "subheading"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "image_EW3QRR": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/logo-natural-white.svg",
+            "image_width": 200,
+            "link": "",
+            "wide": false
+          }
+        },
+        "links_KWtURF": {
+          "type": "links",
+          "settings": {
+            "menu": "infos-pratiques",
+            "collapse_on_mobile": false,
+            "show_menu_title": true,
+            "menu_title": "",
+            "wide": false
+          }
+        },
+        "links_PgayQk": {
+          "type": "links",
+          "settings": {
+            "menu": "footer-venezia-photo",
+            "collapse_on_mobile": false,
+            "show_menu_title": true,
+            "menu_title": "",
+            "wide": false
+          }
+        },
+        "links_KBqpfY": {
+          "type": "links",
+          "settings": {
+            "menu": "legal-v2",
+            "collapse_on_mobile": false,
+            "show_menu_title": true,
+            "menu_title": "",
+            "wide": false
+          }
+        },
+        "links": {
+          "type": "links",
+          "settings": {
+            "menu": "footer",
+            "collapse_on_mobile": false,
+            "show_menu_title": true,
+            "menu_title": "",
+            "wide": false
+          }
+        },
+        "links_mMDM3k": {
+          "type": "links",
+          "settings": {
+            "menu": "contact",
+            "collapse_on_mobile": false,
+            "show_menu_title": true,
+            "menu_title": "",
+            "wide": true
+          }
+        },
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "title": "Newsletter",
+            "content": "<p>Sign up to our newsletter to receive exclusive offers.</p>",
+            "disclaimer_text": "<p>By signing up to our newsletter, you agree with our privacy policy.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "image_EW3QRR",
+        "links_KWtURF",
+        "links_PgayQk",
+        "links_KBqpfY",
+        "links",
+        "links_mMDM3k",
+        "newsletter"
+      ],
+      "settings": {
+        "color_scheme": "scheme-7",
+        "show_social_media": true,
+        "show_payment_icons": false,
+        "show_powered_by_shopify": false,
+        "show_country_selector": false,
+        "show_country_name": true,
+        "show_country_flag": true,
+        "show_locale_selector": true
+      }
+    }
+  },
+  "order": [
+    "trust-icons",
+    "footer"
+  ]
+}

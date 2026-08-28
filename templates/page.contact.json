@@ -1,0 +1,88 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "show_title": true,
+        "content_width": "md"
+      }
+    },
+    "text_with_media_3iFxj9": {
+      "type": "text-with-media",
+      "blocks": {
+        "heading_RmtqbB": {
+          "type": "heading",
+          "settings": {
+            "text": "<em>A question? Write to us</em>",
+            "heading_tag": "h1",
+            "position": "middle_left",
+            "indent": "none",
+            "highlight_effect": "default",
+            "highlight_accent_color": "",
+            "highlight_text_color": ""
+          }
+        },
+        "richtext_Pkckfj": {
+          "type": "richtext",
+          "settings": {
+            "text": "{{ page.content }}",
+            "position": "middle_left"
+          }
+        }
+      },
+      "block_order": [
+        "heading_RmtqbB",
+        "richtext_Pkckfj"
+      ],
+      "name": "t:sections.text_with_media.name",
+      "settings": {
+        "color_scheme": "",
+        "allow_transparent_header": false,
+        "content_position": "end",
+        "content_percentage_width": 50,
+        "overlay_color": "#000000",
+        "overlay_opacity": 20,
+        "add_media_spacing": false,
+        "image_size": "fill",
+        "mobile_image_size": "auto",
+        "autoplay_video": true,
+        "primary_image": "shopify://shop_images/Algae_015.jpg",
+        "secondary_media_width": 60,
+        "secondary_media_mobile_width": 60,
+        "show_secondary_media_on_mobile": true,
+        "secondary_media_alignment": "place-self-center",
+        "secondary_media_shape": "none"
+      }
+    },
+    "contact-form": {
+      "type": "contact",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "layout": "stacked",
+        "add_image_spacing": false,
+        "subheading": "Contact Us",
+        "title": "We'd love to hear from you",
+        "heading_size": "h2",
+        "content": "<p>If you have any questions, please fill in this contact form, and our team will reach you back as soon as possible.</p>",
+        "show_social_media": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "text_with_media_3iFxj9",
+    "contact-form"
+  ]
+}

@@ -1,0 +1,78 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "message-1": {
+          "type": "message",
+          "settings": {
+            "text": "New: discover our latest products"
+          }
+        },
+        "message-2": {
+          "type": "message",
+          "settings": {
+            "text": "Free shipping"
+          }
+        }
+      },
+      "block_order": [
+        "message-1",
+        "message-2"
+      ],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-2",
+        "enable_sticky": false,
+        "show_on_homepage_only": false,
+        "autoplay": true,
+        "cycle_speed": 5
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "enable_sticky": true,
+        "hide_on_scroll": true,
+        "mobile_layout": "logo_left_navigation_right",
+        "desktop_layout": "logo_left_navigation_center",
+        "logo": "shopify://shop_images/logo-natural.svg",
+        "logo_max_width": 195,
+        "logo_mobile_max_width": 95,
+        "menu": "new-main",
+        "drawer_menu": "",
+        "secondary_menu": "new-contact-1",
+        "show_search": false,
+        "show_account": false,
+        "customer_account_menu": "customer-account-main-menu",
+        "desktop_dropdown_menu_style": "below",
+        "desktop_dropdown_reveal": "expand",
+        "menu_open_trigger": "hover",
+        "desktop_icon_size": 16,
+        "drawer_show_nested_menu_indicator": false,
+        "show_country_selector": false,
+        "show_country_name": false,
+        "show_country_flag": true,
+        "show_locale_selector": true,
+        "transparent_header_text_color": "#ffffff",
+        "transparent_logo": "shopify://shop_images/logo-natural-white.svg"
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

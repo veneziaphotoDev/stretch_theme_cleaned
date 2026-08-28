@@ -1,0 +1,69 @@
+{%- doc -%}
+Splits a rich text body into bands at each h2 and echoes them joined by a marker, so a caller can capture
+the output and split on that marker instead of keeping its own copy of this.
+
+A body renders as one flat run of siblings, so a background has nothing to attach to and no selector spans
+a run of siblings. Bands are the markup that gives each stretch of the body something to paint.
+
+The rule is subtle enough that two copies of it would drift. A subheading introduces the h2 below it, so it
+belongs to the band that follows -- but only when it closes its band. Used as a label mid-section, several
+to one heading, it has to stay where it is, or the break moves off the h2 and splits a section in half.
+
+Blank bands are dropped, so the caller can rely on forloop.first and forloop.last.
+
+@param {string} content - the rich text to split (required)
+@param {string} [separator] - the marker placed between bands. Defaults to <!--prose-band-->
+{%- enddoc -%}
+
+{%- liquid
+  assign band_separator = separator | default: '<!--prose-band-->'
+  assign subheading_marker = '<p class="subheading"'
+  assign chunks = content | split: '<h2'
+  assign carry = ''
+  assign emitted = false
+-%}
+
+{%- for chunk in chunks -%}
+  {%- liquid
+    assign body = chunk
+
+    unless forloop.first
+      assign body = '<h2' | append: chunk
+    endunless
+
+    assign next_carry = ''
+    assign parts = body | split: subheading_marker
+
+    if parts.size > 1
+      assign tail = parts | last
+      assign tail_pieces = tail | split: '</p>'
+      assign closes_band = false
+
+      if tail_pieces.size == 1
+        # The band ends on the subheading's own closing tag, with nothing after it at all
+        assign closes_band = true
+      elsif tail_pieces.size == 2
+        assign after_close = tail_pieces[1] | strip
+
+        if after_close == blank
+          assign closes_band = true
+        endif
+      endif
+
+      if closes_band
+        assign next_carry = subheading_marker | append: tail
+        assign body = body | remove_last: next_carry
+      endif
+    endif
+
+    assign body = carry | append: body
+    assign carry = next_carry
+    assign trimmed = body | strip
+  -%}
+
+  {%- if trimmed != blank -%}
+    {%- if emitted -%}{{ band_separator }}{%- endif -%}
+    {{- body -}}
+    {%- assign emitted = true -%}
+  {%- endif -%}
+{%- endfor -%}
