@@ -12,168 +12,58 @@
     "slideshow": {
       "type": "slideshow",
       "blocks": {
-        "slideshow-image-slide-1": {
+        "slideshow_image_slide_yhknpn": {
           "type": "_slideshow-image-slide",
           "settings": {
-            "color_scheme": "scheme-3",
-            "image": "shopify://shop_images/ITALY-10962NF40.jpg",
-            "slide_link": "shopify://collections/all",
-            "content_max_width": 720,
-            "mobile_content_position": "place-self-center-start",
-            "desktop_content_position": "sm:place-self-center-start",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
-          },
-          "blocks": {
-            "heading-1": {
-              "type": "heading",
-              "disabled": true,
-              "settings": {
-                "text": "Clean products",
-                "heading_size": "display-m",
-                "html_tag": "p",
-                "indent": "none",
-                "highlight_effect": "circle_pencil",
-                "highlight_accent_color": "",
-                "highlight_text_color": ""
-              },
-              "blocks": {}
-            },
-            "rich-text-1": {
-              "type": "rich-text",
-              "disabled": true,
-              "settings": {
-                "text": "<p>Committed to sustainable beauty and minimize our impact on the planet.</p>",
-                "content_width": "xs"
-              },
-              "blocks": {}
-            },
-            "button-1": {
-              "type": "button",
-              "disabled": true,
-              "settings": {
-                "text": "Discover our products",
-                "url": "",
-                "open_in_new_tab": false,
-                "style": "solid",
-                "background": "",
-                "text_color": "",
-                "icon": "",
-                "icon_position": "before_text"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "heading-1",
-            "rich-text-1",
-            "button-1"
-          ]
-        },
-        "slideshow-image-slide-2": {
-          "type": "_slideshow-image-slide",
-          "settings": {
-            "color_scheme": "scheme-3",
-            "image": "shopify://shop_images/ITALY-10964.jpg",
+            "color_scheme": "scheme-2",
             "slide_link": "",
-            "content_max_width": 780,
-            "mobile_content_position": "place-self-center-start",
-            "desktop_content_position": "sm:place-self-center-start",
+            "content_max_width": 900,
+            "mobile_content_position": "place-self-center",
+            "desktop_content_position": "sm:place-self-center",
             "overlay_color": "#000000",
-            "overlay_opacity": 10
+            "overlay_opacity": 15,
+            "show_branding": true
           },
           "blocks": {
-            "heading-1": {
-              "type": "heading",
-              "disabled": true,
+            "subheading_laguna01": {
+              "type": "subheading",
               "settings": {
-                "text": "Ethical beauty",
-                "heading_size": "display-m",
-                "html_tag": "p",
-                "indent": "none",
-                "highlight_effect": "underline_pencil",
-                "highlight_accent_color": "#ffffff",
-                "highlight_text_color": ""
+                "text": "Laguna",
+                "text_size": "large"
               },
               "blocks": {}
             },
-            "rich-text-1": {
-              "type": "rich-text",
-              "disabled": true,
-              "settings": {
-                "text": "<p>Our products are not tested on animals.</p>",
-                "content_width": "sm"
-              },
-              "blocks": {}
-            },
-            "button-1": {
-              "type": "button",
-              "disabled": true,
-              "settings": {
-                "text": "About us",
-                "url": "",
-                "open_in_new_tab": false,
-                "style": "solid",
-                "background": "",
-                "text_color": "",
-                "icon": "",
-                "icon_position": "before_text"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "heading-1",
-            "rich-text-1",
-            "button-1"
-          ]
-        },
-        "slideshow-image-slide-3": {
-          "type": "_slideshow-image-slide",
-          "settings": {
-            "color_scheme": "scheme-3",
-            "image": "shopify://shop_images/ITALY-10962NF40.jpg",
-            "slide_link": "",
-            "content_max_width": 720,
-            "mobile_content_position": "place-self-center-start",
-            "desktop_content_position": "sm:place-self-center-start",
-            "overlay_color": "#000000",
-            "overlay_opacity": 10
-          },
-          "blocks": {
-            "heading-1": {
+            "heading_laguna01": {
               "type": "heading",
-              "disabled": true,
               "settings": {
-                "text": "Transform your skin",
-                "heading_size": "display-m",
-                "html_tag": "p",
+                "text": "Discover the Venice few ever get to see.",
+                "heading_size": "display-l",
+                "html_tag": "h1",
                 "indent": "none",
                 "highlight_effect": "default",
                 "highlight_accent_color": "",
-                "highlight_text_color": "rgba(0,0,0,0)"
+                "highlight_text_color": ""
               },
               "blocks": {}
             },
-            "rich-text-1": {
+            "richtext_laguna01": {
               "type": "rich-text",
-              "disabled": true,
               "settings": {
-                "text": "<p>Tone your skin and reduce cellulite with our body selection.</p>",
-                "content_width": "xs"
+                "text": "<p>Photograph Venice differently — at first light, or last.</p>",
+                "content_width": "xs",
+                "text_size": "lg"
               },
               "blocks": {}
             },
-            "button-1": {
+            "button_laguna01": {
               "type": "button",
-              "disabled": true,
               "settings": {
-                "text": "Shop Beauty tools",
-                "url": "",
+                "text": "Book an Experience",
+                "url": "#sessions",
                 "open_in_new_tab": false,
                 "style": "solid",
-                "background": "",
-                "text_color": "",
+                "background": "#AB5A3C",
+                "text_color": "#FDFCFA",
                 "icon": "",
                 "icon_position": "before_text"
               },
@@ -181,13 +71,15 @@
             }
           },
           "block_order": [
-            "heading-1",
-            "rich-text-1",
-            "button-1"
+            "subheading_laguna01",
+            "heading_laguna01",
+            "richtext_laguna01",
+            "button_laguna01"
           ]
         },
         "slideshow-controls": {
           "type": "_slideshow-controls",
+          "disabled": true,
           "static": true,
           "settings": {
             "controls_style": "line",
@@ -197,245 +89,68 @@
         }
       },
       "block_order": [
-        "slideshow-image-slide-1",
-        "slideshow-image-slide-2",
-        "slideshow-image-slide-3"
+        "slideshow_image_slide_yhknpn"
       ],
       "settings": {
-        "group_with_next": true,
-        "fit_screen": false,
-        "group_color_scheme": "scheme-2",
+        "anchor": "",
         "allow_transparent_header": true,
-        "image_size": "sm",
+        "image_size": "fill",
         "transition_type": "fade",
         "autoplay": true,
         "pause_auto_rotate_on_hover": false,
-        "cycle_speed": 6,
-        "background": "#000000"
+        "cycle_speed": 4,
+        "background": "#000000",
+        "branding_svg": "shopify://shop_images/logo-natural-white.svg",
+        "branding_size": 40,
+        "branding_mobile_size": 30,
+        "branding_hide_on_mobile": true
       }
     },
-    "dynamic-grid": {
-      "type": "dynamic-grid",
-      "blocks": {
-        "dynamic-grid-item-1": {
-          "type": "_dynamic-grid-item",
-          "settings": {
-            "visibility": "both",
-            "text_alignment": "left",
-            "desktop_row_start": 2,
-            "desktop_column_start": 1,
-            "desktop_column_end": 6,
-            "desktop_horizontal_adjustment": 0,
-            "desktop_vertical_adjustment": 0,
-            "mobile_row_start": 2,
-            "mobile_column_start": 1,
-            "mobile_column_end": 8,
-            "mobile_horizontal_adjustment": 0,
-            "mobile_vertical_adjustment": 0,
-            "parallax_speed": 2,
-            "parallax_direction": "vertical"
-          },
-          "blocks": {
-            "dynamic-grid-heading-1": {
-              "type": "_dynamic-grid-heading",
-              "settings": {
-                "text": "Precious <em>ingredients</em> sourcing.",
-                "show_text_vertically": false,
-                "font_size_desktop": 4,
-                "font_size_mobile": 9,
-                "font_size_line_height": 0.9,
-                "html_tag": "p",
-                "indent": "none",
-                "highlight_effect": "underline_pencil",
-                "highlight_accent_color": "",
-                "highlight_text_color": ""
-              },
-              "blocks": {}
-            },
-            "rich-text-1": {
-              "type": "rich-text",
-              "settings": {
-                "text": "<p>Ingredient sourcing is a crucial step, reflecting our commitment to quality and ethics. We carefully select precious, natural active ingredients from the best organic crops and wild harvesting. Our raw ingredients are chosen for their exceptional properties on the skin.</p>",
-                "content_width": "xs"
-              },
-              "blocks": {}
-            },
-            "button-1": {
-              "type": "button",
-              "settings": {
-                "text": "All ingredients",
-                "url": "shopify://collections/all",
-                "open_in_new_tab": false,
-                "style": "outline",
-                "background": "",
-                "text_color": "",
-                "icon": "",
-                "icon_position": "before_text"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "dynamic-grid-heading-1",
-            "rich-text-1",
-            "button-1"
-          ]
-        },
-        "dynamic-grid-item-2": {
-          "type": "_dynamic-grid-item",
-          "settings": {
-            "visibility": "desktop_only",
-            "text_alignment": "left",
-            "desktop_row_start": 7,
-            "desktop_column_start": 3,
-            "desktop_column_end": 5,
-            "desktop_horizontal_adjustment": 0,
-            "desktop_vertical_adjustment": 0,
-            "mobile_row_start": 12,
-            "mobile_column_start": 1,
-            "mobile_column_end": 3,
-            "mobile_horizontal_adjustment": 0,
-            "mobile_vertical_adjustment": 0,
-            "parallax_speed": -1,
-            "parallax_direction": "vertical"
-          },
-          "blocks": {
-            "image-with-caption-1": {
-              "type": "image-with-caption",
-              "settings": {
-                "caption": "",
-                "max_width": 100,
-                "mobile_max_width": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "image-with-caption-1"
-          ]
-        },
-        "dynamic-grid-item-3": {
-          "type": "_dynamic-grid-item",
-          "settings": {
-            "visibility": "both",
-            "text_alignment": "left",
-            "desktop_row_start": 2,
-            "desktop_column_start": 8,
-            "desktop_column_end": 11,
-            "desktop_horizontal_adjustment": 0,
-            "desktop_vertical_adjustment": 0,
-            "mobile_row_start": 10,
-            "mobile_column_start": 1,
-            "mobile_column_end": 3,
-            "mobile_horizontal_adjustment": 0,
-            "mobile_vertical_adjustment": 0,
-            "parallax_speed": -4,
-            "parallax_direction": "vertical"
-          },
-          "blocks": {
-            "image-with-caption-1": {
-              "type": "image-with-caption",
-              "settings": {
-                "caption": "",
-                "max_width": 100,
-                "mobile_max_width": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "image-with-caption-1"
-          ]
-        },
-        "dynamic-grid-item-4": {
-          "type": "_dynamic-grid-item",
-          "settings": {
-            "visibility": "both",
-            "text_alignment": "left",
-            "desktop_row_start": 5,
-            "desktop_column_start": 13,
-            "desktop_column_end": 16,
-            "desktop_horizontal_adjustment": 0,
-            "desktop_vertical_adjustment": 0,
-            "mobile_row_start": 8,
-            "mobile_column_start": 5,
-            "mobile_column_end": 8,
-            "mobile_horizontal_adjustment": 0,
-            "mobile_vertical_adjustment": 0,
-            "parallax_speed": -2,
-            "parallax_direction": "vertical"
-          },
-          "blocks": {
-            "image-with-caption-1": {
-              "type": "image-with-caption",
-              "settings": {
-                "caption": "",
-                "max_width": 100,
-                "mobile_max_width": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "image-with-caption-1"
-          ]
-        }
-      },
-      "block_order": [
-        "dynamic-grid-item-1",
-        "dynamic-grid-item-2",
-        "dynamic-grid-item-3",
-        "dynamic-grid-item-4"
-      ],
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-1",
-        "allow_transparent_header": true,
-        "show_background_image_parallax": false,
-        "add_vertical_spacing": true,
-        "add_horizontal_spacing": true,
-        "gap": 16,
-        "mobile_gap": 10,
-        "overlay_color": "#000000",
-        "overlay_opacity": 0
-      }
-    },
-    "text-with-media": {
+    "text_with_media_about01": {
       "type": "text-with-media",
       "blocks": {
-        "subheading-1": {
+        "subheading_about01": {
           "type": "subheading",
           "settings": {
-            "text": "Nature for your skin",
+            "text": "About Venezia Photo",
+            "text_size": "medium",
             "position": "top_left"
           }
         },
-        "heading-1": {
+        "heading_about01": {
           "type": "heading",
           "settings": {
-            "text": "Routines for all <em>skin</em> types.",
-            "heading_tag": "h2",
-            "position": "top_left",
+            "text": "Almost ten years of photography, on the water and on the island.",
+            "content_width": "md",
+            "heading_tag": "h5",
             "indent": "none",
-            "highlight_effect": "tilted_marker",
-            "highlight_accent_color": "#f6a429",
+            "position": "top_left",
+            "highlight_effect": "default",
+            "highlight_accent_color": "",
             "highlight_text_color": ""
           }
         },
-        "richtext-1": {
+        "richtext_about01": {
           "type": "richtext",
           "settings": {
-            "text": "<p>Every skin deserves exceptional care. Our certified organic and natural formulas combine rare botanical plants and powerful active ingredients, carefully selected to nourish, protect and enhance every skin type. </p>",
-            "position": "bottom_left"
+            "text": "<p>For almost ten years, Venezia Photo has established itself as one of Europe's leading photographic destinations, welcoming internationally acclaimed photographers and participants from around the world through its festival, workshops and exhibitions.</p>",
+            "position": "top_left"
           }
         },
-        "button-1": {
+        "richtext_about02": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p>Laguna is the natural extension of that adventure: exceptional locations, small groups, outstanding photographers and meaningful encounters — all within a single unforgettable journey across the Venetian lagoon.</p>",
+            "position": "top_left"
+          }
+        },
+        "button_about01": {
           "type": "button",
           "settings": {
-            "text": "Shop all",
-            "url": "shopify://collections/all",
-            "position": "bottom_left",
-            "style": "solid",
+            "text": "Read more about us",
+            "url": "",
+            "position": "top_left",
+            "style": "link",
             "background": "",
             "text_color": "",
             "icon": "",
@@ -444,653 +159,342 @@
         }
       },
       "block_order": [
-        "subheading-1",
-        "heading-1",
-        "richtext-1",
-        "button-1"
+        "subheading_about01",
+        "heading_about01",
+        "richtext_about01",
+        "richtext_about02",
+        "button_about01"
       ],
-      "disabled": true,
+      "name": "t:sections.text_with_media.name",
       "settings": {
-        "color_scheme": "scheme-5",
-        "allow_transparent_header": false,
+        "anchor": "",
+        "color_scheme": "",
+        "fit_screen_standalone": false,
         "content_position": "start",
         "content_percentage_width": 50,
         "overlay_color": "#000000",
         "overlay_opacity": 20,
         "add_media_spacing": false,
-        "image_size": "auto",
-        "mobile_image_size": "auto",
         "autoplay_video": true,
-        "secondary_media_width": 55,
-        "secondary_media_mobile_width": 55,
+        "primary_media_width": 100,
+        "primary_media_mobile_width": 100,
+        "primary_media_natural_size": false,
+        "primary_media_x_position": "center",
+        "secondary_media_width": 60,
+        "secondary_media_mobile_width": 60,
         "show_secondary_media_on_mobile": true,
-        "secondary_media_alignment": "place-self-center",
-        "secondary_media_shape": "none"
+        "secondary_media_alignment": "place-self-start",
+        "secondary_media_shape": "none",
+        "group_with_next": false,
+        "group_color_scheme": "scheme-1",
+        "fit_screen": false
       }
     },
-    "before-after": {
-      "type": "before-after",
-      "blocks": {
-        "before-1": {
-          "type": "before",
-          "settings": {
-            "color_scheme": "scheme-3",
-            "text": "Before",
-            "text_size": "h5",
-            "text_position": "start"
-          }
-        },
-        "after-1": {
-          "type": "after",
-          "settings": {
-            "color_scheme": "scheme-3",
-            "text": "After",
-            "text_size": "h5",
-            "text_position": "start"
-          }
-        }
-      },
-      "block_order": [
-        "before-1",
-        "after-1"
-      ],
-      "disabled": true,
+    "sessions_grid_laguna01": {
+      "type": "sessions-grid",
       "settings": {
+        "anchor": "sessions",
         "color_scheme": "",
-        "layout": "stacked",
-        "add_comparison_spacing": true,
-        "subheading": "Skin problem",
-        "title": "A <em>naturally</em> transformed skin",
-        "title_tag": "h3",
-        "content": "<p>Tightness, blemishes, redness or hormonal acne? Our serum is your ally for soothed, regulated, luminous skin.</p>",
-        "button_text": "Learn more",
-        "button_url": "",
-        "button_style": "solid",
-        "cursor_direction": "horizontal",
-        "cursor_initial_position": 62,
-        "cursor_background": "#ffffff",
-        "cursor_arrows_color": "#000000"
+        "heading": "Upcoming Sessions",
+        "subheading": "Sunrise & Sunset · small-group departures",
+        "product_list": [],
+        "products_per_row_mobile": "1",
+        "products_per_row_desktop": 4
       }
     },
-    "dynamic-grid-2": {
-      "type": "dynamic-grid",
+    "gallery_laguna01": {
+      "type": "gallery",
       "blocks": {
-        "dynamic-grid-item-1": {
-          "type": "_dynamic-grid-item",
+        "gallery_row01": {
+          "type": "gallery-row",
           "settings": {
-            "visibility": "both",
-            "text_alignment": "center",
-            "desktop_row_start": 10,
-            "desktop_column_start": 6,
-            "desktop_column_end": 11,
-            "desktop_horizontal_adjustment": 0,
-            "desktop_vertical_adjustment": 0,
-            "mobile_row_start": 8,
-            "mobile_column_start": 1,
-            "mobile_column_end": 8,
-            "mobile_horizontal_adjustment": 0,
-            "mobile_vertical_adjustment": 0,
-            "parallax_speed": -2,
-            "parallax_direction": "vertical"
+            "columns": 5,
+            "content_width": "full"
           },
           "blocks": {
-            "rich-text-1": {
-              "type": "rich-text",
+            "image01": {
+              "type": "_gallery-image",
               "settings": {
-                "text": "<p>Our daytime range adapts to all skin types, including those of pregnant and breastfeeding women. Enriched with hyaluronic acid, ceramides and vitamin C, our ultra-clean formulas stimulate, hydrate and regenerate the skin.</p>",
-                "content_width": "sm"
-              },
-              "blocks": {}
+                "caption": "Dorit · Sunrise Session"
+              }
             },
-            "button-1": {
-              "type": "button",
+            "image02": {
+              "type": "_gallery-image",
               "settings": {
-                "text": "Shop Face",
-                "url": "shopify://collections/all",
-                "open_in_new_tab": false,
-                "style": "solid",
-                "background": "",
-                "text_color": "",
-                "icon": "",
-                "icon_position": "before_text"
-              },
-              "blocks": {}
+                "caption": "Julie · Sunset Session"
+              }
+            },
+            "image03": {
+              "type": "_gallery-image",
+              "settings": {
+                "caption": "Brandi · Sunrise Session"
+              }
+            },
+            "image04": {
+              "type": "_gallery-image",
+              "settings": {
+                "caption": "Elizabeth · Sunrise Session"
+              }
+            },
+            "image05": {
+              "type": "_gallery-image",
+              "settings": {
+                "caption": "Marie-Claude · Sunset Session"
+              }
             }
           },
           "block_order": [
-            "rich-text-1",
-            "button-1"
-          ]
-        },
-        "dynamic-grid-item-2": {
-          "type": "_dynamic-grid-item",
-          "settings": {
-            "visibility": "both",
-            "text_alignment": "center",
-            "desktop_row_start": 2,
-            "desktop_column_start": 4,
-            "desktop_column_end": 13,
-            "desktop_horizontal_adjustment": 0,
-            "desktop_vertical_adjustment": 4,
-            "mobile_row_start": 2,
-            "mobile_column_start": 1,
-            "mobile_column_end": 8,
-            "mobile_horizontal_adjustment": 0,
-            "mobile_vertical_adjustment": 0,
-            "parallax_speed": 2,
-            "parallax_direction": "vertical"
-          },
-          "blocks": {
-            "dynamic-grid-heading-1": {
-              "type": "_dynamic-grid-heading",
-              "settings": {
-                "text": "Effective formulas.",
-                "show_text_vertically": false,
-                "font_size_desktop": 10,
-                "font_size_mobile": 15,
-                "font_size_line_height": 0.8,
-                "html_tag": "p",
-                "indent": "none",
-                "highlight_effect": "default",
-                "highlight_accent_color": "",
-                "highlight_text_color": ""
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "dynamic-grid-heading-1"
+            "image01",
+            "image02",
+            "image03",
+            "image04",
+            "image05"
           ]
         }
       },
       "block_order": [
-        "dynamic-grid-item-1",
-        "dynamic-grid-item-2"
+        "gallery_row01"
       ],
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-4",
-        "allow_transparent_header": true,
-        "show_background_image_parallax": true,
-        "add_vertical_spacing": true,
-        "add_horizontal_spacing": true,
-        "gap": 16,
-        "mobile_gap": 8,
-        "overlay_color": "#000000",
-        "overlay_opacity": 20
-      }
-    },
-    "reading-text": {
-      "type": "reading-text",
-      "disabled": true,
       "settings": {
         "color_scheme": "",
-        "subheading": "About us",
-        "content": "We deliver the best cosmetics for all skin types, handmade and respectful of nature.",
-        "button_text": "Learn more",
-        "button_link": "",
-        "heading_tag": "h2",
-        "mobile_text_position": "place-self-center",
-        "desktop_text_position": "sm:place-self-center",
-        "content_width": "lg",
-        "reading_speed": "1.5",
-        "separate_button": false,
-        "text_opacity": 10,
-        "overlay_color": "#000000",
-        "overlay_opacity": 0
+        "gap": "md",
+        "aspect_ratio": "cover",
+        "full_width": false,
+        "title": "The Venice You'll Capture",
+        "heading_tag": "h3",
+        "subtitle": "Images taken by our guests, straight off their own cameras.",
+        "text_alignment": "center"
       }
     },
-    "dynamic-grid-3": {
-      "type": "dynamic-grid",
+    "steps_howitworks01": {
+      "type": "steps",
       "blocks": {
-        "dynamic-grid-item-1": {
-          "type": "_dynamic-grid-item",
+        "step01": {
+          "type": "step",
           "settings": {
-            "visibility": "both",
-            "text_alignment": "center",
-            "desktop_row_start": 2,
-            "desktop_column_start": 1,
-            "desktop_column_end": 16,
-            "desktop_horizontal_adjustment": 0,
-            "desktop_vertical_adjustment": 0,
-            "mobile_row_start": 2,
-            "mobile_column_start": 1,
-            "mobile_column_end": 8,
-            "mobile_horizontal_adjustment": 0,
-            "mobile_vertical_adjustment": 0,
-            "parallax_speed": 0,
-            "parallax_direction": "vertical"
-          },
-          "blocks": {
-            "rich-text-1": {
-              "type": "rich-text",
-              "settings": {
-                "text": "<p>pure ingredients.</p>",
-                "content_width": "sm"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "rich-text-1"
-          ]
-        },
-        "dynamic-grid-item-2": {
-          "type": "_dynamic-grid-item",
-          "settings": {
-            "visibility": "both",
-            "text_alignment": "right",
-            "desktop_row_start": 4,
-            "desktop_column_start": 1,
-            "desktop_column_end": 6,
-            "desktop_horizontal_adjustment": 2,
-            "desktop_vertical_adjustment": 0,
-            "mobile_row_start": 6,
-            "mobile_column_start": 1,
-            "mobile_column_end": 5,
-            "mobile_horizontal_adjustment": 0,
-            "mobile_vertical_adjustment": 0,
-            "parallax_speed": -4,
-            "parallax_direction": "horizontal"
-          },
-          "blocks": {
-            "dynamic-grid-heading-1": {
-              "type": "_dynamic-grid-heading",
-              "settings": {
-                "text": "Plant-based",
-                "show_text_vertically": false,
-                "font_size_desktop": 5.5,
-                "font_size_mobile": 11,
-                "font_size_line_height": 1,
-                "html_tag": "p",
-                "indent": "none",
-                "highlight_effect": "italic",
-                "highlight_accent_color": "",
-                "highlight_text_color": ""
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "dynamic-grid-heading-1"
-          ]
-        },
-        "dynamic-grid-item-3": {
-          "type": "_dynamic-grid-item",
-          "settings": {
-            "visibility": "both",
-            "text_alignment": "left",
-            "desktop_row_start": 4,
-            "desktop_column_start": 11,
-            "desktop_column_end": 16,
-            "desktop_horizontal_adjustment": -2,
-            "desktop_vertical_adjustment": 0,
-            "mobile_row_start": 7,
-            "mobile_column_start": 4,
-            "mobile_column_end": 8,
-            "mobile_horizontal_adjustment": 0,
-            "mobile_vertical_adjustment": 0,
-            "parallax_speed": 4,
-            "parallax_direction": "horizontal"
-          },
-          "blocks": {
-            "dynamic-grid-heading-1": {
-              "type": "_dynamic-grid-heading",
-              "settings": {
-                "text": "Innovation",
-                "show_text_vertically": false,
-                "font_size_desktop": 5.5,
-                "font_size_mobile": 11,
-                "font_size_line_height": 1,
-                "html_tag": "p",
-                "indent": "none",
-                "highlight_effect": "italic",
-                "highlight_accent_color": "",
-                "highlight_text_color": ""
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "dynamic-grid-heading-1"
-          ]
-        },
-        "dynamic-grid-item-4": {
-          "type": "_dynamic-grid-item",
-          "settings": {
-            "visibility": "desktop_only",
-            "text_alignment": "center",
-            "desktop_row_start": 4,
-            "desktop_column_start": 8,
-            "desktop_column_end": 9,
-            "desktop_horizontal_adjustment": 0,
-            "desktop_vertical_adjustment": 0,
-            "mobile_row_start": 1,
-            "mobile_column_start": 1,
-            "mobile_column_end": 3,
-            "mobile_horizontal_adjustment": 0,
-            "mobile_vertical_adjustment": 0,
-            "parallax_speed": -5,
-            "parallax_direction": "vertical"
-          },
-          "blocks": {
-            "rich-text-1": {
-              "type": "rich-text",
-              "settings": {
-                "text": "<p>We create exceptional skincare products with unique formulas, combining rare and precious ingredients in maximum concentration.</p>",
-                "content_width": "sm"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "rich-text-1"
-          ]
-        },
-        "dynamic-grid-item-5": {
-          "type": "_dynamic-grid-item",
-          "settings": {
-            "visibility": "both",
-            "text_alignment": "center",
-            "desktop_row_start": 8,
-            "desktop_column_start": 1,
-            "desktop_column_end": 16,
-            "desktop_horizontal_adjustment": 0,
-            "desktop_vertical_adjustment": 0,
-            "mobile_row_start": 11,
-            "mobile_column_start": 1,
-            "mobile_column_end": 8,
-            "mobile_horizontal_adjustment": 0,
-            "mobile_vertical_adjustment": 0,
-            "parallax_speed": 0,
-            "parallax_direction": "vertical"
-          },
-          "blocks": {
-            "rich-text-1": {
-              "type": "rich-text",
-              "settings": {
-                "text": "<p>sustainable beauty.</p>",
-                "content_width": "sm"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "rich-text-1"
-          ]
-        }
-      },
-      "block_order": [
-        "dynamic-grid-item-1",
-        "dynamic-grid-item-2",
-        "dynamic-grid-item-3",
-        "dynamic-grid-item-4",
-        "dynamic-grid-item-5"
-      ],
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-5",
-        "allow_transparent_header": true,
-        "show_background_image_parallax": false,
-        "add_vertical_spacing": false,
-        "add_horizontal_spacing": false,
-        "gap": 16,
-        "mobile_gap": 10,
-        "overlay_color": "#000000",
-        "overlay_opacity": 10
-      }
-    },
-    "testimonials": {
-      "type": "testimonials",
-      "blocks": {
-        "testimonial-1": {
-          "type": "testimonial",
-          "settings": {
-            "show_rating": true,
-            "rating": 5,
-            "author": "Francoise T.",
-            "title": "My skin has never felt this smooth—lightweight, effective, and a new staple in my routine.",
-            "heading_tag": "h4",
-            "product": "",
-            "position": "place-self-start"
+            "title": "Embark",
+            "description": "<p>Board a traditional mahogany water taxi at a discreet, private departure point.</p>"
           }
         },
-        "testimonial-2": {
-          "type": "testimonial",
+        "step02": {
+          "type": "step",
           "settings": {
-            "show_rating": true,
-            "rating": 5,
-            "author": "Elodie M.",
-            "title": "I noticed a visible glow after just a few days. It feels like self-care in a bottle.",
-            "heading_tag": "h4",
-            "product": "",
-            "position": "place-self-start"
+            "title": "Navigate",
+            "description": "<p>Glide through hidden canals and quiet stretches of the lagoon, off the usual routes.</p>"
           }
         },
-        "testimonial-3": {
-          "type": "testimonial",
+        "step03": {
+          "type": "step",
           "settings": {
-            "show_rating": true,
-            "rating": 5,
-            "author": "Magali L.",
-            "title": "Gentle on my sensitive skin but powerful results. I’m obsessed!",
-            "heading_tag": "h4",
-            "product": "",
-            "position": "place-self-start"
+            "title": "Shoot",
+            "description": "<p>Your photographer guides your framing, exposure and eye as the light shifts.</p>"
           }
         },
-        "testimonial-4": {
-          "type": "testimonial",
+        "step04": {
+          "type": "step",
           "settings": {
-            "show_rating": true,
-            "rating": 5,
-            "author": "Marie U.",
-            "title": "This product actually does what it promises. Hydrated, radiant skin all day.",
-            "heading_tag": "h4",
-            "product": "",
-            "position": "place-self-start"
+            "title": "Edit & Print",
+            "description": "<p>Back on San Servolo, review your images and take home one fine art print.</p>"
           }
         }
       },
       "block_order": [
-        "testimonial-1",
-        "testimonial-2",
-        "testimonial-3",
-        "testimonial-4"
+        "step01",
+        "step02",
+        "step03",
+        "step04"
       ],
       "settings": {
-        "color_scheme": "scheme-1",
-        "text_alignment": "left",
-        "image_position": "end",
-        "autoplay": true,
-        "cycle_speed": 6
-      }
-    },
-    "text-with-fixed-background": {
-      "type": "text-with-fixed-background",
-      "blocks": {
-        "title-1": {
-          "type": "title",
-          "settings": {
-            "content_position": "place-self-start",
-            "subheading": "Our commitment",
-            "title": "Pure & <em>raw</em> ingredients.",
-            "heading_tag": "h1",
-            "highlight_effect": "circle",
-            "highlight_accent_color": "#f6a429",
-            "highlight_text_color": ""
-          }
-        },
-        "content-1": {
-          "type": "content",
-          "settings": {
-            "color_scheme": "",
-            "content_position": "md:place-self-end",
-            "title": "Pure beauty.",
-            "content": "<p>Certified by Ecocert and bearing the Cosmos Organic and Cosmos Natural labels, our products meet the highest standards of ingredient quality. Packaged in recycled glass, they also reflect a strong commitment to environmental responsibility.</p>",
-            "indent_heading": false
-          }
-        }
-      },
-      "block_order": [
-        "title-1",
-        "content-1"
-      ],
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-3",
-        "overlay_color": "#000000",
-        "overlay_opacity": 0
-      }
-    },
-    "press": {
-      "type": "press",
-      "blocks": {
-        "item-1": {
-          "type": "item",
-          "settings": {
-            "logo_width": 112,
-            "author": "Le monde",
-            "content": "Experience the power of nature with this botanical elixir. A rich, organic oil designed to restore skin overnight, leaving it visibly firmer and deeply nourished."
-          }
-        },
-        "item-2": {
-          "type": "item",
-          "settings": {
-            "logo_width": 120,
-            "author": "Marie-Claire",
-            "content": "A clean beauty essential: this velvety serum blends rare plant extracts to smooth fine lines and awaken tired skin by morning. Pure radiance in a bottle."
-          }
-        },
-        "item-3": {
-          "type": "item",
-          "settings": {
-            "logo_width": 120,
-            "author": "Elle",
-            "content": "Elegant and effective, this floral-infused formula boosts elasticity and hydration, revealing a luminous, even-toned complexion with every use."
-          }
-        }
-      },
-      "block_order": [
-        "item-1",
-        "item-2",
-        "item-3"
-      ],
-      "disabled": true,
-      "settings": {
+        "anchor": "",
         "color_scheme": "",
-        "title": "In the press",
-        "use_arrows_navigation": false,
-        "show_quotation_mark": true,
-        "quotation_tag": "h4",
-        "item_style": "avatar",
+        "subheading": "How It Works",
+        "heading": "From embarkation to a photograph you'll keep forever.",
+        "heading_tag": "h3",
+        "content_width": "md",
+        "items_per_row": 4,
+        "mobile_layout": "carousel"
+      }
+    },
+    "video_carousel_community01": {
+      "type": "video-carousel",
+      "blocks": {
+        "video01": {
+          "type": "video",
+          "settings": {
+            "video": null,
+            "caption": ""
+          }
+        },
+        "video02": {
+          "type": "video",
+          "settings": {
+            "video": null,
+            "caption": ""
+          }
+        },
+        "video03": {
+          "type": "video",
+          "settings": {
+            "video": null,
+            "caption": ""
+          }
+        }
+      },
+      "block_order": [
+        "video01",
+        "video02",
+        "video03"
+      ],
+      "settings": {
+        "anchor": "",
+        "color_scheme": "",
+        "subheading": "Community Gallery",
+        "heading": "A vlog-style look, created by our guests.",
+        "heading_tag": "h3",
+        "content_width": "md",
+        "items_per_row": 4
+      }
+    },
+    "testimonial_quotes_laguna01": {
+      "type": "testimonial-quotes",
+      "blocks": {
+        "quote01": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "\"We saw a Venice we didn't know existed — empty, silent, glowing. The photographer's eye made all the difference.\"",
+            "author": "Dorit"
+          }
+        },
+        "quote02": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "\"The editing session on San Servolo was the best part. I left with a print I'll keep forever.\"",
+            "author": "Julie"
+          }
+        },
+        "quote03": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "\"Intimate, unhurried, beautifully organised. Nothing like the usual gondola circuit.\"",
+            "author": "Elizabeth"
+          }
+        }
+      },
+      "block_order": [
+        "quote01",
+        "quote02",
+        "quote03"
+      ],
+      "settings": {
+        "anchor": "",
+        "color_scheme": "",
+        "subheading": "What Our Guests Are Saying",
         "autoplay": true,
-        "cycle_speed": 6,
-        "overlay_color": "#000000",
-        "overlay_opacity": 20
+        "cycle_speed": 4,
+        "pause_on_hover": true
       }
     },
-    "blog-posts": {
-      "type": "blog-posts",
+    "activity_cards_ecosystem01": {
+      "type": "activity-cards",
       "blocks": {
-        "blog-1": {
-          "type": "blog",
+        "card_festival": {
+          "type": "card",
           "settings": {
-            "blog": "article",
-            "posts_count": 4
+            "badge": "Since 2017",
+            "title": "Festival",
+            "description": "An international photography festival bringing together the world's finest photographers in Venice each spring.",
+            "highlight": false,
+            "link_text": "Discover",
+            "link_url": ""
+          }
+        },
+        "card_academy": {
+          "type": "card",
+          "settings": {
+            "badge": "Year-round",
+            "title": "Academy",
+            "description": "Immersive multi-day workshops led by internationally renowned photographers, all year long.",
+            "highlight": false,
+            "link_text": "Discover",
+            "link_url": ""
+          }
+        },
+        "card_laguna": {
+          "type": "card",
+          "settings": {
+            "badge": "You are here",
+            "title": "Laguna",
+            "description": "Premium half-day photographic experiences by boat, for travellers who want to see Venice differently.",
+            "highlight": true,
+            "current_page_label": "Current page"
           }
         }
       },
       "block_order": [
-        "blog-1"
+        "card_festival",
+        "card_academy",
+        "card_laguna"
       ],
       "settings": {
-        "color_scheme": "scheme-2",
-        "mobile_layout": "carousel",
-        "desktop_layout": "carousel",
-        "title": "Latest news",
+        "anchor": "",
+        "color_scheme": "",
+        "subheading": "The Venezia Photo World",
+        "heading": "One passion for photography, three ways to live it in Venice.",
         "heading_tag": "h3",
-        "scrolling_title_separator": "none",
-        "scrolling_title": false,
-        "button_link": "",
-        "button_text": "View all",
-        "button_style": "outline",
-        "icon": "custom-plus-icon",
-        "icon_position": "after_text",
-        "blog_post_card_heading_size": "h5",
-        "separator_style": "space",
-        "show_category": true,
-        "show_date": true,
-        "show_excerpt": true,
-        "image_size": "natural"
+        "content_width": "md",
+        "items_per_row": 3
       }
     },
-    "blog_posts_DGry9P": {
-      "type": "blog-posts",
+    "intro_stats_laguna01": {
+      "type": "intro-stats",
       "blocks": {
-        "blog_rQQa6N": {
-          "type": "blog",
+        "stat_guests": {
+          "type": "stat",
           "settings": {
-            "blog": "archive",
-            "posts_count": 4
+            "value": "8",
+            "label": "Guests max."
+          }
+        },
+        "stat_duration": {
+          "type": "stat",
+          "settings": {
+            "value": "4h",
+            "label": "Per session"
+          }
+        },
+        "stat_print": {
+          "type": "stat",
+          "settings": {
+            "value": "1",
+            "label": "Fine art print incl."
           }
         }
       },
       "block_order": [
-        "blog_rQQa6N"
+        "stat_guests",
+        "stat_duration",
+        "stat_print"
       ],
       "settings": {
-        "color_scheme": "scheme-1",
-        "mobile_layout": "carousel",
-        "desktop_layout": "carousel",
-        "title": "Archive",
-        "heading_tag": "h3",
-        "scrolling_title_separator": "none",
-        "scrolling_title": false,
-        "button_link": "",
-        "button_text": "View all",
-        "button_style": "outline",
-        "icon": "custom-plus-icon",
-        "icon_position": "after_text",
-        "blog_post_card_heading_size": "h5",
-        "separator_style": "space",
-        "show_category": true,
-        "show_date": true,
-        "show_excerpt": true,
-        "image_size": "natural"
-      }
-    },
-    "newsletter": {
-      "type": "newsletter",
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-4",
-        "image_position": "split",
-        "image_size": "md",
-        "add_image_spacing": true,
-        "icon": "inbox",
-        "title": "<em>Subscribe</em> for inspiring stories, offers & news.",
-        "heading_tag": "h3",
-        "button_text": "Subscribe",
-        "privacy_policy_text": "By signing up, you agree with our privacy policy.",
-        "overlay_color": "#000000",
-        "overlay_opacity": 0
+        "anchor": "",
+        "color_scheme": "",
+        "subheading": "The Laguna Experience",
+        "heading": "Venice Like No One Has Ever Seen It.",
+        "heading_tag": "h4",
+        "heading_content_width": "sm",
+        "description": "<p>Far from the crowds and the familiar landmarks, Venezia Photo Laguna invites you to experience the city from the water, when its light is at its most beautiful and its atmosphere at its most peaceful.</p><p>In groups of no more than eight participants, you'll board a traditional Venetian mahogany water taxi alongside a professional photographer to explore hidden canals, quiet islands and ever-changing reflections across the lagoon. Whether at sunrise or sunset, each outing is designed to slow your pace, sharpen your eye, and reveal a side of Venice few ever witness. Back on the island of San Servolo, the experience continues with a relaxed editing session, personal feedback, and the print of one selected photograph to take home.</p>"
       }
     }
   },
   "order": [
     "slideshow",
-    "dynamic-grid",
-    "text-with-media",
-    "before-after",
-    "dynamic-grid-2",
-    "reading-text",
-    "dynamic-grid-3",
-    "testimonials",
-    "text-with-fixed-background",
-    "press",
-    "blog-posts",
-    "blog_posts_DGry9P",
-    "newsletter"
+    "intro_stats_laguna01",
+    "text_with_media_about01",
+    "sessions_grid_laguna01",
+    "steps_howitworks01",
+    "gallery_laguna01",
+    "video_carousel_community01",
+    "testimonial_quotes_laguna01",
+    "activity_cards_ecosystem01"
   ]
 }
