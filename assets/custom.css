@@ -186,6 +186,15 @@ height-observer {
   border-inline-end: 1px solid rgb(var(--border-color));
 }
 
+@media screen and (max-width: 699px) {
+  /* Single column now, so the previous card sits above instead of to the left: the
+     gap divider covers the top edge, and the sides need their own border instead. */
+  .activity-cards__card--highlight {
+    border-block-start: 0;
+    border-inline: 1px solid rgb(var(--border-color));
+  }
+}
+
 .activity-cards__badge,
 .activity-cards__title,
 .activity-cards__description,
