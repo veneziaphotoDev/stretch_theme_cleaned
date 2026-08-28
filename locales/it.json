@@ -22,7 +22,9 @@
       "close": "Chiudi",
       "next": "Successivo",
       "previous": "Precedente",
-      "play_video": "Riproduci video"
+      "play_video": "Riproduci video",
+      "mute_video": "Disattiva audio",
+      "unmute_video": "Attiva audio"
     },
     "label": {
       "color": "Colore",
@@ -102,7 +104,8 @@
       "available_colors_count": {
         "one": "{{ count }} colore disponibile",
         "other": "{{ count }} colori disponibili"
-      }
+      },
+      "book_session_button": "Prenota il mio posto"
     },
     "gallery": {
       "close": "Chiudi galleria immagini",

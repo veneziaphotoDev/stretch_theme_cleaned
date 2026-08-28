@@ -22,7 +22,9 @@
       "close": "Fermer",
       "next": "Suivant",
       "previous": "Précédent",
-      "play_video": "Lancer la video"
+      "play_video": "Lancer la video",
+      "mute_video": "Couper le son",
+      "unmute_video": "Activer le son"
     },
     "label": {
       "color": "Couleur",
@@ -108,7 +110,7 @@
         "one": "{{ count }} place restante",
         "other": "{{ count }} places restantes"
       },
-      "professional_rate": "Tarif professionnel (financé par un OPCO) :"
+      "book_session_button": "Réserver ma place"
     },
     "gallery": {
       "close": "Fermer la galerie",

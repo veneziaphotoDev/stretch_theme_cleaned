@@ -22,7 +22,9 @@
       "close": "Close",
       "next": "Next",
       "previous": "Previous",
-      "play_video": "Play video"
+      "play_video": "Play video",
+      "mute_video": "Mute video",
+      "unmute_video": "Unmute video"
     },
     "label": {
       "color": "Color,Colour",
@@ -112,7 +114,7 @@
         "one": "{{ count }} place left",
         "other": "{{ count }} places left"
       },
-      "professional_rate": "Professional rate (funded by an OPCO):"
+      "book_session_button": "Book my place"
     },
     "gallery": {
       "close": "Close gallery",
