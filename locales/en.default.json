@@ -170,6 +170,17 @@
     },
     "disclosures": {
       "title": "Disclosures"
+    },
+    "experience": {
+      "duration_total": "Total duration",
+      "time_on_water": "On the water",
+      "boat_time_mobilized": "Boat mobilized",
+      "participants_max": "Participants",
+      "highlight_moment": "Highlight",
+      "program_title": "The programme, minute by minute",
+      "route_title": "Nautical route",
+      "operations_note_title": "Good to know",
+      "faq_title": "Frequently asked questions"
     }
   },
   "collection": {
