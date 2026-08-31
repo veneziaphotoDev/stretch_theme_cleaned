@@ -168,15 +168,15 @@
       "title": "Avertissements"
     },
     "experience": {
-      "duration_total": "Durée totale",
       "time_on_water": "Sur l'eau",
-      "boat_time_mobilized": "Bateau mobilisé",
-      "participants_max": "Participants",
       "highlight_moment": "Moment phare",
       "program_title": "Le programme, minute par minute",
       "route_title": "Itinéraire nautique",
       "operations_note_title": "Bon à savoir",
-      "faq_title": "Questions fréquentes"
+      "faq_title": "Questions fréquentes",
+      "total_duration": "Durée totale",
+      "boat_mobilized_time": "Bateau mobilisé",
+      "max_participants": "Participants"
     }
   },
   "collection": {

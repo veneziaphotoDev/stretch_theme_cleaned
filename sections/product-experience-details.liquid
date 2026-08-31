@@ -7,9 +7,9 @@
   product metafields, so the same section works for every experience without any per-product template or hardcoded
   copy. Meant to be placed on the product template, between "main" and "related-products".
 
-  Expected metafields (namespace "custom"): subtitle, promise, guide_name, duration_total, time_on_water,
-  boat_time_mobilized, participants_max, highlight_moment, route, operations_note, program_steps (list of
-  metaobject "itinerary_step": time, step, intention), faq (list of metaobject "faq_item": question, answer).
+  Expected metafields (namespace "custom"): subtitle, promise, guide_name, total_duration, time_on_water,
+  boat_mobilized_time, max_participants, highlight_moment, route, operations_note, program_steps (list of
+  metaobject "itinerary_step": time, step, intention), faq_items (list of metaobject "faq_item": question, answer).
 
   Every block below is skipped independently when its metafield is blank, so a product only needs to fill in
   whichever fields apply to it.
@@ -18,18 +18,18 @@
 {%- liquid
   assign promise = product.metafields.custom.promise.value
   assign guide_name = product.metafields.custom.guide_name.value
-  assign duration_total = product.metafields.custom.duration_total.value
+  assign total_duration = product.metafields.custom.total_duration.value
   assign time_on_water = product.metafields.custom.time_on_water.value
-  assign boat_time_mobilized = product.metafields.custom.boat_time_mobilized.value
-  assign participants_max = product.metafields.custom.participants_max.value
+  assign boat_mobilized_time = product.metafields.custom.boat_mobilized_time.value
+  assign max_participants = product.metafields.custom.max_participants.value
   assign highlight_moment = product.metafields.custom.highlight_moment.value
   assign route = product.metafields.custom.route.value
   assign operations_note = product.metafields.custom.operations_note.value
   assign program_steps = product.metafields.custom.program_steps.value
-  assign faq_items = product.metafields.custom.faq.value
+  assign faq_items = product.metafields.custom.faq_items.value
 
   assign has_facts = false
-  if duration_total != blank or time_on_water != blank or boat_time_mobilized != blank or participants_max != blank or highlight_moment != blank
+  if total_duration != blank or time_on_water != blank or boat_mobilized_time != blank or max_participants != blank or highlight_moment != blank
     assign has_facts = true
   endif
 
@@ -51,10 +51,10 @@
 
         {%- if has_facts -%}
           <div class="experience-facts" data-animate>
-            {%- if duration_total != blank -%}
+            {%- if total_duration != blank -%}
               <div class="experience-facts__item">
-                <p class="experience-facts__value">{{ duration_total }}</p>
-                <p class="experience-facts__label subheading">{{ 'product.experience.duration_total' | t }}</p>
+                <p class="experience-facts__value">{{ total_duration }}</p>
+                <p class="experience-facts__label subheading">{{ 'product.experience.total_duration' | t }}</p>
               </div>
             {%- endif -%}
 
@@ -63,17 +63,17 @@
                 <p class="experience-facts__value">{{ time_on_water }}</p>
                 <p class="experience-facts__label subheading">{{ 'product.experience.time_on_water' | t }}</p>
               </div>
-            {%- elsif boat_time_mobilized != blank -%}
+            {%- elsif boat_mobilized_time != blank -%}
               <div class="experience-facts__item">
-                <p class="experience-facts__value">{{ boat_time_mobilized }}</p>
-                <p class="experience-facts__label subheading">{{ 'product.experience.boat_time_mobilized' | t }}</p>
+                <p class="experience-facts__value">{{ boat_mobilized_time }}</p>
+                <p class="experience-facts__label subheading">{{ 'product.experience.boat_mobilized_time' | t }}</p>
               </div>
             {%- endif -%}
 
-            {%- if participants_max != blank -%}
+            {%- if max_participants != blank -%}
               <div class="experience-facts__item">
-                <p class="experience-facts__value">{{ participants_max }}{% if guide_name != blank %} + {{ guide_name | split: ' ' | first }}{% endif %}</p>
-                <p class="experience-facts__label subheading">{{ 'product.experience.participants_max' | t }}</p>
+                <p class="experience-facts__value">{{ max_participants }}{% if guide_name != blank %} + {{ guide_name | split: ' ' | first }}{% endif %}</p>
+                <p class="experience-facts__label subheading">{{ 'product.experience.max_participants' | t }}</p>
               </div>
             {%- endif -%}
 

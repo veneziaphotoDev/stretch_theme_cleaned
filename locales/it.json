@@ -162,15 +162,15 @@
       "title": "Avvertenze"
     },
     "experience": {
-      "duration_total": "Durata totale",
       "time_on_water": "Sull'acqua",
-      "boat_time_mobilized": "Barca impegnata",
-      "participants_max": "Partecipanti",
       "highlight_moment": "Momento clou",
       "program_title": "Il programma, minuto per minuto",
       "route_title": "Itinerario nautico",
       "operations_note_title": "Da sapere",
-      "faq_title": "Domande frequenti"
+      "faq_title": "Domande frequenti",
+      "total_duration": "Durata totale",
+      "boat_mobilized_time": "Barca impegnata",
+      "max_participants": "Partecipanti"
     }
   },
   "collection": {
