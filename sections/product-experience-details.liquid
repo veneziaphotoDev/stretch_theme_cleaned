@@ -90,14 +90,25 @@
         {%- if route_stops.size > 0 -%}
           <div class="experience-route" data-animate>
             <p class="experience-route__title subheading">{{ 'product.experience.route_title' | t }}</p>
-            <ol class="experience-route__stops">
+
+            <scroll-carousel id="experience-route-{{ section.id }}" allow-swipe cell-selector=".experience-route__stop" class="experience-route__stops scroll-area bleed sm:unbleed snap-x" role="region">
               {%- for stop in route_stops -%}
-                <li class="experience-route__stop">
-                  <span class="experience-route__stop-index">{{ forloop.index }}</span>
-                  <span class="experience-route__stop-name">{{ stop.name.value }}</span>
-                </li>
+                <div class="experience-route__stop" role="group" aria-label="{{ 'general.accessibility.item_nth_of_count' | t: index: forloop.index, count: route_stops.size }}">
+                  <p class="experience-route__stop-index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</p>
+                  <p class="experience-route__stop-name">{{ stop.name.value }}</p>
+                </div>
               {%- endfor -%}
-            </ol>
+            </scroll-carousel>
+
+            {%- if route_stops.size > 1 -%}
+              <carousel-navigation class="scroll-marker-group scroll-marker-group--lines justify-self-center" aria-controls="experience-route-{{ section.id }}">
+                {%- for stop in route_stops -%}
+                  <button class="scroll-marker tap-area tap-area--sm" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+                    <span class="sr-only">{{ 'general.accessibility.go_to_item' | t: index: forloop.index }}</span>
+                  </button>
+                {%- endfor -%}
+              </carousel-navigation>
+            {%- endif -%}
           </div>
         {%- endif -%}
 
