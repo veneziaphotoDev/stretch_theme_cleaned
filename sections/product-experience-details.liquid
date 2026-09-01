@@ -3,13 +3,14 @@
   PRODUCT EXPERIENCE DETAILS SECTION
   ----------------------------------------------------------------------------------------------------------------------
 
-  Renders the tour-specific content (promise, quick facts, minute-by-minute program, route, operations note, FAQ) from
-  product metafields, so the same section works for every experience without any per-product template or hardcoded
-  copy. Meant to be placed on the product template, between "main" and "related-products".
+  Renders the tour-specific content (promise, quick facts, route, minute-by-minute program, operations note, FAQ)
+  from product metafields, so the same section works for every experience without any per-product template or
+  hardcoded copy. Meant to be placed on the product template, between "main" and "related-products".
 
   Expected metafields (namespace "custom"): subtitle, promise, guide_name, total_duration, time_on_water,
-  boat_mobilized_time, max_participants, highlight_moment, route, operations_note, program_steps (list of
-  metaobject "itinerary_step": time, step, intention), faq_items (list of metaobject "faq_item": question, answer).
+  boat_mobilized_time, max_participants, highlight_moment, route_stops (list of single-line text, one waypoint per
+  line), operations_note, program_steps (list of metaobject "itinerary_step": time, step, intention), faq_items
+  (list of metaobject "faq_item": question, answer).
 
   Every block below is skipped independently when its metafield is blank, so a product only needs to fill in
   whichever fields apply to it.
@@ -23,7 +24,7 @@
   assign boat_mobilized_time = product.metafields.custom.boat_mobilized_time.value
   assign max_participants = product.metafields.custom.max_participants.value
   assign highlight_moment = product.metafields.custom.highlight_moment.value
-  assign route = product.metafields.custom.route.value
+  assign route_stops = product.metafields.custom.route_stops.value
   assign operations_note = product.metafields.custom.operations_note.value
   assign program_steps = product.metafields.custom.program_steps.value
   assign faq_items = product.metafields.custom.faq_items.value
@@ -34,7 +35,7 @@
   endif
 
   assign has_content = false
-  if promise != blank or has_facts or route != blank or operations_note != blank or program_steps.size > 0 or faq_items.size > 0
+  if promise != blank or has_facts or route_stops.size > 0 or operations_note != blank or program_steps.size > 0 or faq_items.size > 0
     assign has_content = true
   endif
 -%}
@@ -86,7 +87,21 @@
           </div>
         {%- endif -%}
 
-        {%- if route != blank or operations_note != blank or program_steps.size > 0 or faq_items.size > 0 -%}
+        {%- if route_stops.size > 0 -%}
+          <div class="experience-route" data-animate>
+            <p class="experience-route__title subheading">{{ 'product.experience.route_title' | t }}</p>
+            <ol class="experience-route__stops">
+              {%- for stop in route_stops -%}
+                <li class="experience-route__stop">
+                  <span class="experience-route__stop-index">{{ forloop.index }}</span>
+                  <span class="experience-route__stop-name">{{ stop }}</span>
+                </li>
+              {%- endfor -%}
+            </ol>
+          </div>
+        {%- endif -%}
+
+        {%- if operations_note != blank or program_steps.size > 0 or faq_items.size > 0 -%}
           <div class="experience-details__accordions" data-animate>
             {%- if program_steps.size > 0 -%}
               {%- capture program_content -%}
@@ -103,11 +118,6 @@
                 </ol>
               {%- endcapture -%}
               {%- render 'accordion', title: 'product.experience.program_title' | t, content: program_content, open: true -%}
-            {%- endif -%}
-
-            {%- if route != blank -%}
-              {%- capture route_content -%}<div class="prose">{{ route }}</div>{%- endcapture -%}
-              {%- render 'accordion', title: 'product.experience.route_title' | t, content: route_content -%}
             {%- endif -%}
 
             {%- if operations_note != blank -%}
