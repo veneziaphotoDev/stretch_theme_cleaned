@@ -173,7 +173,9 @@
       "max_participants": "Partecipanti",
       "privatize_note": "Volete privatizzare la barca, anche in due?",
       "privatize_link": "Contattateci",
-      "privatize_subject": "Privatizzare l'uscita {{ title }}"
+      "privatize_subject": "Privatizzare l'uscita {{ title }}",
+      "sibling_prompt_to_sunset": "Preferite la luce della sera?",
+      "sibling_prompt_to_sunrise": "Siete mattinieri?"
     }
   },
   "collection": {

@@ -10,7 +10,8 @@
   Expected metafields (namespace "custom"): subtitle, promise, guide_name, total_duration, time_on_water,
   boat_mobilized_time, max_participants, highlight_moment, route_stops (list of metaobject "route_stop": name),
   operations_note, program_steps (list of metaobject "itinerary_step": time, step, intention), faq_items (list of
-  metaobject "faq_item": question, answer).
+  metaobject "faq_item": question, answer), sibling_experience (single product reference, only set on products that
+  share the same route as another product at the other time of day).
 
   Every block below is skipped independently when its metafield is blank, so a product only needs to fill in
   whichever fields apply to it.
@@ -28,6 +29,12 @@
   assign operations_note = product.metafields.custom.operations_note.value
   assign program_steps = product.metafields.custom.program_steps.value
   assign faq_items = product.metafields.custom.faq_items.value
+  assign sibling = product.metafields.custom.sibling_experience.value
+
+  assign sibling_prompt_key = 'product.experience.sibling_prompt_to_sunset'
+  if product.tags contains 'sunset'
+    assign sibling_prompt_key = 'product.experience.sibling_prompt_to_sunrise'
+  endif
 
   assign has_facts = false
   if total_duration != blank or time_on_water != blank or boat_mobilized_time != blank or max_participants != blank or highlight_moment != blank
@@ -85,6 +92,19 @@
               </div>
             {%- endif -%}
           </div>
+
+          {%- if sibling != blank -%}
+            <a href="{{ sibling.url }}" class="experience-sibling" data-animate>
+              {%- if sibling.featured_media != blank -%}
+                {{- sibling.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', sizes: '80px', widths: '80,160', class: 'experience-sibling__image' -}}
+              {%- endif -%}
+              <span class="experience-sibling__text">
+                <span class="experience-sibling__prompt subheading">{{ sibling_prompt_key | t }}</span>
+                <span class="experience-sibling__title">{{ sibling.title }}</span>
+              </span>
+              {%- render 'icon' with 'arrow-right', direction_aware: true, class: 'experience-sibling__arrow' -%}
+            </a>
+          {%- endif -%}
 
           {%- if shop.email != blank -%}
             <p class="experience-privatize text-sm text-subdued">

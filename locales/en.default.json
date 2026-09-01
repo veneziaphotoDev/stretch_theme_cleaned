@@ -183,7 +183,9 @@
       "max_participants": "Participants",
       "privatize_note": "Want to have the boat all to yourselves, even as a couple?",
       "privatize_link": "Get in touch",
-      "privatize_subject": "Privatize the {{ title }} outing"
+      "privatize_subject": "Privatize the {{ title }} outing",
+      "sibling_prompt_to_sunset": "More of an evening light person?",
+      "sibling_prompt_to_sunrise": "Early riser?"
     }
   },
   "collection": {
