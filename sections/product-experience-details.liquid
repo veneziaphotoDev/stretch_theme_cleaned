@@ -85,6 +85,13 @@
               </div>
             {%- endif -%}
           </div>
+
+          {%- if shop.email != blank -%}
+            <p class="experience-privatize text-sm text-subdued">
+              {{- 'product.experience.privatize_note' | t }}
+              <a href="mailto:{{ shop.email }}?subject={{ 'product.experience.privatize_subject' | t: title: product.title | url_encode }}" class="link">{{ 'product.experience.privatize_link' | t }}</a>
+            </p>
+          {%- endif -%}
         {%- endif -%}
 
         {%- if route_stops.size > 0 -%}
