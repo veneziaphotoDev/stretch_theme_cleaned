@@ -8,9 +8,9 @@
   hardcoded copy. Meant to be placed on the product template, between "main" and "related-products".
 
   Expected metafields (namespace "custom"): subtitle, promise, guide_name, total_duration, time_on_water,
-  boat_mobilized_time, max_participants, highlight_moment, route_stops (list of single-line text, one waypoint per
-  line), operations_note, program_steps (list of metaobject "itinerary_step": time, step, intention), faq_items
-  (list of metaobject "faq_item": question, answer).
+  boat_mobilized_time, max_participants, highlight_moment, route_stops (list of metaobject "route_stop": name),
+  operations_note, program_steps (list of metaobject "itinerary_step": time, step, intention), faq_items (list of
+  metaobject "faq_item": question, answer).
 
   Every block below is skipped independently when its metafield is blank, so a product only needs to fill in
   whichever fields apply to it.
@@ -94,7 +94,7 @@
               {%- for stop in route_stops -%}
                 <li class="experience-route__stop">
                   <span class="experience-route__stop-index">{{ forloop.index }}</span>
-                  <span class="experience-route__stop-name">{{ stop }}</span>
+                  <span class="experience-route__stop-name">{{ stop.name.value }}</span>
                 </li>
               {%- endfor -%}
             </ol>
