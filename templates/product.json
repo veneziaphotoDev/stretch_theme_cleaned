@@ -123,17 +123,10 @@
         "show_view_all_button": true,
         "show_scrolling_bar": true
       }
-    },
-    "experience-details": {
-      "type": "product-experience-details",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
     }
   },
   "order": [
     "main",
-    "experience-details",
     "related-products"
   ]
 }

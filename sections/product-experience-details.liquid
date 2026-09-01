@@ -8,8 +8,9 @@
   hardcoded copy. Meant to be placed on the product template, between "main" and "related-products".
 
   Expected metafields (namespace "custom"): subtitle, promise, guide_name, total_duration, time_on_water,
-  boat_mobilized_time, max_participants, highlight_moment, route_stops (list of metaobject "route_stop": name),
-  operations_note, program_steps (list of metaobject "itinerary_step": time, step, intention), faq_items (list of
+  boat_mobilized_time, max_participants, highlight_moment, route_stops (list of metaobject "route_stop": name,
+  optional image -- cropped to a fixed 4:5 ratio so mixed photo formats stay consistent), operations_note,
+  program_steps (list of metaobject "itinerary_step": time, step, intention), faq_items (list of
   metaobject "faq_item": question, answer), sibling_experience (single product reference, only set on products that
   share the same route as another product at the other time of day).
 
@@ -120,9 +121,20 @@
 
             <scroll-carousel id="experience-route-{{ section.id }}" allow-swipe cell-selector=".experience-route__stop" class="experience-route__stops scroll-area bleed sm:unbleed snap-x" role="region">
               {%- for stop in route_stops -%}
-                <div class="experience-route__stop" role="group" aria-label="{{ 'general.accessibility.item_nth_of_count' | t: index: forloop.index, count: route_stops.size }}">
-                  <p class="experience-route__stop-index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</p>
-                  <p class="experience-route__stop-name">{{ stop.name.value }}</p>
+                {%- assign stop_image = stop.image.value -%}
+                <div class="experience-route__stop {% if stop_image != blank %}experience-route__stop--has-image{% endif %}" role="group" aria-label="{{ 'general.accessibility.item_nth_of_count' | t: index: forloop.index, count: route_stops.size }}">
+                  {%- if stop_image != blank -%}
+                    <div class="experience-route__stop-media">
+                      {{- stop_image | image_url: width: 400, height: 500, crop: 'center' | image_tag: loading: 'lazy', sizes: '176px', widths: '176,352', alt: stop.name.value, class: 'experience-route__stop-image' -}}
+                      <div class="experience-route__stop-caption">
+                        <p class="experience-route__stop-index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</p>
+                        <p class="experience-route__stop-name">{{ stop.name.value }}</p>
+                      </div>
+                    </div>
+                  {%- else -%}
+                    <p class="experience-route__stop-index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</p>
+                    <p class="experience-route__stop-name">{{ stop.name.value }}</p>
+                  {%- endif -%}
                 </div>
               {%- endfor -%}
             </scroll-carousel>
