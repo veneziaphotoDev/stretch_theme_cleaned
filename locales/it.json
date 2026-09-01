@@ -170,7 +170,10 @@
       "faq_title": "Domande frequenti",
       "total_duration": "Durata totale",
       "boat_mobilized_time": "Barca impegnata",
-      "max_participants": "Partecipanti"
+      "max_participants": "Partecipanti",
+      "privatize_note": "Volete privatizzare la barca, anche in due?",
+      "privatize_link": "Contattateci",
+      "privatize_subject": "Privatizzare l'uscita {{ title }}"
     }
   },
   "collection": {

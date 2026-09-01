@@ -180,7 +180,10 @@
       "faq_title": "Frequently asked questions",
       "total_duration": "Total duration",
       "boat_mobilized_time": "Boat mobilized",
-      "max_participants": "Participants"
+      "max_participants": "Participants",
+      "privatize_note": "Want to have the boat all to yourselves, even as a couple?",
+      "privatize_link": "Get in touch",
+      "privatize_subject": "Privatize the {{ title }} outing"
     }
   },
   "collection": {

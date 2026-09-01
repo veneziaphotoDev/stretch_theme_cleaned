@@ -1812,6 +1812,11 @@ section-container.color-scheme .circle-button:before {
   margin: 0.25rem 0 0;
 }
 
+.experience-privatize {
+  margin: 0.75rem 0 0;
+  text-align: center;
+}
+
 .experience-route__title {
   margin: 0 0 0.75rem;
 }

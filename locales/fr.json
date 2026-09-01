@@ -176,7 +176,10 @@
       "faq_title": "Questions fréquentes",
       "total_duration": "Durée totale",
       "boat_mobilized_time": "Bateau mobilisé",
-      "max_participants": "Participants"
+      "max_participants": "Participants",
+      "privatize_note": "Vous voulez privatiser le bateau, même à deux ?",
+      "privatize_link": "Contactez-nous",
+      "privatize_subject": "Privatiser la sortie {{ title }}"
     }
   },
   "collection": {
