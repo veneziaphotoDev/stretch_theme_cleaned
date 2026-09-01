@@ -1,0 +1,71 @@
+{%- comment -%}
+  ----------------------------------------------------------------------------------------------------------------------
+  PRODUCT HERO SECTION
+  ----------------------------------------------------------------------------------------------------------------------
+
+  Full-bleed opening moment for an experience product template: background image, product title (the page's only h1
+  -- the buy-box's own title block is intentionally left out of the experience template), subtitle metafield and a
+  scroll cue. Immediately followed by a sticky booking bar (price + a link back to the buy-box below) that pins to
+  the top once scrolled past, using native position: sticky -- no scroll-tracking JS needed.
+
+  Expected metafields (namespace "custom"): hero_image (single image file reference), subtitle. Falls back to the
+  product's featured image when hero_image is blank.
+{%- endcomment -%}
+
+{%- liquid
+  assign hero_image = product.metafields.custom.hero_image.value
+  assign subtitle = product.metafields.custom.subtitle.value
+
+  if hero_image == blank
+    assign hero_image = product.featured_media.preview_image
+  endif
+-%}
+
+{%- if hero_image != blank -%}
+  <div class="product-hero color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    {{- hero_image | image_url: width: 2000 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', widths: '750,1100,1500,2000', class: 'product-hero__image' -}}
+
+    <div class="product-hero__overlay"></div>
+
+    <div class="product-hero__content">
+      <h1 class="product-hero__title">{{ product.title }}</h1>
+
+      {%- if subtitle != blank -%}
+        <p class="product-hero__subtitle subheading">{{ subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <a href="#shopify-section-main" class="product-hero__scroll-cue" aria-label="{{ 'general.accessibility.skip_to_content' | t }}">
+      {%- render 'icon' with 'arrow-right', width: 18, class: 'product-hero__scroll-icon' -%}
+    </a>
+  </div>
+{%- endif -%}
+
+<div class="product-hero-bar color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div class="container product-hero-bar__inner">
+    <span class="product-hero-bar__title">{{ product.title }}</span>
+    <span class="product-hero-bar__price">{{ product.price | money }}</span>
+    {%- render 'button', content: 'product.experience.book_now' | t, href: '#shopify-section-main', style: 'solid', class: 'product-hero-bar__cta' -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Experience hero",
+  "class": "shopify-section--product-hero",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-7"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Experience hero"
+    }
+  ]
+}
+{% endschema %}
