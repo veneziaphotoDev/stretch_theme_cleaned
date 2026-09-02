@@ -9,18 +9,18 @@
  */
 {
   "sections": {
+    "hero": {
+      "type": "product-hero",
+      "settings": {
+        "color_scheme": "scheme-7"
+      }
+    },
     "main": {
       "type": "main-product",
       "blocks": {
         "vendor": {
           "type": "vendor",
           "settings": {}
-        },
-        "title": {
-          "type": "title",
-          "settings": {
-            "heading_tag": "h3"
-          }
         },
         "badges": {
           "type": "badges",
@@ -83,7 +83,6 @@
       },
       "block_order": [
         "vendor",
-        "title",
         "badges",
         "price",
         "rating",
@@ -149,6 +148,7 @@
     }
   },
   "order": [
+    "hero",
     "main",
     "experience-details",
     "related-products"

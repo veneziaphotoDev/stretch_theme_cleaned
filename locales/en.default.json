@@ -185,7 +185,8 @@
       "privatize_link": "Get in touch",
       "privatize_subject": "Privatize the {{ title }} outing",
       "sibling_prompt_to_sunset": "More of an evening light person?",
-      "sibling_prompt_to_sunrise": "Early riser?"
+      "sibling_prompt_to_sunrise": "Early riser?",
+      "book_now": "Book now"
     }
   },
   "collection": {
