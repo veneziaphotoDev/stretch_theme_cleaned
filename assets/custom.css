@@ -1774,6 +1774,10 @@ section-container.color-scheme .circle-button:before {
   display: flex;
   flex-direction: column;
   gap: calc(var(--container-gutter) * 2);
+}
+
+.experience-details__text {
+  width: 100%;
   max-width: 48rem;
   margin-inline: auto;
 }
@@ -1827,17 +1831,20 @@ section-container.color-scheme .circle-button:before {
 }
 
 .experience-route__title {
-  margin: 0 0 0.75rem;
+  margin: 0 0 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgb(var(--border-color));
 }
 
 .experience-route__stops {
   display: flex;
+  gap: 1.5rem;
 }
 
 .experience-route__stop {
   position: relative;
   flex: 0 0 auto;
-  width: 13rem;
+  width: min(78vw, 26rem);
   padding: 1.5rem 1.25rem 0 0;
   border-top: 1px solid rgb(var(--border-color));
 }
@@ -1854,7 +1861,7 @@ section-container.color-scheme .circle-button:before {
 }
 
 .experience-route__stop-index {
-  margin: 0 0 0.35rem;
+  margin: 0 0 0.5rem;
   font-family: var(--heading-italic-font-family);
   font-weight: var(--heading-italic-font-weight);
   font-style: var(--heading-italic-font-style);
@@ -1888,34 +1895,47 @@ section-container.color-scheme .circle-button:before {
 .experience-route__stop-image {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.experience-route__stop:hover .experience-route__stop-image {
+  transform: scale(1.06);
 }
 
 .experience-route__stop-caption {
   position: absolute;
   inset: auto 0 0 0;
-  padding: 1.75rem 0.85rem 0.75rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
+  padding: 4rem 1.5rem 1.5rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.32) 55%, rgba(0, 0, 0, 0) 100%);
 }
 
 .experience-route__stop--has-image .experience-route__stop-index {
-  opacity: 0.85;
+  opacity: 0.9;
   color: #fff;
+  font-size: var(--text-display-m);
+  font-style: italic;
+  margin-bottom: 0.75rem;
 }
 
 .experience-route__stop--has-image .experience-route__stop-name {
   color: #fff;
+  font-size: var(--text-lg);
+  font-weight: var(--text-font-weight);
 }
 
 @media screen and (max-width: 699px) {
+  .experience-route__stops {
+    gap: 0.85rem;
+  }
+
   .experience-route__stop {
-    width: 10.5rem;
     padding-top: 1.25rem;
   }
 
-  .experience-route__stop-index {
-    font-size: var(--text-h4);
+  .experience-route__stop-caption {
+    padding: 3rem 1.25rem 1.25rem;
   }
 }
 
