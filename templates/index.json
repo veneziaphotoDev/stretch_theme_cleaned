@@ -202,6 +202,7 @@
       "settings": {
         "color_scheme": "",
         "allow_transparent_header": false,
+        "primary_image": "shopify://shop_images/punta.jpg",
         "content_position": "start",
         "content_percentage_width": 50,
         "overlay_color": "#000000",
@@ -224,7 +225,12 @@
         "color_scheme": "",
         "heading": "Upcoming Sessions",
         "subheading": "Sunrise & Sunset · small-group departures",
-        "product_list": [],
+        "product_list": [
+          "golden-and-blue-hour",
+          "les-iles-de-la-lagune-sunrise",
+          "sunrise-lights",
+          "sunrise-lights-1"
+        ],
         "products_per_row_mobile": "1",
         "products_per_row_desktop": 4
       }
