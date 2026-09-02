@@ -42,10 +42,6 @@
           "type": "experience_summary",
           "settings": {}
         },
-        "separator": {
-          "type": "separator",
-          "settings": {}
-        },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
@@ -93,7 +89,6 @@
         "badges",
         "rating",
         "experience_summary",
-        "separator",
         "variant_picker",
         "experience_sibling",
         "buy_buttons",
