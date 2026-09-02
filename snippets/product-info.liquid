@@ -467,7 +467,7 @@ no need to manually pass the section as it is globally available)
               assign highlight_moment = product.metafields.custom.highlight_moment.value
             -%}
 
-            {%- if meeting_point != blank or total_duration != blank or time_on_water != blank or max_participants != blank or highlight_moment != blank -%}
+            {%- if meeting_point != blank or total_duration != blank or max_participants != blank or highlight_moment != blank -%}
               <ul class="experience-summary__facts unstyled-list">
                 {%- if meeting_point != blank -%}
                   <li class="experience-summary__fact">
@@ -478,15 +478,14 @@ no need to manually pass the section as it is globally available)
 
                 {%- if total_duration != blank -%}
                   <li class="experience-summary__fact">
-                    {%- render 'icon' with 'picto-date', width: 18 -%}
-                    <span>{{ total_duration }}</span>
-                  </li>
-                {%- endif -%}
-
-                {%- if time_on_water != blank -%}
-                  <li class="experience-summary__fact">
-                    {%- render 'icon' with 'picto-drop-of-water', width: 18 -%}
-                    <span><span class="sr-only">{{ 'product.experience.time_on_water' | t }}: </span>{{ time_on_water }}</span>
+                    {%- render 'icon' with 'picto-clock', width: 18 -%}
+                    <span>
+                      {%- if time_on_water != blank -%}
+                        {{ 'product.experience.duration_summary' | t: total: total_duration, water: time_on_water }}
+                      {%- else -%}
+                        {{ total_duration }}
+                      {%- endif -%}
+                    </span>
                   </li>
                 {%- endif -%}
 

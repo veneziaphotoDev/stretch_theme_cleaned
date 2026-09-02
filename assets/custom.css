@@ -1841,6 +1841,10 @@ section-container.color-scheme .circle-button:before {
   gap: 1.5rem;
 }
 
+.experience-route__controls {
+  margin-top: 2rem;
+}
+
 .experience-route__stop {
   position: relative;
   flex: 0 0 auto;

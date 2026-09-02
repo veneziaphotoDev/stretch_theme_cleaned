@@ -783,6 +783,12 @@ To render an icon made of an image, you need to explicitly pass the image, and t
         <path vector-effect="non-scaling-stroke" d="M18 1V4" fill="none" stroke="currentColor" stroke-width="{{ stroke_width | default: settings.icon_stroke_width }}"/>
       </svg>
 
+    {%- when 'picto-clock' -%}
+      <svg aria-hidden="true" focusable="false" width="{{ mobile_width | default: 24 }}" class="{{ class | strip }}" {% if style != blank %}style="{{ style }}"{% endif %} viewBox="0 0 24 24">
+        <path vector-effect="non-scaling-stroke" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="none" stroke="currentColor" stroke-width="{{ stroke_width | default: settings.icon_stroke_width }}"/>
+        <path vector-effect="non-scaling-stroke" d="M12 6.5V12L16 14.5" fill="none" stroke="currentColor" stroke-width="{{ stroke_width | default: settings.icon_stroke_width }}" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+
     {%- when 'picto-info' -%}
       <svg aria-hidden="true" focusable="false" width="{{ mobile_width | default: 24 }}" class="{{ class | strip }}" {% if style != blank %}style="{{ style }}"{% endif %} viewBox="0 0 24 24">
         <path vector-effect="non-scaling-stroke" d="M1 12C1 14.9174 2.15893 17.7153 4.22183 19.7782C6.28473 21.8411 9.08262 23 12 23C14.9174 23 17.7153 21.8411 19.7782 19.7782C21.8411 17.7153 23 14.9174 23 12C23 9.08262 21.8411 6.28473 19.7782 4.22183C17.7153 2.15893 14.9174 1 12 1C9.08262 1 6.28473 2.15893 4.22183 4.22183C2.15893 6.28473 1 9.08262 1 12Z" fill="none" stroke="currentColor" stroke-width="{{ stroke_width | default: settings.icon_stroke_width }}"/>
