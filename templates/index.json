@@ -352,101 +352,6 @@
         "text_alignment": "center"
       }
     },
-    "video_carousel_community01": {
-      "type": "video-carousel",
-      "blocks": {
-        "video_PdMXPC": {
-          "type": "video",
-          "settings": {
-            "video": "shopify://files/videos/Gondola Ride Venice, Italy.mp4",
-            "caption": ""
-          }
-        },
-        "video_iqDPxm": {
-          "type": "video",
-          "settings": {
-            "video": "shopify://files/videos/Venice Gondola Ride_ the Experience of a Lifetime_b90aca44-5d2d-462f-98fc-666a48b8de93.mp4",
-            "caption": ""
-          }
-        },
-        "video01": {
-          "type": "video",
-          "settings": {
-            "video": "shopify://files/videos/Water taxi's in Venice.mp4",
-            "caption": ""
-          }
-        },
-        "video02": {
-          "type": "video",
-          "settings": {
-            "video": "shopify://files/videos/Gondola Ride Venice, Italy.mp4",
-            "caption": ""
-          }
-        },
-        "video03": {
-          "type": "video",
-          "settings": {
-            "video": "shopify://files/videos/Venice Gondola Ride_ the Experience of a Lifetime_b90aca44-5d2d-462f-98fc-666a48b8de93.mp4",
-            "caption": ""
-          }
-        }
-      },
-      "block_order": [
-        "video_PdMXPC",
-        "video_iqDPxm",
-        "video01",
-        "video02",
-        "video03"
-      ],
-      "settings": {
-        "anchor": "",
-        "color_scheme": "",
-        "subheading": "Community Gallery",
-        "heading": "A vlog-style look, created by our guests.",
-        "heading_tag": "h3",
-        "content_width": "md",
-        "items_per_row": 4
-      }
-    },
-    "testimonial_quotes_laguna01": {
-      "type": "testimonial-quotes",
-      "blocks": {
-        "quote01": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "\"We saw a Venice we didn't know existed — empty, silent, glowing. The photographer's eye made all the difference.\"",
-            "author": "Dorit"
-          }
-        },
-        "quote02": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "\"The editing session on San Servolo was the best part. I left with a print I'll keep forever.\"",
-            "author": "Julie"
-          }
-        },
-        "quote03": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "\"Intimate, unhurried, beautifully organised. Nothing like the usual gondola circuit.\"",
-            "author": "Elizabeth"
-          }
-        }
-      },
-      "block_order": [
-        "quote01",
-        "quote02",
-        "quote03"
-      ],
-      "settings": {
-        "anchor": "",
-        "color_scheme": "",
-        "subheading": "What Our Guests Are Saying",
-        "autoplay": true,
-        "cycle_speed": 4,
-        "pause_on_hover": true
-      }
-    },
     "activity_cards_ecosystem01": {
       "type": "activity-cards",
       "blocks": {
@@ -510,8 +415,6 @@
     "sessions_grid_laguna01",
     "steps_howitworks01",
     "gallery_laguna01",
-    "video_carousel_community01",
-    "testimonial_quotes_laguna01",
     "activity_cards_ecosystem01"
   ]
 }
