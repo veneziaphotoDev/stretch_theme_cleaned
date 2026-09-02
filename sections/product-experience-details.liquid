@@ -3,12 +3,13 @@
   PRODUCT EXPERIENCE DETAILS SECTION
   ----------------------------------------------------------------------------------------------------------------------
 
-  Renders the tour-specific content (promise, quick facts, route, minute-by-minute program, operations note, FAQ)
-  from product metafields, so the same section works for every experience without any per-product template or
-  hardcoded copy. Meant to be placed on the product template, between "main" and "related-products".
+  Renders the tour-specific content that lives below the fold: route, minute-by-minute program, operations note,
+  FAQ, plus the sunrise/sunset sibling link and the privatization contact note. The above-the-fold content (tagline,
+  quick facts, promise, what's included) lives in the buy-box itself via the "experience_summary" and
+  "experience_included" blocks in snippets/product-info.liquid, so it sits next to the sticky gallery instead of
+  below it. Meant to be placed on the product template, between "main" and "related-products".
 
-  Expected metafields (namespace "custom"): subtitle, promise, guide_name, total_duration, time_on_water,
-  boat_mobilized_time, max_participants, highlight_moment, route_stops (list of metaobject "route_stop": name,
+  Expected metafields (namespace "custom"): guide_name, route_stops (list of metaobject "route_stop": name,
   optional image -- cropped to a fixed 4:5 ratio so mixed photo formats stay consistent), operations_note,
   program_steps (list of metaobject "itinerary_step": time, step, intention), faq_items (list of
   metaobject "faq_item": question, answer), sibling_experience (single product reference, only set on products that
@@ -19,13 +20,6 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign promise = product.metafields.custom.promise.value
-  assign guide_name = product.metafields.custom.guide_name.value
-  assign total_duration = product.metafields.custom.total_duration.value
-  assign time_on_water = product.metafields.custom.time_on_water.value
-  assign boat_mobilized_time = product.metafields.custom.boat_mobilized_time.value
-  assign max_participants = product.metafields.custom.max_participants.value
-  assign highlight_moment = product.metafields.custom.highlight_moment.value
   assign route_stops = product.metafields.custom.route_stops.value
   assign operations_note = product.metafields.custom.operations_note.value
   assign program_steps = product.metafields.custom.program_steps.value
@@ -37,69 +31,21 @@
     assign sibling_prompt_key = 'product.experience.sibling_prompt_to_sunrise'
   endif
 
-  assign has_facts = false
-  if total_duration != blank or time_on_water != blank or boat_mobilized_time != blank or max_participants != blank or highlight_moment != blank
-    assign has_facts = true
-  endif
-
   assign has_nudges = false
   if sibling != blank or shop.email != blank
     assign has_nudges = true
   endif
 
   assign has_content = false
-  if promise != blank or has_facts or route_stops.size > 0 or operations_note != blank or program_steps.size > 0 or faq_items.size > 0
+  if has_nudges or route_stops.size > 0 or operations_note != blank or program_steps.size > 0 or faq_items.size > 0
     assign has_content = true
   endif
 -%}
 
 {%- if has_content -%}
   <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
-    {%- if promise != blank -%}
-      <div class="container">
-        <p class="experience-promise" data-animate>{{ promise }}</p>
-      </div>
-    {%- endif -%}
-
     <div class="container section-spacing">
       <div class="experience-details">
-        {%- if has_facts -%}
-          <div class="experience-facts" data-animate>
-            {%- if total_duration != blank -%}
-              <div class="experience-facts__item">
-                <p class="experience-facts__value">{{ total_duration }}</p>
-                <p class="experience-facts__label subheading">{{ 'product.experience.total_duration' | t }}</p>
-              </div>
-            {%- endif -%}
-
-            {%- if time_on_water != blank -%}
-              <div class="experience-facts__item">
-                <p class="experience-facts__value">{{ time_on_water }}</p>
-                <p class="experience-facts__label subheading">{{ 'product.experience.time_on_water' | t }}</p>
-              </div>
-            {%- elsif boat_mobilized_time != blank -%}
-              <div class="experience-facts__item">
-                <p class="experience-facts__value">{{ boat_mobilized_time }}</p>
-                <p class="experience-facts__label subheading">{{ 'product.experience.boat_mobilized_time' | t }}</p>
-              </div>
-            {%- endif -%}
-
-            {%- if max_participants != blank -%}
-              <div class="experience-facts__item">
-                <p class="experience-facts__value">{{ max_participants }}{% if guide_name != blank %} + {{ guide_name | split: ' ' | first }}{% endif %}</p>
-                <p class="experience-facts__label subheading">{{ 'product.experience.max_participants' | t }}</p>
-              </div>
-            {%- endif -%}
-
-            {%- if highlight_moment != blank -%}
-              <div class="experience-facts__item">
-                <p class="experience-facts__value">{{ highlight_moment }}</p>
-                <p class="experience-facts__label subheading">{{ 'product.experience.highlight_moment' | t }}</p>
-              </div>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-
         {%- if has_nudges -%}
           <div class="experience-nudges">
             {%- if sibling != blank -%}
