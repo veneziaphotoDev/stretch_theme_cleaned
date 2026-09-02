@@ -42,6 +42,22 @@
     #shopify-section-{{ section.id }} {
       --product-grid: auto / minmax(0, {{ section.settings.product_media_size | divided_by: 100.0 }}fr) minmax(0, {{ 100.0 | minus: section.settings.product_media_size | divided_by: 100.0 }}fr);
     }
+
+    {%- comment -%}
+    theme.css also makes .product-info sticky (built for the default template, where a short buy-box
+    sits next to a tall stacked image grid). The experience buy-box is the tall column instead (tagline,
+    facts, promise, included, privatize note), so that native rule would pin the wrong side and let the
+    carousel gallery scroll past underneath it. Scoped to this section instance only, so the default
+    product template keeps its normal buy-box-sticks behavior.
+    {%- endcomment -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'experience_summary' -%}
+        #shopify-section-{{ section.id }} .product-info {
+          position: static;
+        }
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
   }
 </style>
 
