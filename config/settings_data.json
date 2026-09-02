@@ -209,7 +209,29 @@
     "input_uppercase": false,
     "heading_italic_font_size_multiplier": 6,
     "apply_italic_override_to_paragraphs": true,
-    "stagger_products": true
+    "stagger_products": true,
+    "blocks": {
+      "18384125943788576634": {
+        "type": "shopify://apps/meety-booking-app/blocks/bookings-v2/47f38863-0648-44e3-873d-c84301243dcb",
+        "disabled": false,
+        "settings": {
+          "use_add_to_cart_style": false,
+          "horizontal_alignment": "center",
+          "font_family": "poppins_n4",
+          "font_size": 14,
+          "schedule_text": "Schedule your time",
+          "schedule_text_color": "#fffffd",
+          "schedule_background_color": "#000001",
+          "bundle_button_type": "1",
+          "bundle_text": "Schedule your bundle",
+          "bundle_book_text": "Book a new bundle",
+          "bundle_manage_text": "Manage your booked bundle",
+          "bundle_text_color": "#fffffd",
+          "bundle_background_color": "#000001",
+          "css_customization": "--meety-block-button-border-radius: 10px;\n--meety-block-button-width: 100%;\n--meety-block-button-height: 48px;\n--meety-block-button-margin: 0px 0px 0px 0px;\n--meety-block-button-schedule-border-color:#000001;\n--meety-block-button-schedule-border-width: 0px;\n--meety-block-button-subs-book-border-color:#000001;\n--meety-block-button-subs-book-border-width: 0px;"
+        }
+      }
+    }
   },
   "presets": {
     "Stretch": {
