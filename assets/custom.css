@@ -1914,14 +1914,15 @@ section-container.color-scheme .circle-button:before {
 .experience-route__stop--has-image .experience-route__stop-index {
   opacity: 0.9;
   color: #fff;
-  font-size: var(--text-h2);
+  font-size: var(--text-display-m);
+  font-style: italic;
   margin-bottom: 0.75rem;
 }
 
 .experience-route__stop--has-image .experience-route__stop-name {
   color: #fff;
   font-size: var(--text-lg);
-  font-weight: 600;
+  font-weight: var(--text-font-weight);
 }
 
 @media screen and (max-width: 699px) {
