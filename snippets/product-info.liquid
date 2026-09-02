@@ -451,19 +451,20 @@ no need to manually pass the section as it is globally available)
               {%- endif -%}
             </product-recommendations>
 
+          {%- when 'experience_tagline' -%}
+            {%- assign tagline = product.metafields.custom.tagline.value -%}
+            {%- if tagline != blank -%}
+              <p class="experience-tagline subheading">{{ tagline }}</p>
+            {%- endif -%}
+
           {%- when 'experience_summary' -%}
             {%- liquid
-              assign tagline = product.metafields.custom.tagline.value
               assign promise = product.metafields.custom.promise.value
               assign meeting_point = product.metafields.custom.route_stops.value.first.name.value
               assign total_duration = product.metafields.custom.total_duration.value
               assign max_participants = product.metafields.custom.max_participants.value
               assign highlight_moment = product.metafields.custom.highlight_moment.value
             -%}
-
-            {%- if tagline != blank -%}
-              <p class="experience-summary__tagline subheading">{{ tagline }}</p>
-            {%- endif -%}
 
             {%- if meeting_point != blank or total_duration != blank or max_participants != blank or highlight_moment != blank -%}
               <ul class="experience-summary__facts">

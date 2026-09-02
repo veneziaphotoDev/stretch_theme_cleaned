@@ -12,6 +12,10 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "experience_tagline": {
+          "type": "experience_tagline",
+          "settings": {}
+        },
         "title": {
           "type": "title",
           "settings": {
@@ -79,6 +83,7 @@
         }
       },
       "block_order": [
+        "experience_tagline",
         "title",
         "price",
         "badges",

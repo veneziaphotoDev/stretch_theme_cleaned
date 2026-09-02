@@ -1981,8 +1981,8 @@ section-container.color-scheme .circle-button:before {
    PRODUCT INFO — EXPERIENCE SUMMARY / INCLUDED
    ============================================ */
 
-.experience-summary__tagline {
-  margin: 0 0 1rem;
+.experience-tagline {
+  margin: 0 0 0.5rem;
 }
 
 .experience-summary__facts {
