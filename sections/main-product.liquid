@@ -54,6 +54,18 @@
       #shopify-section-{{ section.id }} .product-title {
         line-height: 0.95;
       }
+
+      {%- comment -%}
+      The price uses the "h4" heading class by default (price-list.liquid, context: "product"), which
+      renders it in Gascogne. Switched to the body font (Helvetica) for this section instance only --
+      price-list.liquid is shared with cards, cart and orders, so this can't be changed globally there.
+      {%- endcomment -%}
+      #shopify-section-{{ section.id }} sale-price,
+      #shopify-section-{{ section.id }} compare-at-price {
+        font-family: var(--text-font-family);
+        font-weight: var(--text-font-weight);
+        font-style: var(--text-font-style);
+      }
       {%- break -%}
     {%- endif -%}
   {%- endfor -%}
