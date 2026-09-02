@@ -65,13 +65,31 @@
             </scroll-carousel>
 
             {%- if route_stops.size > 1 -%}
-              <carousel-navigation class="scroll-marker-group scroll-marker-group--lines justify-self-center" aria-controls="experience-route-{{ section.id }}">
-                {%- for stop in route_stops -%}
-                  <button class="scroll-marker tap-area tap-area--sm" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
-                    <span class="sr-only">{{ 'general.accessibility.go_to_item' | t: index: forloop.index }}</span>
-                  </button>
-                {%- endfor -%}
-              </carousel-navigation>
+              <div class="experience-route__controls h-stack justify-between">
+                <carousel-navigation class="scroll-marker-group scroll-marker-group--lines" aria-controls="experience-route-{{ section.id }}">
+                  {%- for stop in route_stops -%}
+                    <button class="scroll-marker tap-area tap-area--sm" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+                      <span class="sr-only">{{ 'general.accessibility.go_to_item' | t: index: forloop.index }}</span>
+                    </button>
+                  {%- endfor -%}
+                </carousel-navigation>
+
+                <div class="h-stack gap-2">
+                  <carousel-prev-button aria-controls="experience-route-{{ section.id }}">
+                    <button type="button" class="circle-button">
+                      <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+                      {%- render 'icon' with 'big-arrow-left', width: 9, direction_aware: true -%}
+                    </button>
+                  </carousel-prev-button>
+
+                  <carousel-next-button aria-controls="experience-route-{{ section.id }}">
+                    <button type="button" class="circle-button">
+                      <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+                      {%- render 'icon' with 'big-arrow-right', width: 9, direction_aware: true -%}
+                    </button>
+                  </carousel-next-button>
+                </div>
+              </div>
             {%- endif -%}
           </div>
         {%- endif -%}
