@@ -102,6 +102,15 @@
 
     <main id="main" class="anchor {% if request.page_type == 'policy' or request.page_type == 'captcha' %}color-scheme color-scheme--{{ settings.default_color_scheme.id }}{% endif %}">
       {{ content_for_layout }}
+
+      {%- comment -%}
+        Shared social-proof block (community videos + guest testimonials): edited once here, appears
+        identically on the homepage and every experience product page instead of being re-entered per
+        template.
+      {%- endcomment -%}
+      {%- if template.name == 'index' or template.suffix == 'experience' -%}
+        {%- sections 'social-proof-group' -%}
+      {%- endif -%}
     </main>
 
     {%- comment -%}

@@ -148,92 +148,11 @@
       "settings": {
         "color_scheme": "scheme-1"
       }
-    },
-    "video-carousel": {
-      "type": "video-carousel",
-      "blocks": {
-        "video01": {
-          "type": "video",
-          "settings": {
-            "video": null,
-            "caption": ""
-          }
-        },
-        "video02": {
-          "type": "video",
-          "settings": {
-            "video": null,
-            "caption": ""
-          }
-        },
-        "video03": {
-          "type": "video",
-          "settings": {
-            "video": null,
-            "caption": ""
-          }
-        }
-      },
-      "block_order": [
-        "video01",
-        "video02",
-        "video03"
-      ],
-      "settings": {
-        "anchor": "",
-        "color_scheme": "",
-        "subheading": "Community Gallery",
-        "heading": "A vlog-style look, created by our guests.",
-        "heading_tag": "h3",
-        "content_width": "md",
-        "items_per_row": 4
-      }
-    },
-    "testimonial-quotes": {
-      "type": "testimonial-quotes",
-      "blocks": {
-        "quote01": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "\"We saw a Venice we didn't know existed — empty, silent, glowing. The photographer's eye made all the difference.\"",
-            "author": "Dorit"
-          }
-        },
-        "quote02": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "\"The editing session on San Servolo was the best part. I left with a print I'll keep forever.\"",
-            "author": "Julie"
-          }
-        },
-        "quote03": {
-          "type": "testimonial",
-          "settings": {
-            "quote": "\"Intimate, unhurried, beautifully organised. Nothing like the usual gondola circuit.\"",
-            "author": "Elizabeth"
-          }
-        }
-      },
-      "block_order": [
-        "quote01",
-        "quote02",
-        "quote03"
-      ],
-      "settings": {
-        "anchor": "",
-        "color_scheme": "",
-        "subheading": "What Our Guests Are Saying",
-        "autoplay": true,
-        "cycle_speed": 4,
-        "pause_on_hover": true
-      }
     }
   },
   "order": [
     "main",
     "experience-details",
-    "related-products",
-    "video-carousel",
-    "testimonial-quotes"
+    "related-products"
   ]
 }
