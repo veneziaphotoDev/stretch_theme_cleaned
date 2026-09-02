@@ -467,7 +467,7 @@ no need to manually pass the section as it is globally available)
             -%}
 
             {%- if meeting_point != blank or total_duration != blank or max_participants != blank or highlight_moment != blank -%}
-              <ul class="experience-summary__facts">
+              <ul class="experience-summary__facts unstyled-list">
                 {%- if meeting_point != blank -%}
                   <li class="experience-summary__fact">
                     {%- render 'icon' with 'picto-location-pin', width: 18 -%}
@@ -509,7 +509,7 @@ no need to manually pass the section as it is globally available)
             {%- if included_items.size > 0 -%}
               <div class="experience-included">
                 <p class="experience-included__title subheading">{{ 'product.experience.included_title' | t }}</p>
-                <ul class="experience-included__list">
+                <ul class="experience-included__list unstyled-list">
                   {%- for item in included_items -%}
                     <li class="experience-included__item">
                       {%- render 'icon' with 'picto-checked', width: 16 -%}
