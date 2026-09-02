@@ -173,20 +173,16 @@
     },
     "experience": {
       "time_on_water": "On the water",
-      "highlight_moment": "Highlight",
       "program_title": "The programme, minute by minute",
       "route_title": "Nautical route",
       "operations_note_title": "Good to know",
       "faq_title": "Frequently asked questions",
-      "total_duration": "Total duration",
-      "boat_mobilized_time": "Boat mobilized",
       "max_participants": "Participants",
       "privatize_note": "Want to have the boat all to yourselves, even as a couple?",
       "privatize_link": "Get in touch",
       "privatize_subject": "Privatize the {{ title }} outing",
       "sibling_prompt_to_sunset": "More of an evening light person?",
       "sibling_prompt_to_sunrise": "Early riser?",
-      "book_now": "Book now",
       "max_participants_value": "{{ count }} participants max.",
       "included_title": "What's included"
     }

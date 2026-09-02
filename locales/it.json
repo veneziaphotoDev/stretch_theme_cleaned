@@ -163,20 +163,16 @@
     },
     "experience": {
       "time_on_water": "Sull'acqua",
-      "highlight_moment": "Momento clou",
       "program_title": "Il programma, minuto per minuto",
       "route_title": "Itinerario nautico",
       "operations_note_title": "Da sapere",
       "faq_title": "Domande frequenti",
-      "total_duration": "Durata totale",
-      "boat_mobilized_time": "Barca impegnata",
       "max_participants": "Partecipanti",
       "privatize_note": "Volete privatizzare la barca, anche in due?",
       "privatize_link": "Contattateci",
       "privatize_subject": "Privatizzare l'uscita {{ title }}",
       "sibling_prompt_to_sunset": "Preferite la luce della sera?",
       "sibling_prompt_to_sunrise": "Siete mattinieri?",
-      "book_now": "Prenota",
       "max_participants_value": "{{ count }} partecipanti max.",
       "included_title": "Cosa è incluso"
     }

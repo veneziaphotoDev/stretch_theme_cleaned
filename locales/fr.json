@@ -169,20 +169,16 @@
     },
     "experience": {
       "time_on_water": "Sur l'eau",
-      "highlight_moment": "Moment phare",
       "program_title": "Le programme, minute par minute",
       "route_title": "Itinéraire nautique",
       "operations_note_title": "Bon à savoir",
       "faq_title": "Questions fréquentes",
-      "total_duration": "Durée totale",
-      "boat_mobilized_time": "Bateau mobilisé",
       "max_participants": "Participants",
       "privatize_note": "Vous voulez privatiser le bateau, même à deux ?",
       "privatize_link": "Contactez-nous",
       "privatize_subject": "Privatiser la sortie {{ title }}",
       "sibling_prompt_to_sunset": "Vous préférez la lumière du soir ?",
       "sibling_prompt_to_sunrise": "Vous êtes plutôt matinal ?",
-      "book_now": "Réserver",
       "max_participants_value": "{{ count }} participants max.",
       "included_title": "Ce qui est inclus"
     }
