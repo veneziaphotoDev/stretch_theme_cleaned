@@ -9,18 +9,14 @@
  */
 {
   "sections": {
-    "hero": {
-      "type": "product-hero",
-      "settings": {
-        "color_scheme": "scheme-7"
-      }
-    },
     "main": {
       "type": "main-product",
       "blocks": {
-        "badges": {
-          "type": "badges",
-          "settings": {}
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_tag": "h1"
+          }
         },
         "price": {
           "type": "price",
@@ -28,11 +24,19 @@
             "show_taxes_notice": false
           }
         },
+        "badges": {
+          "type": "badges",
+          "settings": {}
+        },
         "rating": {
           "type": "rating",
           "settings": {
             "show_empty": false
           }
+        },
+        "experience_summary": {
+          "type": "experience_summary",
+          "settings": {}
         },
         "separator": {
           "type": "separator",
@@ -64,15 +68,22 @@
             "payment_button_background": "",
             "payment_button_text_color": ""
           }
+        },
+        "experience_included": {
+          "type": "experience_included",
+          "settings": {}
         }
       },
       "block_order": [
-        "badges",
+        "title",
         "price",
+        "badges",
         "rating",
+        "experience_summary",
         "separator",
         "variant_picker",
-        "buy_buttons"
+        "buy_buttons",
+        "experience_included"
       ],
       "settings": {
         "color_scheme": "",
@@ -80,7 +91,7 @@
         "transparent_header_use_primary_colors": false,
         "add_top_spacing": false,
         "show_sticky_add_to_cart": false,
-        "product_media_size": 40,
+        "product_media_size": 50,
         "content_alignment": "left",
         "desktop_media_layout": "carousel",
         "desktop_carousel_controls": "thumbnails_under",
@@ -130,7 +141,6 @@
     }
   },
   "order": [
-    "hero",
     "main",
     "experience-details",
     "related-products"

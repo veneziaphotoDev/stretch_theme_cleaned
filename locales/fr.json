@@ -182,7 +182,9 @@
       "privatize_subject": "Privatiser la sortie {{ title }}",
       "sibling_prompt_to_sunset": "Vous préférez la lumière du soir ?",
       "sibling_prompt_to_sunrise": "Vous êtes plutôt matinal ?",
-      "book_now": "Réserver"
+      "book_now": "Réserver",
+      "max_participants_value": "{{ count }} participants max.",
+      "included_title": "Ce qui est inclus"
     }
   },
   "collection": {
