@@ -23,11 +23,14 @@ note that this may have impact on different places.
     assign text_font_bold_italic = text_font_bold | font_modify: 'style', 'italic'
 
     # Typography (subheading)
-    echo settings.subheading_font | font_face: font_display: 'fallback'
+    # Skipped when a custom font overrides the picker, so its webfont is not downloaded unused
+    unless settings.subheading_custom_font == 'helvetica_neue'
+      echo settings.subheading_font | font_face: font_display: 'fallback'
 
-    if subheading_font_italic
-      echo subheading_font_italic | font_face: font_display: 'fallback'
-    endif
+      if subheading_font_italic
+        echo subheading_font_italic | font_face: font_display: 'fallback'
+      endif
+    endunless
 
     # Typography (heading)
     # Skipped when a custom font overrides the picker, so its webfont is not downloaded unused
@@ -49,23 +52,26 @@ note that this may have impact on different places.
     endif
 
     # Typography (body)
-    echo settings.text_font | font_face: font_display: 'fallback'
+    # Skipped when a custom font overrides the picker, so its webfont is not downloaded unused
+    unless settings.text_custom_font == 'helvetica_neue'
+      echo settings.text_font | font_face: font_display: 'fallback'
 
-    if text_font_italic
-      echo text_font_italic | font_face: font_display: 'fallback'
-    endif
+      if text_font_italic
+        echo text_font_italic | font_face: font_display: 'fallback'
+      endif
 
-    if text_font_medium
-      echo text_font_medium | font_face: font_display: 'fallback'
-    endif
+      if text_font_medium
+        echo text_font_medium | font_face: font_display: 'fallback'
+      endif
 
-    if text_font_bold
-      echo text_font_bold | font_face: font_display: 'fallback'
-    endif
+      if text_font_bold
+        echo text_font_bold | font_face: font_display: 'fallback'
+      endif
 
-    if text_font_bold_italic
-      echo text_font_bold_italic | font_face: font_display: 'fallback'
-    endif
+      if text_font_bold_italic
+        echo text_font_bold_italic | font_face: font_display: 'fallback'
+      endif
+    endunless
   -%}
 
   {%- comment -%}
@@ -107,6 +113,50 @@ note that this may have impact on different places.
       {% endcomment %}
       ascent-override: 74%;
       descent-override: 2%;
+      line-gap-override: 0%;
+    }
+  {%- endif -%}
+
+  {%- comment -%}
+    Custom Helvetica Neue override for the body/subheading axes. The ascent/descent overrides match the
+    metrics the client's font vendor shipped it with -- Shopify's font-library "Helvetica" pick (helvetica_n4)
+    is a different face with looser metrics, which is what made body text read as noticeably more spaced out
+    than veneziaphoto.org even at the same line-height setting.
+  {%- endcomment -%}
+  {%- if settings.text_custom_font == 'helvetica_neue' or settings.subheading_custom_font == 'helvetica_neue' -%}
+    @font-face {
+      font-family: 'Helvetica Neue';
+      src: url('{{ 'helvetica-neue-light.woff2' | file_url }}') format('woff2'),
+           url('{{ 'helvetica-neue-light.woff' | file_url }}') format('woff');
+      font-weight: 300;
+      font-style: normal;
+      font-display: fallback;
+      ascent-override: 85%;
+      descent-override: 20%;
+      line-gap-override: 0%;
+    }
+
+    @font-face {
+      font-family: 'Helvetica Neue';
+      src: url('{{ 'helvetica-neue-roman.woff2' | file_url }}') format('woff2'),
+           url('{{ 'helvetica-neue-roman.woff' | file_url }}') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: fallback;
+      ascent-override: 85%;
+      descent-override: 20%;
+      line-gap-override: 0%;
+    }
+
+    @font-face {
+      font-family: 'Helvetica Neue';
+      src: url('{{ 'helvetica-neue-medium.woff2' | file_url }}') format('woff2'),
+           url('{{ 'helvetica-neue-medium.woff' | file_url }}') format('woff');
+      font-weight: 500;
+      font-style: normal;
+      font-display: fallback;
+      ascent-override: 85%;
+      descent-override: 20%;
       line-gap-override: 0%;
     }
   {%- endif -%}
@@ -156,9 +206,17 @@ note that this may have impact on different places.
      */
 
     /* Font properties */
-    --subheading-font-family: {{ settings.subheading_font.family }}, {{ settings.subheading_font.fallback_families }};
-    --subheading-font-weight: {{ settings.subheading_font.weight }};
-    --subheading-font-style: {{ settings.subheading_font.style }};
+    {%- if settings.subheading_custom_font == 'helvetica_neue' -%}
+      --subheading-font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --subheading-font-weight: 400;
+      --subheading-font-style: normal;
+      --safari-subheading-margin: -0.35em;
+    {%- else -%}
+      --subheading-font-family: {{ settings.subheading_font.family }}, {{ settings.subheading_font.fallback_families }};
+      --subheading-font-weight: {{ settings.subheading_font.weight }};
+      --subheading-font-style: {{ settings.subheading_font.style }};
+      --safari-subheading-margin: 0;
+    {%- endif -%}
     --subheading-font-size: {{ settings.subheading_font_size | minus: 1 | divided_by: 16.0 }}rem;
     --subheading-text-transform: {{ settings.subheading_text_transform }};
     --subheading-letter-spacing: {% if language_code == 'ar' %}0{% else %}{{ settings.subheading_letter_spacing | divided_by: 100.0 }}{% endif %}em;
@@ -167,10 +225,13 @@ note that this may have impact on different places.
       {%- comment -%}Gascogne is always set in its thin (extra light) cut{%- endcomment -%}
       --heading-font-weight: 200;
       --heading-font-style: normal;
+      {%- comment -%}Safari ignores *-override in @font-face, so it needs this margin compensation instead.{%- endcomment -%}
+      --safari-heading-margin: -0.35em;
     {%- else -%}
       --heading-font-family: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
       --heading-font-weight: {{ settings.heading_font.weight }};
       --heading-font-style: {{ settings.heading_font.style }};
+      --safari-heading-margin: 0;
     {%- endif -%}
     --heading-text-transform: {{ settings.heading_text_transform }};
     --heading-letter-spacing: {% if language_code == 'ar' %}0{% else %}{{ settings.heading_letter_spacing | divided_by: 100.0 }}{% endif %}em;
@@ -197,14 +258,27 @@ note that this may have impact on different places.
       --heading-italic-font-size-multiplier: {% if settings.heading_font.family != settings.heading_italic_font.family %}{{ settings.heading_italic_font_size_multiplier }}{% else %}0{% endif %}%;
       --heading-italic-font-style: italic;
     {%- endif -%}
-    --text-font-family: {{ settings.text_font.family }}, {{ settings.text_font.fallback_families }};
-    --text-font-weight: {{ settings.text_font.weight }};
-    --text-font-style: {{ settings.text_font.style }};
+    {%- if settings.text_custom_font == 'helvetica_neue' -%}
+      --text-font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --text-font-weight: 400;
+      --text-font-style: normal;
+      --safari-text-margin: -0.35em;
+    {%- else -%}
+      --text-font-family: {{ settings.text_font.family }}, {{ settings.text_font.fallback_families }};
+      --text-font-weight: {{ settings.text_font.weight }};
+      --text-font-style: {{ settings.text_font.style }};
+      --safari-text-margin: 0;
+    {%- endif -%}
     --text-transform: {{ settings.text_font_text_transform }};
     --text-letter-spacing: {% if language_code == 'ar' %}0{% else %}{{ settings.text_font_letter_spacing | divided_by: 100.0 }}{% endif %}em;
     --text-line-height: {{ settings.text_line_height }};
-    --text-font-medium-weight: {{ text_font_medium.weight | default: 500 }};
-    --text-font-bold-weight: {{ text_font_bold.weight | default: 700 }};
+    {%- if settings.text_custom_font == 'helvetica_neue' -%}
+      --text-font-medium-weight: 500;
+      --text-font-bold-weight: 500;
+    {%- else -%}
+      --text-font-medium-weight: {{ text_font_medium.weight | default: 500 }};
+      --text-font-bold-weight: {{ text_font_bold.weight | default: 700 }};
+    {%- endif -%}
     --button-font: {% if settings.button_text_font == 'heading' %}var(--heading-font-style) 500 var(--button-font-size) / normal var(--heading-font-family){% else %}var(--text-font-style) var(--text-font-weight) var(--button-font-size) / normal var(--text-font-family){% endif %};
     --button-text-transform: {{ settings.button_text_transform }};
     --button-letter-spacing: {% if language_code == 'ar' %}0{% else %}{{ settings.button_letter_spacing | divided_by: 100.0 }}{% endif %}em;
@@ -424,4 +498,33 @@ note that this may have impact on different places.
       navigation: auto;
     }
   {%- endif -%}
+
+  {%- comment -%}Safari font metrics fix -- Safari doesn't support *-override in @font-face{%- endcomment -%}
+  @supports (-webkit-hyphens: none) {
+    /* Body text (uses --text-font-family) */
+    body {
+      margin-bottom: var(--safari-text-margin, 0);
+    }
+
+    /* Button text content (uses --text-font-family or --heading-font-family depending on settings) */
+    .button__content {
+      margin-bottom: var(--safari-text-margin, 0);
+    }
+
+    /* Headings (use --heading-font-family) */
+    .heading,
+    .display-xl,
+    .display-l,
+    .display-m,
+    .h1, .h2, .h3, .h4, .h5, .h6, .h7,
+    .prose :where(h1, h2, h3, h4, h5, h6),
+    .badge {
+      margin-bottom: var(--safari-heading-margin, 0);
+    }
+
+    /* Subheadings (use --subheading-font-family) */
+    .subheading {
+      margin-bottom: var(--safari-subheading-margin, 0);
+    }
+  }
 </style>

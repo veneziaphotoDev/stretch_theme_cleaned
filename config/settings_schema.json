@@ -319,6 +319,23 @@
         "default": "helvetica_n4"
       },
       {
+        "type": "select",
+        "id": "text_custom_font",
+        "label": "Custom font override",
+        "info": "Overrides the font picker above with a font uploaded to Settings > Files. The picker only lists Shopify's font library, so custom fonts have to be selected here.",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default (use font picker)"
+          },
+          {
+            "value": "helvetica_neue",
+            "label": "Helvetica Neue"
+          }
+        ],
+        "default": "default"
+      },
+      {
         "type": "range",
         "id": "text_font_size_mobile",
         "label": "t:theme_settings.typography.body_base_size_mobile",
@@ -462,6 +479,23 @@
         "label": "t:theme_settings.typography.font",
         "info": "t:theme_settings.typography.font_info",
         "default": "helvetica_n4"
+      },
+      {
+        "type": "select",
+        "id": "subheading_custom_font",
+        "label": "Custom font override",
+        "info": "Overrides the font picker above with a font uploaded to Settings > Files. The picker only lists Shopify's font library, so custom fonts have to be selected here.",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default (use font picker)"
+          },
+          {
+            "value": "helvetica_neue",
+            "label": "Helvetica Neue"
+          }
+        ],
+        "default": "default"
       },
       {
         "type": "range",
