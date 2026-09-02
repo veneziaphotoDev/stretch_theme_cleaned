@@ -1965,6 +1965,11 @@ section-container.color-scheme .circle-button:before {
 
 .experience-program__time {
   padding-top: 0.15rem;
+  font-family: var(--heading-italic-font-family);
+  font-weight: var(--heading-italic-font-weight);
+  font-style: var(--heading-italic-font-style);
+  font-size: var(--text-h5);
+  line-height: 1.15;
 }
 
 .experience-program__body {

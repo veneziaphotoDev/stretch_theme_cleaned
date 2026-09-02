@@ -82,7 +82,7 @@
             <ol class="experience-program unstyled-list">
               {%- for step in program_steps -%}
                 <li class="experience-program__step">
-                  <span class="experience-program__time subheading">{{ step.time.value }}</span>
+                  <span class="experience-program__time">{{ step.time.value }}</span>
                   <div class="experience-program__body">
                     <p class="experience-program__title">{{ step.step.value }}</p>
                     {%- if step.intention.value != blank -%}
