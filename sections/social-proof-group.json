@@ -8,7 +8,7 @@
  * ------------------------------------------------------------
  */
 {
-  "type": "custom.social-proof",
+  "type": "custom.social_proof",
   "name": "Social proof group",
   "sections": {
     "video_carousel_community01": {
