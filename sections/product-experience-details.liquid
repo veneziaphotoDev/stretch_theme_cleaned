@@ -42,7 +42,7 @@
       <div class="experience-details">
         {%- if route_stops.size > 0 -%}
           <div class="experience-route" data-animate>
-            <p class="experience-route__title subheading">{{ 'product.experience.route_title' | t }}</p>
+            <p class="experience-section-title subheading">{{ 'product.experience.route_title' | t }}</p>
 
             <scroll-carousel id="experience-route-{{ section.id }}" allow-swipe cell-selector=".experience-route__stop" class="experience-route__stops scroll-area bleed sm:unbleed snap-x" role="region">
               {%- for stop in route_stops -%}
@@ -76,43 +76,43 @@
           </div>
         {%- endif -%}
 
-        {%- if operations_note != blank or program_steps.size > 0 or faq_items.size > 0 -%}
-          <div class="experience-details__text">
-            <div class="experience-details__accordions" data-animate>
-              {%- if program_steps.size > 0 -%}
-                {%- capture program_content -%}
-                  <ol class="experience-program">
-                    {%- for step in program_steps -%}
-                      <li class="experience-program__step">
-                        <span class="experience-program__time subheading">{{ step.time.value }}</span>
-                        <span class="experience-program__title">{{ step.step.value }}</span>
-                        {%- if step.intention.value != blank -%}
-                          <span class="experience-program__intention text-subdued">{{ step.intention.value }}</span>
-                        {%- endif -%}
-                      </li>
-                    {%- endfor -%}
-                  </ol>
-                {%- endcapture -%}
-                {%- render 'accordion', title: 'product.experience.program_title' | t, content: program_content, open: true -%}
-              {%- endif -%}
-
-              {%- if operations_note != blank -%}
-                {%- capture operations_content -%}<div class="prose">{{ operations_note }}</div>{%- endcapture -%}
-                {%- render 'accordion', title: 'product.experience.operations_note_title' | t, content: operations_content -%}
-              {%- endif -%}
-
-              {%- if faq_items.size > 0 -%}
-                {%- capture faq_content -%}
-                  <div class="v-stack gap-4">
-                    {%- for item in faq_items -%}
-                      {%- capture answer_content -%}<div class="prose">{{ item.answer.value }}</div>{%- endcapture -%}
-                      {%- render 'accordion', title: item.question.value, content: answer_content, subheading_title: true -%}
-                    {%- endfor -%}
+        {%- if program_steps.size > 0 -%}
+          <div class="experience-program-block" data-animate>
+            <p class="experience-section-title subheading">{{ 'product.experience.program_title' | t }}</p>
+            <ol class="experience-program unstyled-list">
+              {%- for step in program_steps -%}
+                <li class="experience-program__step">
+                  <span class="experience-program__time subheading">{{ step.time.value }}</span>
+                  <div class="experience-program__body">
+                    <p class="experience-program__title">{{ step.step.value }}</p>
+                    {%- if step.intention.value != blank -%}
+                      <p class="experience-program__intention text-subdued">{{ step.intention.value }}</p>
+                    {%- endif -%}
                   </div>
-                {%- endcapture -%}
-                {%- render 'accordion', title: 'product.experience.faq_title' | t, content: faq_content, open: true -%}
-              {%- endif -%}
-            </div>
+                </li>
+              {%- endfor -%}
+            </ol>
+          </div>
+        {%- endif -%}
+
+        {%- if operations_note != blank -%}
+          <div class="experience-operations-note" data-animate>
+            <p class="experience-section-title subheading">{{ 'product.experience.operations_note_title' | t }}</p>
+            <div class="prose experience-operations-note__content">{{ operations_note }}</div>
+          </div>
+        {%- endif -%}
+
+        {%- if faq_items.size > 0 -%}
+          <div class="experience-details__text">
+            {%- capture faq_content -%}
+              <div class="v-stack gap-4">
+                {%- for item in faq_items -%}
+                  {%- capture answer_content -%}<div class="prose">{{ item.answer.value }}</div>{%- endcapture -%}
+                  {%- render 'accordion', title: item.question.value, content: answer_content, subheading_title: true -%}
+                {%- endfor -%}
+              </div>
+            {%- endcapture -%}
+            {%- render 'accordion', title: 'product.experience.faq_title' | t, content: faq_content, open: true -%}
           </div>
         {%- endif -%}
       </div>
