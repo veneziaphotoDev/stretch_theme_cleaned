@@ -1814,7 +1814,7 @@ section-container.color-scheme .circle-button:before {
 }
 
 .experience-sibling__title {
-  font-weight: 600;
+  font-weight: var(--text-font-weight);
 }
 
 .experience-sibling__arrow {
