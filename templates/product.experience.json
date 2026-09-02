@@ -80,6 +80,10 @@
         "experience_privatize": {
           "type": "experience_privatize",
           "settings": {}
+        },
+        "experience_sibling": {
+          "type": "experience_sibling",
+          "settings": {}
         }
       },
       "block_order": [
@@ -91,6 +95,7 @@
         "experience_summary",
         "separator",
         "variant_picker",
+        "experience_sibling",
         "buy_buttons",
         "experience_privatize",
         "experience_included"

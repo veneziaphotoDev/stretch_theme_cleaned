@@ -1778,12 +1778,6 @@ section-container.color-scheme .circle-button:before {
   margin-inline: auto;
 }
 
-.experience-nudges {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
 .experience-sibling {
   display: flex;
   align-items: center;

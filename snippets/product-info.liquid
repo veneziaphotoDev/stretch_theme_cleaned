@@ -528,6 +528,27 @@ no need to manually pass the section as it is globally available)
               </p>
             {%- endif -%}
 
+          {%- when 'experience_sibling' -%}
+            {%- liquid
+              assign sibling = product.metafields.custom.sibling_experience.value
+              assign sibling_prompt_key = 'product.experience.sibling_prompt_to_sunset'
+              if product.tags contains 'sunset'
+                assign sibling_prompt_key = 'product.experience.sibling_prompt_to_sunrise'
+              endif
+            -%}
+            {%- if sibling != blank -%}
+              <a href="{{ sibling.url }}" class="experience-sibling" data-animate>
+                {%- if sibling.featured_media != blank -%}
+                  {{- sibling.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', sizes: '80px', widths: '80,160', class: 'experience-sibling__image' -}}
+                {%- endif -%}
+                <span class="experience-sibling__text">
+                  <span class="experience-sibling__prompt subheading">{{ sibling_prompt_key | t }}</span>
+                  <span class="experience-sibling__title">{{ sibling.title }}</span>
+                </span>
+                {%- render 'icon' with 'arrow-right', direction_aware: true, class: 'experience-sibling__arrow' -%}
+              </a>
+            {%- endif -%}
+
           {%- when 'text' -%}
             {%- if block.settings.text != blank -%}
               <div class="prose prose-justify-{{ alignment }}">
