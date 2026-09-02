@@ -451,9 +451,14 @@ no need to manually pass the section as it is globally available)
               {%- endif -%}
             </product-recommendations>
 
+          {%- when 'experience_tagline' -%}
+            {%- assign tagline = product.metafields.custom.tagline.value -%}
+            {%- if tagline != blank -%}
+              <p class="experience-tagline subheading">{{ tagline }}</p>
+            {%- endif -%}
+
           {%- when 'experience_summary' -%}
             {%- liquid
-              assign tagline = product.metafields.custom.tagline.value
               assign promise = product.metafields.custom.promise.value
               assign meeting_point = product.metafields.custom.route_stops.value.first.name.value
               assign total_duration = product.metafields.custom.total_duration.value
@@ -461,12 +466,8 @@ no need to manually pass the section as it is globally available)
               assign highlight_moment = product.metafields.custom.highlight_moment.value
             -%}
 
-            {%- if tagline != blank -%}
-              <p class="experience-summary__tagline subheading">{{ tagline }}</p>
-            {%- endif -%}
-
             {%- if meeting_point != blank or total_duration != blank or max_participants != blank or highlight_moment != blank -%}
-              <ul class="experience-summary__facts">
+              <ul class="experience-summary__facts unstyled-list">
                 {%- if meeting_point != blank -%}
                   <li class="experience-summary__fact">
                     {%- render 'icon' with 'picto-location-pin', width: 18 -%}
@@ -508,7 +509,7 @@ no need to manually pass the section as it is globally available)
             {%- if included_items.size > 0 -%}
               <div class="experience-included">
                 <p class="experience-included__title subheading">{{ 'product.experience.included_title' | t }}</p>
-                <ul class="experience-included__list">
+                <ul class="experience-included__list unstyled-list">
                   {%- for item in included_items -%}
                     <li class="experience-included__item">
                       {%- render 'icon' with 'picto-checked', width: 16 -%}
@@ -525,6 +526,27 @@ no need to manually pass the section as it is globally available)
                 {{- 'product.experience.privatize_note' | t }}
                 <a href="mailto:{{ shop.email }}?subject={{ 'product.experience.privatize_subject' | t: title: product.title | url_encode }}" class="link">{{ 'product.experience.privatize_link' | t }}</a>
               </p>
+            {%- endif -%}
+
+          {%- when 'experience_sibling' -%}
+            {%- liquid
+              assign sibling = product.metafields.custom.sibling_experience.value
+              assign sibling_prompt_key = 'product.experience.sibling_prompt_to_sunset'
+              if product.tags contains 'sunset'
+                assign sibling_prompt_key = 'product.experience.sibling_prompt_to_sunrise'
+              endif
+            -%}
+            {%- if sibling != blank -%}
+              <a href="{{ sibling.url }}" class="experience-sibling" data-animate>
+                {%- if sibling.featured_media != blank -%}
+                  {{- sibling.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', sizes: '80px', widths: '80,160', class: 'experience-sibling__image' -}}
+                {%- endif -%}
+                <span class="experience-sibling__text">
+                  <span class="experience-sibling__prompt subheading">{{ sibling_prompt_key | t }}</span>
+                  <span class="experience-sibling__title">{{ sibling.title }}</span>
+                </span>
+                {%- render 'icon' with 'arrow-right', direction_aware: true, class: 'experience-sibling__arrow' -%}
+              </a>
             {%- endif -%}
 
           {%- when 'text' -%}

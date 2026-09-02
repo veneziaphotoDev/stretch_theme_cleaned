@@ -3,10 +3,10 @@
   PRODUCT EXPERIENCE DETAILS SECTION
   ----------------------------------------------------------------------------------------------------------------------
 
-  Renders the tour-specific content that lives below the fold: route, minute-by-minute program, operations note,
-  FAQ, plus the sunrise/sunset sibling link. The above-the-fold content (tagline, quick facts, promise, what's
-  included, privatization contact note) lives in the buy-box itself via the "experience_summary",
-  "experience_included" and "experience_privatize" blocks in snippets/product-info.liquid, so it sits next to the
+  Renders the tour-specific content that lives below the fold: route, minute-by-minute program, operations note
+  and FAQ. The above-the-fold content (tagline, quick facts, promise, what's included, privatization contact note,
+  sunrise/sunset sibling link) lives in the buy-box itself via the "experience_summary", "experience_included",
+  "experience_privatize" and "experience_sibling" blocks in snippets/product-info.liquid, so it sits next to the
   sticky gallery instead of below it. Meant to be placed on the product template, between "main" and
   "related-products".
 
@@ -25,15 +25,9 @@
   assign operations_note = product.metafields.custom.operations_note.value
   assign program_steps = product.metafields.custom.program_steps.value
   assign faq_items = product.metafields.custom.faq_items.value
-  assign sibling = product.metafields.custom.sibling_experience.value
-
-  assign sibling_prompt_key = 'product.experience.sibling_prompt_to_sunset'
-  if product.tags contains 'sunset'
-    assign sibling_prompt_key = 'product.experience.sibling_prompt_to_sunrise'
-  endif
 
   assign has_content = false
-  if sibling != blank or route_stops.size > 0 or operations_note != blank or program_steps.size > 0 or faq_items.size > 0
+  if route_stops.size > 0 or operations_note != blank or program_steps.size > 0 or faq_items.size > 0
     assign has_content = true
   endif
 -%}
@@ -42,21 +36,6 @@
   <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
     <div class="container section-spacing">
       <div class="experience-details">
-        {%- if sibling != blank -%}
-          <div class="experience-nudges">
-            <a href="{{ sibling.url }}" class="experience-sibling" data-animate>
-              {%- if sibling.featured_media != blank -%}
-                {{- sibling.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', sizes: '80px', widths: '80,160', class: 'experience-sibling__image' -}}
-              {%- endif -%}
-              <span class="experience-sibling__text">
-                <span class="experience-sibling__prompt subheading">{{ sibling_prompt_key | t }}</span>
-                <span class="experience-sibling__title">{{ sibling.title }}</span>
-              </span>
-              {%- render 'icon' with 'arrow-right', direction_aware: true, class: 'experience-sibling__arrow' -%}
-            </a>
-          </div>
-        {%- endif -%}
-
         {%- if route_stops.size > 0 -%}
           <div class="experience-route" data-animate>
             <p class="experience-route__title subheading">{{ 'product.experience.route_title' | t }}</p>

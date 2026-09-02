@@ -43,6 +43,32 @@
       --product-grid: auto / minmax(0, {{ section.settings.product_media_size | divided_by: 100.0 }}fr) minmax(0, {{ 100.0 | minus: section.settings.product_media_size | divided_by: 100.0 }}fr);
     }
   }
+
+  {%- comment -%}
+  The default heading-line-height (used sitewide) reads as too spaced out on the experience product
+  title specifically, which tends to wrap to two lines. Tightened for this section instance only, so
+  other headings across the site are unaffected.
+  {%- endcomment -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'experience_tagline' -%}
+      #shopify-section-{{ section.id }} .product-title {
+        line-height: 0.95;
+      }
+
+      {%- comment -%}
+      The price uses the "h4" heading class by default (price-list.liquid, context: "product"), which
+      renders it in Gascogne. Switched to the body font (Helvetica) for this section instance only --
+      price-list.liquid is shared with cards, cart and orders, so this can't be changed globally there.
+      {%- endcomment -%}
+      #shopify-section-{{ section.id }} sale-price,
+      #shopify-section-{{ section.id }} compare-at-price {
+        font-family: var(--text-font-family);
+        font-weight: var(--text-font-weight);
+        font-style: var(--text-font-style);
+      }
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
 </style>
 
 <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}" {% if section.settings.allow_transparent_header and product.media.size > 0 %}allow-transparent-header{% endif %}>
@@ -283,6 +309,11 @@
       "type": "@app"
     },
     {
+      "type": "experience_tagline",
+      "name": "Experience tagline",
+      "limit": 1
+    },
+    {
       "type": "experience_summary",
       "name": "Experience summary",
       "limit": 1
@@ -295,6 +326,11 @@
     {
       "type": "experience_privatize",
       "name": "Experience privatize note",
+      "limit": 1
+    },
+    {
+      "type": "experience_sibling",
+      "name": "Experience sibling link",
       "limit": 1
     },
     {

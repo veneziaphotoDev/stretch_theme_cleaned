@@ -1778,12 +1778,6 @@ section-container.color-scheme .circle-button:before {
   margin-inline: auto;
 }
 
-.experience-nudges {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
 .experience-sibling {
   display: flex;
   align-items: center;
@@ -1820,7 +1814,7 @@ section-container.color-scheme .circle-button:before {
 }
 
 .experience-sibling__title {
-  font-weight: 600;
+  font-weight: var(--text-font-weight);
 }
 
 .experience-sibling__arrow {
@@ -1981,8 +1975,8 @@ section-container.color-scheme .circle-button:before {
    PRODUCT INFO — EXPERIENCE SUMMARY / INCLUDED
    ============================================ */
 
-.experience-summary__tagline {
-  margin: 0 0 1rem;
+.experience-tagline {
+  margin: 0 0 0.5rem;
 }
 
 .experience-summary__facts {

@@ -12,6 +12,10 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "experience_tagline": {
+          "type": "experience_tagline",
+          "settings": {}
+        },
         "title": {
           "type": "title",
           "settings": {
@@ -36,10 +40,6 @@
         },
         "experience_summary": {
           "type": "experience_summary",
-          "settings": {}
-        },
-        "separator": {
-          "type": "separator",
           "settings": {}
         },
         "variant_picker": {
@@ -76,16 +76,21 @@
         "experience_privatize": {
           "type": "experience_privatize",
           "settings": {}
+        },
+        "experience_sibling": {
+          "type": "experience_sibling",
+          "settings": {}
         }
       },
       "block_order": [
+        "experience_tagline",
         "title",
         "price",
         "badges",
         "rating",
         "experience_summary",
-        "separator",
         "variant_picker",
+        "experience_sibling",
         "buy_buttons",
         "experience_privatize",
         "experience_included"
