@@ -169,6 +169,7 @@
     },
     "experience": {
       "time_on_water": "Sur l'eau",
+      "duration_summary": "{{ total }} au total – {{ water }} sur l'eau",
       "program_title": "Le programme, minute par minute",
       "route_title": "Itinéraire nautique",
       "operations_note_title": "Bon à savoir",

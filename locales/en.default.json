@@ -173,6 +173,7 @@
     },
     "experience": {
       "time_on_water": "On the water",
+      "duration_summary": "{{ total }} in total – {{ water }} on the water",
       "program_title": "The programme, minute by minute",
       "route_title": "Nautical route",
       "operations_note_title": "Good to know",
