@@ -519,6 +519,14 @@ no need to manually pass the section as it is globally available)
               </div>
             {%- endif -%}
 
+          {%- when 'experience_privatize' -%}
+            {%- if shop.email != blank -%}
+              <p class="experience-privatize text-sm text-subdued">
+                {{- 'product.experience.privatize_note' | t }}
+                <a href="mailto:{{ shop.email }}?subject={{ 'product.experience.privatize_subject' | t: title: product.title | url_encode }}" class="link">{{ 'product.experience.privatize_link' | t }}</a>
+              </p>
+            {%- endif -%}
+
           {%- when 'text' -%}
             {%- if block.settings.text != blank -%}
               <div class="prose prose-justify-{{ alignment }}">

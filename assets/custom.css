@@ -1829,8 +1829,7 @@ section-container.color-scheme .circle-button:before {
 }
 
 .experience-privatize {
-  margin: 0;
-  text-align: center;
+  margin: 0.75rem 0 0;
 }
 
 .experience-route__title {
