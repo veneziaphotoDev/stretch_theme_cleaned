@@ -46,7 +46,7 @@
                 <div class="experience-route__stop {% if stop_image != blank %}experience-route__stop--has-image{% endif %}" role="group" aria-label="{{ 'general.accessibility.item_nth_of_count' | t: index: forloop.index, count: route_stops.size }}">
                   {%- if stop_image != blank -%}
                     <div class="experience-route__stop-media">
-                      {{- stop_image | image_url: width: 400, height: 500, crop: 'center' | image_tag: loading: 'lazy', sizes: '176px', widths: '176,352', alt: stop.name.value, class: 'experience-route__stop-image' -}}
+                      {{- stop_image | image_url: width: 624, height: 832, crop: 'center' | image_tag: loading: 'lazy', sizes: '(max-width: 699px) 78vw, 26rem', widths: '312,624,832', alt: stop.name.value, class: 'experience-route__stop-image' -}}
                       <div class="experience-route__stop-caption">
                         <p class="experience-route__stop-index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</p>
                         <p class="experience-route__stop-name">{{ stop.name.value }}</p>
