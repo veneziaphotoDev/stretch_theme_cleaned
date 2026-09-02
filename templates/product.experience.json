@@ -72,6 +72,10 @@
         "experience_included": {
           "type": "experience_included",
           "settings": {}
+        },
+        "experience_privatize": {
+          "type": "experience_privatize",
+          "settings": {}
         }
       },
       "block_order": [
@@ -83,6 +87,7 @@
         "separator",
         "variant_picker",
         "buy_buttons",
+        "experience_privatize",
         "experience_included"
       ],
       "settings": {

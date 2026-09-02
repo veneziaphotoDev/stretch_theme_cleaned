@@ -4,10 +4,11 @@
   ----------------------------------------------------------------------------------------------------------------------
 
   Renders the tour-specific content that lives below the fold: route, minute-by-minute program, operations note,
-  FAQ, plus the sunrise/sunset sibling link and the privatization contact note. The above-the-fold content (tagline,
-  quick facts, promise, what's included) lives in the buy-box itself via the "experience_summary" and
-  "experience_included" blocks in snippets/product-info.liquid, so it sits next to the sticky gallery instead of
-  below it. Meant to be placed on the product template, between "main" and "related-products".
+  FAQ, plus the sunrise/sunset sibling link. The above-the-fold content (tagline, quick facts, promise, what's
+  included, privatization contact note) lives in the buy-box itself via the "experience_summary",
+  "experience_included" and "experience_privatize" blocks in snippets/product-info.liquid, so it sits next to the
+  sticky gallery instead of below it. Meant to be placed on the product template, between "main" and
+  "related-products".
 
   Expected metafields (namespace "custom"): guide_name, route_stops (list of metaobject "route_stop": name,
   optional image -- cropped to a fixed 4:5 ratio so mixed photo formats stay consistent), operations_note,
@@ -31,13 +32,8 @@
     assign sibling_prompt_key = 'product.experience.sibling_prompt_to_sunrise'
   endif
 
-  assign has_nudges = false
-  if sibling != blank or shop.email != blank
-    assign has_nudges = true
-  endif
-
   assign has_content = false
-  if has_nudges or route_stops.size > 0 or operations_note != blank or program_steps.size > 0 or faq_items.size > 0
+  if sibling != blank or route_stops.size > 0 or operations_note != blank or program_steps.size > 0 or faq_items.size > 0
     assign has_content = true
   endif
 -%}
@@ -46,27 +42,18 @@
   <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
     <div class="container section-spacing">
       <div class="experience-details">
-        {%- if has_nudges -%}
+        {%- if sibling != blank -%}
           <div class="experience-nudges">
-            {%- if sibling != blank -%}
-              <a href="{{ sibling.url }}" class="experience-sibling" data-animate>
-                {%- if sibling.featured_media != blank -%}
-                  {{- sibling.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', sizes: '80px', widths: '80,160', class: 'experience-sibling__image' -}}
-                {%- endif -%}
-                <span class="experience-sibling__text">
-                  <span class="experience-sibling__prompt subheading">{{ sibling_prompt_key | t }}</span>
-                  <span class="experience-sibling__title">{{ sibling.title }}</span>
-                </span>
-                {%- render 'icon' with 'arrow-right', direction_aware: true, class: 'experience-sibling__arrow' -%}
-              </a>
-            {%- endif -%}
-
-            {%- if shop.email != blank -%}
-              <p class="experience-privatize text-sm text-subdued">
-                {{- 'product.experience.privatize_note' | t }}
-                <a href="mailto:{{ shop.email }}?subject={{ 'product.experience.privatize_subject' | t: title: product.title | url_encode }}" class="link">{{ 'product.experience.privatize_link' | t }}</a>
-              </p>
-            {%- endif -%}
+            <a href="{{ sibling.url }}" class="experience-sibling" data-animate>
+              {%- if sibling.featured_media != blank -%}
+                {{- sibling.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', sizes: '80px', widths: '80,160', class: 'experience-sibling__image' -}}
+              {%- endif -%}
+              <span class="experience-sibling__text">
+                <span class="experience-sibling__prompt subheading">{{ sibling_prompt_key | t }}</span>
+                <span class="experience-sibling__title">{{ sibling.title }}</span>
+              </span>
+              {%- render 'icon' with 'arrow-right', direction_aware: true, class: 'experience-sibling__arrow' -%}
+            </a>
           </div>
         {%- endif -%}
 
