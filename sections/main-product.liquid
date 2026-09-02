@@ -43,6 +43,20 @@
       --product-grid: auto / minmax(0, {{ section.settings.product_media_size | divided_by: 100.0 }}fr) minmax(0, {{ 100.0 | minus: section.settings.product_media_size | divided_by: 100.0 }}fr);
     }
   }
+
+  {%- comment -%}
+  The default heading-line-height (used sitewide) reads as too spaced out on the experience product
+  title specifically, which tends to wrap to two lines. Tightened for this section instance only, so
+  other headings across the site are unaffected.
+  {%- endcomment -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'experience_tagline' -%}
+      #shopify-section-{{ section.id }} .product-title {
+        line-height: 0.95;
+      }
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
 </style>
 
 <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}" {% if section.settings.allow_transparent_header and product.media.size > 0 %}allow-transparent-header{% endif %}>
