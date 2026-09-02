@@ -21,15 +21,13 @@
             "mobile_content_position": "place-self-center",
             "desktop_content_position": "sm:place-self-center",
             "overlay_color": "#000000",
-            "overlay_opacity": 15,
-            "show_branding": true
+            "overlay_opacity": 15
           },
           "blocks": {
             "subheading_laguna01": {
               "type": "subheading",
               "settings": {
-                "text": "Laguna",
-                "text_size": "large"
+                "text": "Laguna"
               },
               "blocks": {}
             },
@@ -50,8 +48,7 @@
               "type": "rich-text",
               "settings": {
                 "text": "<p>Photograph Venice differently — at first light, or last.</p>",
-                "content_width": "xs",
-                "text_size": "lg"
+                "content_width": "xs"
               },
               "blocks": {}
             },
@@ -62,8 +59,8 @@
                 "url": "#sessions",
                 "open_in_new_tab": false,
                 "style": "solid",
-                "background": "#AB5A3C",
-                "text_color": "#FDFCFA",
+                "background": "#ab5a3c",
+                "text_color": "#fdfcfa",
                 "icon": "",
                 "icon_position": "before_text"
               },
@@ -92,18 +89,56 @@
         "slideshow_image_slide_yhknpn"
       ],
       "settings": {
-        "anchor": "",
+        "group_with_next": false,
+        "fit_screen": false,
+        "group_color_scheme": "",
         "allow_transparent_header": true,
         "image_size": "fill",
         "transition_type": "fade",
         "autoplay": true,
         "pause_auto_rotate_on_hover": false,
         "cycle_speed": 4,
-        "background": "#000000",
-        "branding_svg": "shopify://shop_images/logo-natural-white.svg",
-        "branding_size": 40,
-        "branding_mobile_size": 30,
-        "branding_hide_on_mobile": true
+        "background": "#000000"
+      }
+    },
+    "intro_stats_laguna01": {
+      "type": "intro-stats",
+      "blocks": {
+        "stat_guests": {
+          "type": "stat",
+          "settings": {
+            "value": "8",
+            "label": "Guests max."
+          }
+        },
+        "stat_duration": {
+          "type": "stat",
+          "settings": {
+            "value": "4h",
+            "label": "Per session"
+          }
+        },
+        "stat_print": {
+          "type": "stat",
+          "settings": {
+            "value": "1",
+            "label": "Fine art print incl."
+          }
+        }
+      },
+      "block_order": [
+        "stat_guests",
+        "stat_duration",
+        "stat_print"
+      ],
+      "settings": {
+        "anchor": "",
+        "color_scheme": "",
+        "subheading": "The Laguna Experience",
+        "heading": "Venice Like No One Has Ever Seen It.",
+        "heading_tag": "h4",
+        "heading_content_width": "sm",
+        "description": "<p>Far from the crowds and the familiar landmarks, Venezia Photo Laguna invites you to experience the city from the water, when its light is at its most beautiful and its atmosphere at its most peaceful.</p><p>In groups of no more than eight participants, you'll board a traditional Venetian mahogany water taxi alongside a professional photographer to explore hidden canals, quiet islands and ever-changing reflections across the lagoon. Whether at sunrise or sunset, each outing is designed to slow your pace, sharpen your eye, and reveal a side of Venice few ever witness. Back on the island of San Servolo, the experience continues with a relaxed editing session, personal feedback, and the print of one selected photograph to take home.</p>"
       }
     },
     "text_with_media_about01": {
@@ -113,7 +148,6 @@
           "type": "subheading",
           "settings": {
             "text": "About Venezia Photo",
-            "text_size": "medium",
             "position": "top_left"
           }
         },
@@ -121,10 +155,9 @@
           "type": "heading",
           "settings": {
             "text": "Almost ten years of photography, on the water and on the island.",
-            "content_width": "md",
             "heading_tag": "h5",
-            "indent": "none",
             "position": "top_left",
+            "indent": "none",
             "highlight_effect": "default",
             "highlight_accent_color": "",
             "highlight_text_color": ""
@@ -167,27 +200,21 @@
       ],
       "name": "t:sections.text_with_media.name",
       "settings": {
-        "anchor": "",
         "color_scheme": "",
-        "fit_screen_standalone": false,
+        "allow_transparent_header": false,
         "content_position": "start",
         "content_percentage_width": 50,
         "overlay_color": "#000000",
         "overlay_opacity": 20,
         "add_media_spacing": false,
+        "image_size": "auto",
+        "mobile_image_size": "auto",
         "autoplay_video": true,
-        "primary_media_width": 100,
-        "primary_media_mobile_width": 100,
-        "primary_media_natural_size": false,
-        "primary_media_x_position": "center",
         "secondary_media_width": 60,
         "secondary_media_mobile_width": 60,
         "show_secondary_media_on_mobile": true,
         "secondary_media_alignment": "place-self-start",
-        "secondary_media_shape": "none",
-        "group_with_next": false,
-        "group_color_scheme": "scheme-1",
-        "fit_screen": false
+        "secondary_media_shape": "none"
       }
     },
     "sessions_grid_laguna01": {
@@ -200,70 +227,6 @@
         "product_list": [],
         "products_per_row_mobile": "1",
         "products_per_row_desktop": 4
-      }
-    },
-    "gallery_laguna01": {
-      "type": "gallery",
-      "blocks": {
-        "gallery_row01": {
-          "type": "gallery-row",
-          "settings": {
-            "columns": 5,
-            "content_width": "full"
-          },
-          "blocks": {
-            "image01": {
-              "type": "_gallery-image",
-              "settings": {
-                "caption": "Dorit · Sunrise Session"
-              }
-            },
-            "image02": {
-              "type": "_gallery-image",
-              "settings": {
-                "caption": "Julie · Sunset Session"
-              }
-            },
-            "image03": {
-              "type": "_gallery-image",
-              "settings": {
-                "caption": "Brandi · Sunrise Session"
-              }
-            },
-            "image04": {
-              "type": "_gallery-image",
-              "settings": {
-                "caption": "Elizabeth · Sunrise Session"
-              }
-            },
-            "image05": {
-              "type": "_gallery-image",
-              "settings": {
-                "caption": "Marie-Claude · Sunset Session"
-              }
-            }
-          },
-          "block_order": [
-            "image01",
-            "image02",
-            "image03",
-            "image04",
-            "image05"
-          ]
-        }
-      },
-      "block_order": [
-        "gallery_row01"
-      ],
-      "settings": {
-        "color_scheme": "",
-        "gap": "md",
-        "aspect_ratio": "cover",
-        "full_width": false,
-        "title": "The Venice You'll Capture",
-        "heading_tag": "h3",
-        "subtitle": "Images taken by our guests, straight off their own cameras.",
-        "text_alignment": "center"
       }
     },
     "steps_howitworks01": {
@@ -315,32 +278,122 @@
         "mobile_layout": "carousel"
       }
     },
+    "gallery_laguna01": {
+      "type": "gallery",
+      "blocks": {
+        "gallery_row01": {
+          "type": "gallery-row",
+          "settings": {
+            "columns": 5,
+            "content_width": "full"
+          },
+          "blocks": {
+            "image01": {
+              "type": "_gallery-image",
+              "settings": {
+                "image": "shopify://shop_images/cana_grande_8c4522b8-b28c-4a99-a9d1-09e6f4ee607e.jpg",
+                "caption": "Dorit · Sunrise Session"
+              },
+              "blocks": {}
+            },
+            "image02": {
+              "type": "_gallery-image",
+              "settings": {
+                "image": "shopify://shop_images/rio_di.jpg",
+                "caption": "Julie · Sunset Session"
+              },
+              "blocks": {}
+            },
+            "image03": {
+              "type": "_gallery-image",
+              "settings": {
+                "image": "shopify://shop_images/sanservolo.jpg",
+                "caption": "Brandi · Sunrise Session"
+              },
+              "blocks": {}
+            },
+            "image04": {
+              "type": "_gallery-image",
+              "settings": {
+                "image": "shopify://shop_images/CopiedeTAGSERGERAMELLI_REZAPHOTOGRAPHY.jpg",
+                "caption": "Elizabeth · Sunrise Session"
+              },
+              "blocks": {}
+            },
+            "image05": {
+              "type": "_gallery-image",
+              "settings": {
+                "image": "shopify://shop_images/canalla_della_giudecca.jpg",
+                "caption": "Marie-Claude · Sunset Session"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image01",
+            "image02",
+            "image03",
+            "image04",
+            "image05"
+          ]
+        }
+      },
+      "block_order": [
+        "gallery_row01"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "gap": "md",
+        "aspect_ratio": "cover",
+        "full_width": false,
+        "title": "The Venice You'll Capture",
+        "heading_tag": "h3",
+        "subtitle": "Images taken by our guests, straight off their own cameras.",
+        "text_alignment": "center"
+      }
+    },
     "video_carousel_community01": {
       "type": "video-carousel",
       "blocks": {
+        "video_PdMXPC": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Gondola Ride Venice, Italy.mp4",
+            "caption": ""
+          }
+        },
+        "video_iqDPxm": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Venice Gondola Ride_ the Experience of a Lifetime_b90aca44-5d2d-462f-98fc-666a48b8de93.mp4",
+            "caption": ""
+          }
+        },
         "video01": {
           "type": "video",
           "settings": {
-            "video": null,
+            "video": "shopify://files/videos/Water taxi's in Venice.mp4",
             "caption": ""
           }
         },
         "video02": {
           "type": "video",
           "settings": {
-            "video": null,
+            "video": "shopify://files/videos/Gondola Ride Venice, Italy.mp4",
             "caption": ""
           }
         },
         "video03": {
           "type": "video",
           "settings": {
-            "video": null,
+            "video": "shopify://files/videos/Venice Gondola Ride_ the Experience of a Lifetime_b90aca44-5d2d-462f-98fc-666a48b8de93.mp4",
             "caption": ""
           }
         }
       },
       "block_order": [
+        "video_PdMXPC",
+        "video_iqDPxm",
         "video01",
         "video02",
         "video03"
@@ -404,6 +457,7 @@
             "title": "Festival",
             "description": "An international photography festival bringing together the world's finest photographers in Venice each spring.",
             "highlight": false,
+            "current_page_label": "Current page",
             "link_text": "Discover",
             "link_url": ""
           }
@@ -415,6 +469,7 @@
             "title": "Academy",
             "description": "Immersive multi-day workshops led by internationally renowned photographers, all year long.",
             "highlight": false,
+            "current_page_label": "Current page",
             "link_text": "Discover",
             "link_url": ""
           }
@@ -426,7 +481,9 @@
             "title": "Laguna",
             "description": "Premium half-day photographic experiences by boat, for travellers who want to see Venice differently.",
             "highlight": true,
-            "current_page_label": "Current page"
+            "current_page_label": "Current page",
+            "link_text": "Discover",
+            "link_url": ""
           }
         }
       },
@@ -443,46 +500,6 @@
         "heading_tag": "h3",
         "content_width": "md",
         "items_per_row": 3
-      }
-    },
-    "intro_stats_laguna01": {
-      "type": "intro-stats",
-      "blocks": {
-        "stat_guests": {
-          "type": "stat",
-          "settings": {
-            "value": "8",
-            "label": "Guests max."
-          }
-        },
-        "stat_duration": {
-          "type": "stat",
-          "settings": {
-            "value": "4h",
-            "label": "Per session"
-          }
-        },
-        "stat_print": {
-          "type": "stat",
-          "settings": {
-            "value": "1",
-            "label": "Fine art print incl."
-          }
-        }
-      },
-      "block_order": [
-        "stat_guests",
-        "stat_duration",
-        "stat_print"
-      ],
-      "settings": {
-        "anchor": "",
-        "color_scheme": "",
-        "subheading": "The Laguna Experience",
-        "heading": "Venice Like No One Has Ever Seen It.",
-        "heading_tag": "h4",
-        "heading_content_width": "sm",
-        "description": "<p>Far from the crowds and the familiar landmarks, Venezia Photo Laguna invites you to experience the city from the water, when its light is at its most beautiful and its atmosphere at its most peaceful.</p><p>In groups of no more than eight participants, you'll board a traditional Venetian mahogany water taxi alongside a professional photographer to explore hidden canals, quiet islands and ever-changing reflections across the lagoon. Whether at sunrise or sunset, each outing is designed to slow your pace, sharpen your eye, and reveal a side of Venice few ever witness. Back on the island of San Servolo, the experience continues with a relaxed editing session, personal feedback, and the print of one selected photograph to take home.</p>"
       }
     }
   },
