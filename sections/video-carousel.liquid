@@ -39,11 +39,12 @@
       <div class="floating-controls-container">
         <scroll-carousel id="{{ carousel_id }}" allow-swipe cell-selector=".video-carousel__item" class="video-carousel scroll-area snap-x bleed md:unbleed">
           {%- for block in section.blocks -%}
+            {%- assign guest_video = block.settings.guest_video -%}
             <div class="video-carousel__item" data-animate style="--reveal-index: {{ forloop.index0 }}" {{ block.shopify_attributes }}>
-              {%- if block.settings.video != blank -%}
+              {%- if guest_video.video.value != blank -%}
                 {%- assign video_media_id = carousel_id | append: '-video-' | append: forloop.index -%}
                 {%- render 'media',
-                  media: block.settings.video,
+                  media: guest_video.video.value,
                   id: video_media_id,
                   class: 'video-carousel__media',
                   autoplay: false,
@@ -53,7 +54,7 @@
                   playsinline: true,
                   show_play_button: false,
                   group: carousel_id,
-                  poster: block.settings.poster
+                  poster: guest_video.poster.value
                 -%}
 
                 <button type="button" class="video-carousel__mute-toggle" data-mute-label="{{ 'general.accessibility.mute_video' | t | escape }}" data-unmute-label="{{ 'general.accessibility.unmute_video' | t | escape }}" aria-label="{{ 'general.accessibility.unmute_video' | t | escape }}">
@@ -66,8 +67,8 @@
                 </button>
               {%- endif -%}
 
-              {%- if block.settings.caption != blank -%}
-                <p class="video-carousel__caption text-subdued">{{ block.settings.caption }}</p>
+              {%- if guest_video.caption.value != blank -%}
+                <p class="video-carousel__caption text-subdued">{{ guest_video.caption.value }}</p>
               {%- endif -%}
             </div>
           {%- endfor -%}
@@ -162,20 +163,10 @@
       "name": "Video",
       "settings": [
         {
-          "type": "video",
-          "id": "video",
-          "label": "t:global.video.video"
-        },
-        {
-          "type": "image_picker",
-          "id": "poster",
-          "label": "Poster image",
-          "info": "Optional. Defaults to the video's own thumbnail."
-        },
-        {
-          "type": "text",
-          "id": "caption",
-          "label": "Caption"
+          "type": "metaobject",
+          "id": "guest_video",
+          "label": "Guest video",
+          "metaobject_type": "guest_video"
         }
       ]
     }

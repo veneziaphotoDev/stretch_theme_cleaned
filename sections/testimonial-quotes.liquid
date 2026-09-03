@@ -33,13 +33,14 @@
           {% if section.settings.pause_on_hover %}pause-on-hover{% endif %}
         >
           {%- for block in section.blocks -%}
+            {%- assign testimonial = block.settings.testimonial -%}
             <div class="testimonial-quotes__item{% if forloop.first %} is-selected{% endif %}" {{ block.shopify_attributes }}>
-              {%- if block.settings.quote != blank -%}
-                <blockquote class="testimonial-quotes__quote">{{ block.settings.quote }}</blockquote>
+              {%- if testimonial.quote.value != blank -%}
+                <blockquote class="testimonial-quotes__quote">{{ testimonial.quote.value }}</blockquote>
               {%- endif -%}
 
-              {%- if block.settings.author != blank -%}
-                <p class="testimonial-quotes__author text-subdued">— {{ block.settings.author }}</p>
+              {%- if testimonial.author.value != blank -%}
+                <p class="testimonial-quotes__author text-subdued">— {{ testimonial.author.value }}</p>
               {%- endif -%}
             </div>
           {%- endfor -%}
@@ -124,16 +125,10 @@
       "name": "Testimonial",
       "settings": [
         {
-          "type": "textarea",
-          "id": "quote",
-          "label": "Quote",
-          "default": "\"Share what a guest said about their experience.\""
-        },
-        {
-          "type": "text",
-          "id": "author",
-          "label": "Author",
-          "default": "Author name"
+          "type": "metaobject",
+          "id": "testimonial",
+          "label": "Testimonial",
+          "metaobject_type": "testimonial"
         }
       ]
     }
