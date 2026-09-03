@@ -413,6 +413,93 @@
         "content_width": "md",
         "items_per_row": 3
       }
+    },
+    "video_carousel_community01": {
+      "type": "video-carousel",
+      "blocks": {
+        "video01": {
+          "type": "video",
+          "settings": {
+            "guest_video": null
+          }
+        },
+        "video02": {
+          "type": "video",
+          "settings": {
+            "guest_video": null
+          }
+        },
+        "video03": {
+          "type": "video",
+          "settings": {
+            "guest_video": null
+          }
+        },
+        "video04": {
+          "type": "video",
+          "settings": {
+            "guest_video": null
+          }
+        },
+        "video05": {
+          "type": "video",
+          "settings": {
+            "guest_video": null
+          }
+        }
+      },
+      "block_order": [
+        "video01",
+        "video02",
+        "video03",
+        "video04",
+        "video05"
+      ],
+      "settings": {
+        "anchor": "",
+        "color_scheme": "",
+        "subheading": "Community Gallery",
+        "heading": "A vlog-style look, created by our guests.",
+        "heading_tag": "h3",
+        "content_width": "md",
+        "items_per_row": 4
+      }
+    },
+    "testimonial_quotes_laguna01": {
+      "type": "testimonial-quotes",
+      "blocks": {
+        "quote01": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": null
+          }
+        },
+        "quote02": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": null
+          }
+        },
+        "quote03": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": null
+          }
+        }
+      },
+      "block_order": [
+        "quote01",
+        "quote02",
+        "quote03"
+      ],
+      "settings": {
+        "anchor": "",
+        "color_scheme": "",
+        "subheading": "What Our Guests Are Saying",
+        "autoplay": true,
+        "cycle_speed": 4,
+        "pause_on_hover": true
+      }
     }
   },
   "order": [
@@ -422,6 +509,8 @@
     "sessions_grid_laguna01",
     "steps_howitworks01",
     "gallery_laguna01",
+    "video_carousel_community01",
+    "testimonial_quotes_laguna01",
     "activity_cards_ecosystem01"
   ]
 }
