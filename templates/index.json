@@ -352,6 +352,7 @@
         "gap": "md",
         "aspect_ratio": "cover",
         "full_width": false,
+        "mobile_layout": "carousel",
         "title": "The Venice You'll Capture",
         "heading_tag": "h3",
         "subtitle": "Images taken by our guests, straight off their own cameras.",
