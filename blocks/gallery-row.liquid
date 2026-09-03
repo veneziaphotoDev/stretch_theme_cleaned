@@ -2,7 +2,11 @@
   assign cols = block.settings.columns
   assign mobile_cols = cols | at_most: 2
   assign tablet_cols = cols | at_most: 3
-  assign mobile_carousel = section.settings.mobile_layout == 'carousel'
+
+  assign mobile_carousel = false
+  if section.settings.mobile_layout == 'carousel'
+    assign mobile_carousel = true
+  endif
 -%}
 
 <style>
