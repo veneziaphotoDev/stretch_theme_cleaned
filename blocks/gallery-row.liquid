@@ -2,17 +2,30 @@
   assign cols = block.settings.columns
   assign mobile_cols = cols | at_most: 2
   assign tablet_cols = cols | at_most: 3
+  assign mobile_carousel = section.settings.mobile_layout == 'carousel'
 -%}
 
 <style>
   #shopify-block-{{ block.id }} {
-    grid-template-columns: repeat({{ mobile_cols }}, minmax(0, 1fr));
+    {% if mobile_carousel %}
+      grid-auto-flow: column;
+      grid-auto-columns: 80%;
+    {% else %}
+      grid-template-columns: repeat({{ mobile_cols }}, minmax(0, 1fr));
+    {% endif %}
     width: 100%;
     margin-inline: auto;
     {% unless section.settings.aspect_ratio == 'cover' %}align-items: center;{% endunless %}
   }
+  {% if mobile_carousel %}
+    #shopify-block-{{ block.id }} > * {
+      scroll-snap-align: start;
+    }
+  {% endif %}
   @media screen and (min-width: 700px) {
     #shopify-block-{{ block.id }} {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
       grid-template-columns: repeat({{ tablet_cols }}, minmax(0, 1fr));
     }
   }
@@ -47,7 +60,7 @@
   {% endif %}
 </style>
 
-<div id="shopify-block-{{ block.id }}" class="max-w-full sm:max-w-{{ block.settings.content_width }}" style="display: grid; gap: var(--gallery-gap);" {{ block.shopify_attributes }}>
+<div id="shopify-block-{{ block.id }}" class="max-w-full sm:max-w-{{ block.settings.content_width }} {% if mobile_carousel %}scroll-area snap-x bleed sm:unbleed{% endif %}" style="display: grid; gap: var(--gallery-gap);" {{ block.shopify_attributes }}>
   {%- content_for 'blocks' -%}
 </div>
 
