@@ -66,6 +66,17 @@
         font-weight: var(--text-font-weight);
         font-style: var(--text-font-style);
       }
+
+      {%- comment -%}
+      The gallery/buy-box grid otherwise sits flush against the header on desktop -- too tight. Scoped
+      to desktop only (the mobile stacked layout already reads fine as-is) and to this section instance,
+      so the default product template's spacing is untouched.
+      {%- endcomment -%}
+      @media screen and (min-width: 1000px) {
+        #shopify-section-{{ section.id }} .product {
+          padding-block-start: 2.5rem;
+        }
+      }
       {%- break -%}
     {%- endif -%}
   {%- endfor -%}
