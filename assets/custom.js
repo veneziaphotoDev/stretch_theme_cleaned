@@ -148,3 +148,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+
+// Subtle mouse parallax on [data-parallax] elements (experience product gallery, desktop only).
+// Sets --parallax-x/--parallax-y custom properties consumed by the element's own CSS transform,
+// so it composes independently from the [data-animate] reveal transform on the same element's parent.
+(function() {
+  const items = document.querySelectorAll('[data-parallax]');
+  if (!items.length) return;
+  if (window.matchMedia('(max-width: 999px)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let mouseX = 0;
+  let mouseY = 0;
+  let ticking = false;
+
+  function update() {
+    items.forEach(function(el, index) {
+      const depth = 6 + (index % 3) * 4; // 6px, 10px or 14px of travel, varied per item
+      el.style.setProperty('--parallax-x', (mouseX * depth).toFixed(2) + 'px');
+      el.style.setProperty('--parallax-y', (mouseY * depth).toFixed(2) + 'px');
+    });
+    ticking = false;
+  }
+
+  window.addEventListener('mousemove', function(event) {
+    mouseX = (event.clientX / window.innerWidth) - 0.5;
+    mouseY = (event.clientY / window.innerHeight) - 0.5;
+
+    if (!ticking) {
+      window.requestAnimationFrame(update);
+      ticking = true;
+    }
+  });
+})();

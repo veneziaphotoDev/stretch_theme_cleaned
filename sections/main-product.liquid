@@ -112,6 +112,8 @@
           height: auto !important;
           width: 100% !important;
           object-fit: cover !important;
+          transform: translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0);
+          transition: transform 0.3s ease-out;
         }
 
         {%- comment -%}
