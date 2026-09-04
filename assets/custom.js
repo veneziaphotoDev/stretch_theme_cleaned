@@ -158,15 +158,27 @@ document.addEventListener('DOMContentLoaded', function() {
   if (window.matchMedia('(max-width: 999px)').matches) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+  // Each item gets its own fixed "personality" (picked once, not re-randomized per frame, so the
+  // effect stays predictable/stable rather than jittery): different travel distance per axis, and
+  // roughly a third of items move opposite to the mouse instead of following it.
+  const factors = Array.prototype.map.call(items, function() {
+    const invertX = Math.random() < 0.35 ? -1 : 1;
+    const invertY = Math.random() < 0.35 ? -1 : 1;
+    return {
+      x: invertX * (6 + Math.random() * 12), // 6-18px
+      y: invertY * (6 + Math.random() * 12)
+    };
+  });
+
   let mouseX = 0;
   let mouseY = 0;
   let ticking = false;
 
   function update() {
     items.forEach(function(el, index) {
-      const depth = 6 + (index % 3) * 4; // 6px, 10px or 14px of travel, varied per item
-      el.style.setProperty('--parallax-x', (mouseX * depth).toFixed(2) + 'px');
-      el.style.setProperty('--parallax-y', (mouseY * depth).toFixed(2) + 'px');
+      const factor = factors[index];
+      el.style.setProperty('--parallax-x', (mouseX * factor.x).toFixed(2) + 'px');
+      el.style.setProperty('--parallax-y', (mouseY * factor.y).toFixed(2) + 'px');
     });
     ticking = false;
   }
