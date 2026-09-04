@@ -104,7 +104,7 @@
 
         #shopify-section-{{ section.id }} .product-gallery__media {
           height: auto;
-          margin-block-end: 3rem;
+          margin-block-end: 2rem;
         }
 
         #shopify-section-{{ section.id }} .product-gallery__media img {
@@ -113,20 +113,42 @@
           object-fit: cover !important;
         }
 
-        {%- comment -%}Repeating 4-image rhythm: full width, offset-right + overlap, narrower, offset-left + overlap.{%- endcomment -%}
-        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(4n+2) {
-          max-width: 80%;
-          margin-inline-start: 20%;
-          margin-block-start: -5rem;
+        {%- comment -%}
+        Fixed rem widths (not percentages of the column) so tall portrait photos stay capped instead of
+        blowing up to the column's full height. 6-image repeating rhythm mixing size, left/right/center
+        alignment and overlap depth, so it doesn't read as a mechanical, predictable pattern.
+        {%- endcomment -%}
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(6n+1) {
+          max-width: 23rem;
+          margin-inline-start: 0;
         }
 
-        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(4n+3) {
-          max-width: 65%;
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(6n+2) {
+          max-width: 15rem;
+          margin-inline-start: auto;
+          margin-block-start: -6rem;
         }
 
-        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(4n) {
-          max-width: 75%;
-          margin-inline-start: 15%;
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(6n+3) {
+          max-width: 19rem;
+          margin-inline: auto;
+          margin-block-start: -3rem;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(6n+4) {
+          max-width: 13rem;
+          margin-inline-start: 8%;
+          margin-block-start: -7rem;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(6n+5) {
+          max-width: 21rem;
+          margin-inline-start: auto;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(6n) {
+          max-width: 17rem;
+          margin-inline-start: 12%;
           margin-block-start: -4rem;
         }
       }
