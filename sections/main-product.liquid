@@ -76,6 +76,15 @@
         #shopify-section-{{ section.id }} .product {
           padding-block-start: 2.5rem;
         }
+
+        {%- comment -%}
+        The native sticky offset (header height + 20px) left the buy-box's title/tagline reading as
+        tucked under the header -- 20px wasn't enough breathing room once stuck. Matches the top-spacing
+        value above for a consistent gap.
+        {%- endcomment -%}
+        #shopify-section-{{ section.id }} .product-info {
+          inset-block-start: calc(var(--sticky-area-height) + 2.5rem);
+        }
       }
 
       {%- comment -%}
