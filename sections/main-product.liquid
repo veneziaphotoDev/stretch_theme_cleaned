@@ -68,6 +68,12 @@
         display: block;
       }
 
+      @media screen and (max-width: 999px) {
+        #shopify-section-{{ section.id }} .product {
+          gap: 1.25rem;
+        }
+      }
+
       @media screen and (min-width: 1000px) {
         #shopify-section-{{ section.id }} .experience-tagline {
           display: block;
