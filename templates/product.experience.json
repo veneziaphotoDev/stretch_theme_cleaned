@@ -101,7 +101,7 @@
         "transparent_header_use_primary_colors": false,
         "add_top_spacing": false,
         "show_sticky_add_to_cart": false,
-        "product_media_size": 38,
+        "product_media_size": 50,
         "content_alignment": "left",
         "desktop_media_layout": "carousel",
         "desktop_carousel_controls": "thumbnails_under",

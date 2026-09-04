@@ -77,6 +77,18 @@
           padding-block-start: 2.5rem;
         }
       }
+
+      {%- comment -%}
+      The 50/50 gallery/buy-box column split needs to stay (the buy-box shouldn't shift left), but the
+      carousel itself reads too large filling the whole 50% column now that images use their natural
+      aspect ratio. Capping its own width keeps it flush against the outer edge of its column instead of
+      stretching, without touching the grid split itself.
+      {%- endcomment -%}
+      @media screen and (min-width: 1000px) {
+        #shopify-section-{{ section.id }} .product-gallery {
+          max-width: 28rem;
+        }
+      }
       {%- break -%}
     {%- endif -%}
   {%- endfor -%}
