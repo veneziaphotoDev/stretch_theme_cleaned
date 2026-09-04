@@ -1045,6 +1045,22 @@ section-container.color-scheme .circle-button:before {
   gap: var(--container-gutter);
 }
 
+.product-gallery__media {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.product-gallery__media img {
+  width: auto !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain !important;
+}
+
 /* ============================================
    FAQ & ACCORDIONS
    ============================================ */
@@ -1364,6 +1380,32 @@ section-container.color-scheme .circle-button:before {
 
   .header__secondary-nav {
     column-gap: 1.5rem;
+  }
+
+  .shopify-section--main-product product-gallery {
+    height: calc(100svh - var(--sticky-area-height, 0px) - var(--container-gutter));
+    /* max-height: calc(100svh - var(--sticky-area-height, 0px) - var(--container-gutter) * 2); */
+  }
+
+  product-gallery.product-gallery {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* gap: calc(var(--container-gutter) * 4); */
+  }
+
+  .product-gallery__image-list {
+    flex: 0 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-gallery__image-list>div:first-child {
+    flex: 0 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
   }
 }
 
