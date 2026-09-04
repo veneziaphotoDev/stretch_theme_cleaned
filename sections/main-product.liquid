@@ -112,7 +112,12 @@
           height: auto !important;
           width: 100% !important;
           object-fit: cover !important;
-          transform: translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0);
+          {%- comment -%}
+          The image's own container clips overflow (see .product-gallery__media in custom.css), so a
+          plain translate on the image would shift its edge past the clip boundary and reveal a gap.
+          Scaling it up first gives enough buffer for the parallax travel to never expose one.
+          {%- endcomment -%}
+          transform: scale(1.15) translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0);
           transition: transform 0.3s ease-out;
         }
 
