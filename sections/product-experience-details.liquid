@@ -122,16 +122,16 @@
         {%- endif -%}
 
         {%- if faq_items.size > 0 -%}
-          <div class="experience-details__text">
-            {%- capture faq_content -%}
-              <div class="v-stack gap-4">
-                {%- for item in faq_items -%}
-                  {%- capture answer_content -%}<div class="prose">{{ item.answer.value }}</div>{%- endcapture -%}
-                  {%- render 'accordion', title: item.question.value, content: answer_content, subheading_title: true -%}
-                {%- endfor -%}
-              </div>
-            {%- endcapture -%}
-            {%- render 'accordion', title: 'product.experience.faq_title' | t, content: faq_content, open: true -%}
+          <div class="experience-faq" data-animate>
+            <p class="experience-section-title subheading">{{ 'product.experience.faq_title' | t }}</p>
+            <div class="experience-faq__list">
+              {%- for item in faq_items -%}
+                <div class="experience-faq__item">
+                  <p class="experience-faq__question">{{ item.question.value }}</p>
+                  <div class="prose experience-faq__answer">{{ item.answer.value }}</div>
+                </div>
+              {%- endfor -%}
+            </div>
           </div>
         {%- endif -%}
       </div>

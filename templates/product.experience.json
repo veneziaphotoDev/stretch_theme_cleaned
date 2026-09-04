@@ -89,11 +89,11 @@
         "badges",
         "rating",
         "experience_summary",
+        "experience_included",
         "variant_picker",
         "experience_sibling",
         "buy_buttons",
-        "experience_privatize",
-        "experience_included"
+        "experience_privatize"
       ],
       "settings": {
         "color_scheme": "",
