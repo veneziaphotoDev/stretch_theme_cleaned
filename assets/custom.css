@@ -1382,9 +1382,6 @@ section-container.color-scheme .circle-button:before {
     column-gap: 1.5rem;
   }
 
-
-
-
   .shopify-section--main-product product-gallery {
     height: calc(100svh - var(--sticky-area-height, 0px) - var(--container-gutter));
     /* max-height: calc(100svh - var(--sticky-area-height, 0px) - var(--container-gutter) * 2); */
@@ -1410,8 +1407,6 @@ section-container.color-scheme .circle-button:before {
     display: flex;
     flex-direction: column;
   }
-
-
 }
 
 
