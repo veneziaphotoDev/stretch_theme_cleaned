@@ -68,6 +68,20 @@
       }
 
       {%- comment -%}
+      The scroll-reveal/parallax markup is added unconditionally (Liquid can't know the viewport at
+      render time), so the generic [data-animate] fade/slide from custom.css would otherwise also apply
+      to the mobile carousel slides. Mobile keeps its original, unanimated behavior -- neutralized here,
+      the real (desktop-only) styling is scoped inside the min-width query below.
+      {%- endcomment -%}
+      @media screen and (max-width: 999px) {
+        #shopify-section-{{ section.id }} .product-gallery__media[data-animate] {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+      }
+
+      {%- comment -%}
       The gallery/buy-box grid otherwise sits flush against the header on desktop -- too tight. Scoped
       to desktop only (the mobile stacked layout already reads fine as-is) and to this section instance,
       so the default product template's spacing is untouched.
@@ -75,6 +89,108 @@
       @media screen and (min-width: 1000px) {
         #shopify-section-{{ section.id }} .product {
           padding-block-start: 2.5rem;
+        }
+
+        {%- comment -%}
+        The native sticky offset (header height + 20px) left the buy-box's title/tagline reading as
+        tucked under the header -- 20px wasn't enough breathing room once stuck. Matches the top-spacing
+        value above for a consistent gap.
+        {%- endcomment -%}
+        #shopify-section-{{ section.id }} .product-info {
+          inset-block-start: calc(var(--sticky-area-height) + 2.5rem);
+        }
+      }
+
+      {%- comment -%}
+      Editorial desktop gallery: a tall, natural-scrolling column of larger, loosely staggered images
+      (mobile keeps the native carousel untouched -- this is all >=1000px). The buy-box sticks in place
+      (native theme.css behavior) while the gallery scrolls past it, unsticking once the photos run out.
+      Overrides the generic main-product gallery rules (built for the default template's fixed-height
+      highlight grid), which don't apply to this section's own "grid" layout.
+      {%- endcomment -%}
+      @media screen and (min-width: 1000px) {
+        #shopify-section-{{ section.id }} .product-gallery {
+          position: static;
+          height: auto;
+          display: block;
+        }
+
+        #shopify-section-{{ section.id }} product-gallery.product-gallery {
+          display: block;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__image-list {
+          flex: initial;
+          min-height: initial;
+          display: block;
+          padding-inline: 2rem;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media {
+          height: auto;
+          margin-block-end: 1rem;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media img {
+          height: auto !important;
+          width: 100% !important;
+          object-fit: cover !important;
+        }
+
+        {%- comment -%}
+        The parallax needs to move the whole card (position in the scattered layout), not just the photo
+        panning inside its own frame -- so it's applied here, on the same element as the scroll-reveal,
+        composed into one transform (translateY for the reveal, translate3d for the parallax) so neither
+        overwrites the other. Overrides the generic [data-animate] transform values for this element only.
+        {%- endcomment -%}
+        #shopify-section-{{ section.id }} .product-gallery__media[data-animate] {
+          transform: translateY(1rem) translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0);
+          transition: opacity 0.6s ease, transform 0.3s ease-out;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media[data-animate].is-visible {
+          transform: translateY(0) translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0);
+        }
+
+        {%- comment -%}
+        clamp() instead of fixed rem: sizes and overlap now scale with the column's actual width (which
+        itself scales with the viewport) instead of staying constant. Narrower desktop widths (just past
+        the 1000px breakpoint) get smaller images and lighter overlap; wide screens get the full size.
+        Still capped on both ends so portrait photos never blow up and images never shrink to nothing.
+        {%- endcomment -%}
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(6n+1) {
+          max-width: clamp(16rem, 22vw, 33rem);
+          margin-inline-start: 0;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(6n+2) {
+          max-width: clamp(12rem, 16vw, 24rem);
+          margin-inline-start: auto;
+          margin-block-start: clamp(-9rem, -4vw - 3rem, -4rem);
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(6n+3) {
+          max-width: clamp(14rem, 19vw, 29rem);
+          margin-inline: auto;
+          margin-block-start: clamp(-7rem, -3vw - 2.5rem, -3rem);
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(6n+4) {
+          max-width: clamp(11rem, 15vw, 22rem);
+          margin-inline-start: 8%;
+          margin-block-start: clamp(-10rem, -4vw - 3.5rem, -4.5rem);
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(6n+5) {
+          max-width: clamp(15rem, 20vw, 31rem);
+          margin-inline-start: auto;
+          margin-block-start: clamp(-6rem, -3vw - 2rem, -3rem);
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(6n) {
+          max-width: clamp(12rem, 17vw, 25rem);
+          margin-inline-start: 12%;
+          margin-block-start: clamp(-8rem, -3vw - 3rem, -3.5rem);
         }
       }
 

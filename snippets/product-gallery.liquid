@@ -93,7 +93,7 @@ only way to do it on Shopify right now.
           {%- for media in product.media -%}
             {%- capture sizes -%}(max-width: 699px) 100vw, 50vw{%- endcapture -%}
 
-            <div class="product-gallery__media snap-center {% if media == default_media %}is-initial{% endif %} {% if enable_image_zoom and section.settings.desktop_media_layout contains 'grid' and media.media_type == 'image' %}relative{% endif %}" data-media-type="{{ media.media_type }}" data-media-id="{{ media.id }}" role="group" aria-label="{{ 'general.accessibility.item_nth_of_count' | t: index: media.position, count: product.media.size }}" {% if filtered_indexes contains media.position %}hidden{% endif %}>
+            <div class="product-gallery__media snap-center {% if media == default_media %}is-initial{% endif %} {% if enable_image_zoom and section.settings.desktop_media_layout contains 'grid' and media.media_type == 'image' %}relative{% endif %}" data-media-type="{{ media.media_type }}" data-media-id="{{ media.id }}" role="group" aria-label="{{ 'general.accessibility.item_nth_of_count' | t: index: media.position, count: product.media.size }}" {% if filtered_indexes contains media.position %}hidden{% endif %} {% if desktop_layout == 'grid' %}data-animate data-parallax style="--reveal-index: {{ forloop.index0 }}"{% endif %}>
               {%- if default_media == media -%}
                 {%- assign preload = true -%}
               {%- else -%}
