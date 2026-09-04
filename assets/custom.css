@@ -1993,28 +1993,15 @@ section-container.color-scheme .circle-button:before {
 .experience-faq__list {
   display: flex;
   flex-direction: column;
+}
+
+.experience-accordions {
   max-width: 48rem;
 }
 
-.experience-faq__item {
-  padding-block: 1.5rem;
-  border-top: 1px solid rgb(var(--border-color));
-}
-
-.experience-faq__item:first-child {
-  border-top: 0;
-  padding-top: 0;
-}
-
-.experience-faq__question {
-  margin: 0 0 0.5rem;
-  font-size: var(--text-base);
-  font-weight: var(--text-font-weight);
-}
-
-.experience-faq__answer {
-  font-size: var(--text-sm);
-  line-height: 1.6;
+.experience-accordions .accordion,
+.experience-faq__list .accordion {
+  border-bottom: 1px solid rgb(var(--border-color));
 }
 
 
