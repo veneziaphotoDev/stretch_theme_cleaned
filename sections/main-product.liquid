@@ -78,6 +78,59 @@
         }
       }
 
+      {%- comment -%}
+      Editorial desktop gallery: a tall, natural-scrolling column of larger, loosely staggered images
+      (mobile keeps the native carousel untouched -- this is all >=1000px). The buy-box sticks in place
+      (native theme.css behavior) while the gallery scrolls past it, unsticking once the photos run out.
+      Overrides the generic main-product gallery rules (built for the default template's fixed-height
+      highlight grid), which don't apply to this section's own "grid" layout.
+      {%- endcomment -%}
+      @media screen and (min-width: 1000px) {
+        #shopify-section-{{ section.id }} .product-gallery {
+          position: static;
+          height: auto;
+          display: block;
+        }
+
+        #shopify-section-{{ section.id }} product-gallery.product-gallery {
+          display: block;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__image-list {
+          flex: initial;
+          min-height: initial;
+          display: block;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media {
+          height: auto;
+          margin-block-end: 3rem;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media img {
+          height: auto !important;
+          width: 100% !important;
+          object-fit: cover !important;
+        }
+
+        {%- comment -%}Repeating 4-image rhythm: full width, offset-right + overlap, narrower, offset-left + overlap.{%- endcomment -%}
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(4n+2) {
+          max-width: 80%;
+          margin-inline-start: 20%;
+          margin-block-start: -5rem;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(4n+3) {
+          max-width: 65%;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media:nth-child(4n) {
+          max-width: 75%;
+          margin-inline-start: 15%;
+          margin-block-start: -4rem;
+        }
+      }
+
       {%- break -%}
     {%- endif -%}
   {%- endfor -%}
