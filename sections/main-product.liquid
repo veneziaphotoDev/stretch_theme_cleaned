@@ -68,6 +68,20 @@
       }
 
       {%- comment -%}
+      The scroll-reveal/parallax markup is added unconditionally (Liquid can't know the viewport at
+      render time), so the generic [data-animate] fade/slide from custom.css would otherwise also apply
+      to the mobile carousel slides. Mobile keeps its original, unanimated behavior -- neutralized here,
+      the real (desktop-only) styling is scoped inside the min-width query below.
+      {%- endcomment -%}
+      @media screen and (max-width: 999px) {
+        #shopify-section-{{ section.id }} .product-gallery__media[data-animate] {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+      }
+
+      {%- comment -%}
       The gallery/buy-box grid otherwise sits flush against the header on desktop -- too tight. Scoped
       to desktop only (the mobile stacked layout already reads fine as-is) and to this section instance,
       so the default product template's spacing is untouched.
