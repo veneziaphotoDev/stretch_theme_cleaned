@@ -2022,8 +2022,9 @@ section-container.color-scheme .circle-button:before {
    PRODUCT INFO — EXPERIENCE SUMMARY / INCLUDED
    ============================================ */
 
-.experience-tagline {
-  margin: 0 0 0.5rem;
+.experience-tagline,
+.product-tagline-mobile {
+  margin: 0 0 0.75rem;
 }
 
 .experience-summary__facts {

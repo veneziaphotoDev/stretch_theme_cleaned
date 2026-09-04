@@ -56,6 +56,35 @@
       }
 
       {%- comment -%}
+      On mobile the tagline moves above the gallery instead of sitting in the buy-box below it (a
+      separate element rendered before the gallery, since the buy-box and gallery are siblings and
+      can't be reordered with CSS alone across that boundary). Desktop keeps it in the buy-box as before.
+      {%- endcomment -%}
+      #shopify-section-{{ section.id }} .experience-tagline {
+        display: none;
+      }
+
+      #shopify-section-{{ section.id }} .product-tagline-mobile {
+        display: block;
+      }
+
+      @media screen and (max-width: 999px) {
+        #shopify-section-{{ section.id }} .product {
+          gap: 1.25rem;
+        }
+      }
+
+      @media screen and (min-width: 1000px) {
+        #shopify-section-{{ section.id }} .experience-tagline {
+          display: block;
+        }
+
+        #shopify-section-{{ section.id }} .product-tagline-mobile {
+          display: none;
+        }
+      }
+
+      {%- comment -%}
       The price uses the "h4" heading class by default (price-list.liquid, context: "product"), which
       renders it in Gascogne. Switched to the body font (Helvetica) for this section instance only --
       price-list.liquid is shared with cards, cart and orders, so this can't be changed globally there.
@@ -205,6 +234,20 @@
 
     <product-rerender id="product-info-{{ product.id }}-{{ section.id }}" observe-form="{{ product_form_id }}" allow-partial-rerender>
       <div class="product">
+        {%- liquid
+          assign mobile_tagline = product.metafields.custom.tagline.value
+          assign has_experience_tagline_block = false
+          for block in section.blocks
+            if block.type == 'experience_tagline'
+              assign has_experience_tagline_block = true
+              break
+            endif
+          endfor
+        -%}
+        {%- if has_experience_tagline_block and mobile_tagline != blank -%}
+          <p class="product-tagline-mobile subheading">{{ mobile_tagline }}</p>
+        {%- endif -%}
+
         {%- if product.media.size > 0 -%}
           {%- render 'product-gallery',
               product: product,
