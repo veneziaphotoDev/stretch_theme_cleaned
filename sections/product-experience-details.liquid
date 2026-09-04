@@ -13,12 +13,13 @@
   Expected metafields (namespace "custom"): guide_name, route_stops (list of metaobject "route_stop": name,
   optional image -- cropped to a fixed 4:5 ratio so mixed photo formats stay consistent), operations_note,
   itinerary (single metaobject reference to "itinerary": name, steps -- a list of metaobject "itinerary_step":
-  time, step, intention), faq_items (list of metaobject "faq_item": question, answer), sibling_experience (single
-  product reference, only set on products that share the same route as another product at the other time of day).
+  time, step, intention), faq_set (single metaobject reference to "faq_set": name, items -- a list of metaobject
+  "faq_item": question, answer), sibling_experience (single product reference, only set on products that share
+  the same route as another product at the other time of day).
 
-  The "itinerary" metaobject exists so a reusable, named itinerary ("Sunrise -- Standard route") can be built once
-  and attached to as many products as share it, instead of re-picking/reordering individual step entries directly
-  on every product.
+  The "itinerary" and "faq_set" metaobjects exist so a reusable, named group ("Sunrise -- Standard route",
+  "Sunrise -- Standard FAQ") can be built once and attached to as many products as share it, instead of
+  re-picking/reordering individual entries directly on every product.
 
   Every block below is skipped independently when its metafield is blank, so a product only needs to fill in
   whichever fields apply to it.
@@ -28,7 +29,7 @@
   assign route_stops = product.metafields.custom.route_stops.value
   assign operations_note = product.metafields.custom.operations_note.value
   assign program_steps = product.metafields.custom.itinerary.value.steps.value
-  assign faq_items = product.metafields.custom.faq_items.value
+  assign faq_items = product.metafields.custom.faq_set.value.items.value
 
   assign has_content = false
   if route_stops.size > 0 or operations_note != blank or program_steps.size > 0 or faq_items.size > 0
@@ -121,16 +122,16 @@
         {%- endif -%}
 
         {%- if faq_items.size > 0 -%}
-          <div class="experience-details__text">
-            {%- capture faq_content -%}
-              <div class="v-stack gap-4">
-                {%- for item in faq_items -%}
-                  {%- capture answer_content -%}<div class="prose">{{ item.answer.value }}</div>{%- endcapture -%}
-                  {%- render 'accordion', title: item.question.value, content: answer_content, subheading_title: true -%}
-                {%- endfor -%}
-              </div>
-            {%- endcapture -%}
-            {%- render 'accordion', title: 'product.experience.faq_title' | t, content: faq_content, open: true -%}
+          <div class="experience-faq" data-animate>
+            <p class="experience-section-title subheading">{{ 'product.experience.faq_title' | t }}</p>
+            <div class="experience-faq__list">
+              {%- for item in faq_items -%}
+                <div class="experience-faq__item">
+                  <p class="experience-faq__question">{{ item.question.value }}</p>
+                  <div class="prose experience-faq__answer">{{ item.answer | metafield_tag }}</div>
+                </div>
+              {%- endfor -%}
+            </div>
           </div>
         {%- endif -%}
       </div>
@@ -149,7 +150,7 @@
               "name": {{ item.question.value | json }},
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": {{ item.answer.value | strip_html | json }}
+                "text": {{ item.answer | metafield_tag | strip_html | json }}
               }
             }{%- unless forloop.last -%},{%- endunless -%}
           {%- endfor -%}
