@@ -2075,12 +2075,11 @@ section-container.color-scheme .circle-button:before {
 
 .experience-included__item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.6rem;
   font-size: var(--text-base);
 }
 
 .experience-included__item .icon {
   flex-shrink: 0;
-  margin-top: 0.15rem;
 }
