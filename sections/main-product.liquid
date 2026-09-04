@@ -112,13 +112,21 @@
           height: auto !important;
           width: 100% !important;
           object-fit: cover !important;
-          {%- comment -%}
-          The image's own container clips overflow (see .product-gallery__media in custom.css), so a
-          plain translate on the image would shift its edge past the clip boundary and reveal a gap.
-          Scaling it up first gives enough buffer for the parallax travel to never expose one.
-          {%- endcomment -%}
-          transform: scale(1.15) translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0);
-          transition: transform 0.3s ease-out;
+        }
+
+        {%- comment -%}
+        The parallax needs to move the whole card (position in the scattered layout), not just the photo
+        panning inside its own frame -- so it's applied here, on the same element as the scroll-reveal,
+        composed into one transform (translateY for the reveal, translate3d for the parallax) so neither
+        overwrites the other. Overrides the generic [data-animate] transform values for this element only.
+        {%- endcomment -%}
+        #shopify-section-{{ section.id }} .product-gallery__media[data-animate] {
+          transform: translateY(1rem) translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0);
+          transition: opacity 0.6s ease, transform 0.3s ease-out;
+        }
+
+        #shopify-section-{{ section.id }} .product-gallery__media[data-animate].is-visible {
+          transform: translateY(0) translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0);
         }
 
         {%- comment -%}
