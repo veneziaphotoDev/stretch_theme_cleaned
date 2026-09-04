@@ -519,7 +519,6 @@ no need to manually pass the section as it is globally available)
                 <ul class="experience-included__list unstyled-list">
                   {%- for item in included_items -%}
                     <li class="experience-included__item">
-                      {%- render 'icon' with 'picto-checked', width: 16 -%}
                       <span>{{ item.label.value }}</span>
                     </li>
                   {%- endfor -%}
