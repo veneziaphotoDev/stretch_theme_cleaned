@@ -2101,6 +2101,20 @@ section-container.color-scheme .circle-button:before {
   }
 }
 
+/* Touch: no hover to drive the swap, so it's tap-driven instead (see custom.js) and the ratio
+   is pushed much further -- the focused panel should read as clearly "selected", with only a
+   sliver of the other one left showing. */
+@media (hover: none) {
+  .split-showcase--duo {
+    grid-template-columns: 4fr 1fr;
+    transition: grid-template-columns 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .split-showcase--duo.is-panel-2-active {
+    grid-template-columns: 1fr 4fr;
+  }
+}
+
 /* Generic (non-duo, N-panel) fallback stacks on narrow screens. */
 @media screen and (max-width: 699px) {
   .split-showcase:not(.split-showcase--duo) {
@@ -2208,6 +2222,26 @@ section-container.color-scheme .circle-button:before {
   }
 }
 
+/* Touch equivalent of the block above, driven by the .is-panel-2-active class (custom.js)
+   instead of :has(:hover). */
+@media (hover: none) {
+  .split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child .split-showcase__image {
+    filter: saturate(0.45) brightness(0.5);
+  }
+
+  .split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child .split-showcase__dim {
+    opacity: 1;
+  }
+
+  .split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child .split-showcase__image {
+    filter: saturate(0.85) brightness(0.92);
+  }
+
+  .split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child .split-showcase__dim {
+    opacity: 0;
+  }
+}
+
 .split-showcase__content {
   position: relative;
   z-index: 2;
@@ -2218,6 +2252,36 @@ section-container.color-scheme .circle-button:before {
 
 @media (hover: hover) and (pointer: fine) {
   .split-showcase__panel:hover .split-showcase__content {
+    transform: translateY(-0.5rem);
+  }
+}
+
+/* Touch: at a 20/80 column split there isn't room for the title/tagline to wrap sanely in the
+   narrow panel, so the non-focused panel's text fades out entirely instead -- only the focused
+   panel reveals its copy, the other recedes to just its image sliver. */
+@media (hover: none) {
+  .split-showcase--duo .split-showcase__content {
+    transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .split-showcase--duo .split-showcase__panel:first-child .split-showcase__content {
+    transform: translateY(-0.5rem);
+  }
+
+  .split-showcase--duo .split-showcase__panel:last-child .split-showcase__content {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child .split-showcase__content {
+    opacity: 0;
+    pointer-events: none;
+    transform: none;
+  }
+
+  .split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child .split-showcase__content {
+    opacity: 1;
+    pointer-events: auto;
     transform: translateY(-0.5rem);
   }
 }

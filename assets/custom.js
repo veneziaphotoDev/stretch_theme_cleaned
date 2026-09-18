@@ -193,3 +193,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 })();
+
+// Split showcase: tap-to-focus on touch devices, mirroring the desktop hover swap (brighten/
+// widen the tapped panel, dim/narrow the other). Hover-capable pointers already get this via
+// CSS :hover/:has() alone -- this only runs where there's no hover to drive that.
+(function() {
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const containers = document.querySelectorAll('.split-showcase--duo');
+  if (!containers.length) return;
+
+  containers.forEach(function(container) {
+    const panels = container.querySelectorAll('.split-showcase__panel');
+    if (panels.length !== 2) return;
+
+    panels.forEach(function(panel, index) {
+      panel.addEventListener('click', function(event) {
+        // Let taps on the actual buttons (view product / Meety) navigate normally -- only
+        // tapping the image/background itself should toggle focus.
+        if (event.target.closest('.split-showcase__actions')) return;
+
+        container.classList.toggle('is-panel-2-active', index === 1);
+      });
+    });
+  });
+})();
