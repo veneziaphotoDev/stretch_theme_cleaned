@@ -14,7 +14,7 @@
 
 {%- if section.blocks.size > 0 -%}
   <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
-    <div class="split-showcase" style="--split-showcase-panel-count: {{ section.blocks.size }};">
+    <div class="split-showcase{% if section.blocks.size == 2 %} split-showcase--duo{% endif %}" style="--split-showcase-panel-count: {{ section.blocks.size }};">
       {%- for block in section.blocks -%}
         {%- liquid
           assign product = block.settings.product
@@ -33,6 +33,8 @@
           {%- if panel_image != blank -%}
             {{- panel_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(max-width: 999px) 100vw, 50vw', widths: '600, 900, 1200, 1600, 2000', class: 'split-showcase__image' -}}
           {%- endif -%}
+
+          <span class="split-showcase__dim" aria-hidden="true"></span>
 
           <p class="split-showcase__index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</p>
 

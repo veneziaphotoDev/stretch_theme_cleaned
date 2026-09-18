@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
       ticking = false;
     }
 
-    panel.addEventListener('mousemove', function(event) {
+    function setFromEvent(event) {
       const rect = panel.getBoundingClientRect();
       x = event.clientX - rect.left;
       y = event.clientY - rect.top;
@@ -224,6 +224,11 @@ document.addEventListener('DOMContentLoaded', function() {
         window.requestAnimationFrame(update);
         ticking = true;
       }
-    });
+    }
+
+    // Position it under the pointer immediately on entry, so it doesn't fly in from
+    // the panel's center on the first mousemove frame.
+    panel.addEventListener('mouseenter', setFromEvent);
+    panel.addEventListener('mousemove', setFromEvent);
   });
 })();
