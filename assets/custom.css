@@ -2242,12 +2242,25 @@ section-container.color-scheme .circle-button:before {
   }
 }
 
+/* Deliberately NOT width: 100% of the panel: that would tie the content's width to the grid
+   column's live width while it animates (hover-grow on desktop, tap-focus on mobile), causing
+   the text to visibly re-wrap and the content box to change height mid-transition. Sized in vw
+   instead -- independent of the animating column -- so wrapping/height stay constant and the
+   panel's own `overflow: hidden` clips it instead of it reflowing. */
 .split-showcase__content {
-  position: relative;
+  position: absolute;
   z-index: 2;
+  inset-block-end: 0;
+  inset-inline-start: 0;
   padding: clamp(1.25rem, 5vw, 2.5rem);
-  width: 100%;
+  width: min(78vw, 26rem);
   transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@media screen and (min-width: 1000px) {
+  .split-showcase__content {
+    width: min(40vw, 32rem);
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
