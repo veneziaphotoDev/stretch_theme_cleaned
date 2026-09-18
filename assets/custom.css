@@ -2082,6 +2082,20 @@ section-container.color-scheme .circle-button:before {
   grid-template-columns: repeat(var(--split-showcase-panel-count, 2), minmax(0, 1fr));
 }
 
+@media screen and (min-width: 1000px) {
+  .split-showcase {
+    transition: grid-template-columns 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .split-showcase:has(.split-showcase__panel:first-child:hover) {
+    grid-template-columns: 1.18fr 0.82fr;
+  }
+
+  .split-showcase:has(.split-showcase__panel:last-child:hover) {
+    grid-template-columns: 0.82fr 1.18fr;
+  }
+}
+
 @media screen and (max-width: 699px) {
   .split-showcase {
     grid-template-columns: minmax(0, 1fr);
@@ -2097,6 +2111,12 @@ section-container.color-scheme .circle-button:before {
   color: #fff;
   text-decoration: none;
   border-inline-end: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .split-showcase__panel {
+    cursor: none;
+  }
 }
 
 .split-showcase__panel:last-child {
@@ -2157,6 +2177,13 @@ section-container.color-scheme .circle-button:before {
   z-index: 2;
   padding: 2.5rem;
   width: 100%;
+  transition: transform 0.5s ease;
+}
+
+@media screen and (min-width: 1000px) {
+  .split-showcase__panel:hover .split-showcase__content {
+    transform: translateY(-0.5rem);
+  }
 }
 
 .split-showcase__tagline {
@@ -2176,4 +2203,79 @@ section-container.color-scheme .circle-button:before {
 
 .split-showcase__cta {
   display: inline-block;
+  transition: opacity 0.4s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .split-showcase__cta {
+    opacity: 0;
+  }
+}
+
+/* Editorial index number, top-left of each panel, same visual language as
+   the Nautical Route stop index (large Gascogne-italic numeral). */
+.split-showcase__index {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 2rem;
+  inset-inline-start: 2.5rem;
+  margin: 0;
+  font-family: var(--heading-italic-font-family);
+  font-weight: var(--heading-italic-font-weight);
+  font-style: italic;
+  font-size: var(--text-display-m);
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.55);
+  transition: color 0.5s ease, transform 0.5s ease;
+}
+
+@media screen and (min-width: 1000px) {
+  .split-showcase__panel:hover .split-showcase__index {
+    color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-0.25rem);
+  }
+}
+
+@media screen and (max-width: 699px) {
+  .split-showcase__index {
+    inset-inline-start: 1.25rem;
+    inset-block-start: 1.25rem;
+    font-size: var(--text-h2);
+  }
+}
+
+/* Custom cursor "View" pill -- follows the pointer within its panel,
+   fully hidden on touch/coarse pointers where there is no hover state. */
+.split-showcase__cursor-label {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .split-showcase__cursor-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 3;
+    top: var(--cursor-y, 50%);
+    left: var(--cursor-x, 50%);
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    color: #111;
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    will-change: transform;
+  }
+
+  .split-showcase__panel:hover .split-showcase__cursor-label {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }

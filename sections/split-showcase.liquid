@@ -29,10 +29,12 @@
           endif
           assign panel_url = product.url
         -%}
-        <a {% if panel_url != blank %}href="{{ panel_url }}"{% endif %} class="split-showcase__panel" {{ block.shopify_attributes }}>
+        <a {% if panel_url != blank %}href="{{ panel_url }}"{% endif %} class="split-showcase__panel" data-split-panel {{ block.shopify_attributes }}>
           {%- if panel_image != blank -%}
             {{- panel_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(max-width: 999px) 100vw, 50vw', widths: '600, 900, 1200, 1600, 2000', class: 'split-showcase__image' -}}
           {%- endif -%}
+
+          <p class="split-showcase__index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</p>
 
           <div class="split-showcase__content">
             {%- if panel_tagline != blank -%}
@@ -47,6 +49,10 @@
               <span class="button split-showcase__cta">{{ block.settings.button_text }}</span>
             {%- endif -%}
           </div>
+
+          {%- if block.settings.button_text != blank -%}
+            <span class="split-showcase__cursor-label" aria-hidden="true">{{ block.settings.button_text }}</span>
+          {%- endif -%}
         </a>
       {%- endfor -%}
     </div>

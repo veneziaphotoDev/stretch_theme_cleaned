@@ -193,3 +193,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 })();
+
+// Split showcase: custom cursor "View" label follows the pointer within its own panel.
+// Hover-capable/fine-pointer devices only -- the label is display:none elsewhere in CSS.
+(function() {
+  const panels = document.querySelectorAll('.split-showcase__panel');
+  if (!panels.length) return;
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  panels.forEach(function(panel) {
+    const label = panel.querySelector('.split-showcase__cursor-label');
+    if (!label) return;
+
+    let ticking = false;
+    let x = 0;
+    let y = 0;
+
+    function update() {
+      label.style.setProperty('--cursor-x', x + 'px');
+      label.style.setProperty('--cursor-y', y + 'px');
+      ticking = false;
+    }
+
+    panel.addEventListener('mousemove', function(event) {
+      const rect = panel.getBoundingClientRect();
+      x = event.clientX - rect.left;
+      y = event.clientY - rect.top;
+
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    });
+  });
+})();
