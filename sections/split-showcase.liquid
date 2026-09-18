@@ -26,6 +26,14 @@
   that panel in the block order (theme editor: drag it right below the panel it belongs to); it's then rendered
   inside that panel's actions row instead of as its own grid cell. An app block with no panel immediately before
   it in the order is simply not rendered.
+
+  Duo variant only: a draggable handle sits on the boundary between the two panels (like a before/after image
+  comparison slider) -- dragging it live-tracks the pointer between the two panels, snapping to whichever side's
+  focus state it ends closer to on release (custom.js). This is in addition to, not instead of, the existing
+  hover (desktop) / tap-to-focus (touch) swap -- all three ways of changing focus stay in sync via the same
+  .is-panel-2-active class. The handle carries a small vertical text prompt naming whichever panel is currently
+  NOT in focus, inviting a drag toward it; the two prompts are merchant-editable section settings since the
+  copy ("More an evening person?" / "More a morning person?") is specific to this sunrise/sunset pairing.
 {%- endcomment -%}
 
 {%- liquid
@@ -76,6 +84,22 @@
           </div>
         {%- endif -%}
       {%- endfor -%}
+
+      {%- if panel_blocks.size == 2 -%}
+        <div class="split-showcase__handle" data-split-handle aria-hidden="true">
+          <span class="split-showcase__handle-bar"></span>
+
+          <span class="split-showcase__handle-label split-showcase__handle-label--first">
+            {{ section.settings.slider_label_first }}
+            {%- render 'icon' with 'chevron-right', class: 'split-showcase__handle-chevron' -%}
+          </span>
+
+          <span class="split-showcase__handle-label split-showcase__handle-label--second">
+            {{ section.settings.slider_label_second }}
+            {%- render 'icon' with 'chevron-right', class: 'split-showcase__handle-chevron split-showcase__handle-chevron--left' -%}
+          </span>
+        </div>
+      {%- endif -%}
     </div>
   </div>
 {%- endif -%}
@@ -94,6 +118,24 @@
       "id": "color_scheme",
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Drag handle (duo only)"
+    },
+    {
+      "type": "text",
+      "id": "slider_label_first",
+      "label": "Prompt shown when the first panel is in focus",
+      "info": "Invites a drag toward the second panel.",
+      "default": "More an evening person?"
+    },
+    {
+      "type": "text",
+      "id": "slider_label_second",
+      "label": "Prompt shown when the second panel is in focus",
+      "info": "Invites a drag toward the first panel.",
+      "default": "More a morning person?"
     }
   ],
   "blocks": [
