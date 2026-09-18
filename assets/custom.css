@@ -2078,27 +2078,40 @@ section-container.color-scheme .circle-button:before {
    ============================================ */
 
 .split-showcase {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(var(--split-showcase-panel-count, 2), minmax(0, 1fr));
 }
 
-/* Duo variant (exactly two panels): same side-by-side diptych at every viewport width --
-   it never collapses to a vertical stack, mobile included. The first panel (morning/sunrise)
-   is the default "active" one -- slightly wider, brighter, undimmed -- until the second panel
-   is hovered, at which point they swap (hover-capable pointers only; on touch it just rests
-   in the default state). */
+/* Duo variant (exactly two panels): same side-by-side diptych at every viewport width -- it
+   never collapses to a vertical stack, mobile included. The first panel (morning/sunrise) is
+   the default "active" one -- clearly wider, brighter, undimmed -- until the other becomes
+   focused, at which point they swap. Three independent ways to trigger that swap, all landing
+   on the exact same 80/20 ratio so they stay visually consistent with each other and with the
+   drag handle's resting position: hovering (desktop, ephemeral -- reverts on mouse-out),
+   tapping (touch, persistent -- see custom.js) and dragging the handle (any pointer,
+   persistent, see below). */
 .split-showcase--duo {
-  grid-template-columns: 1.18fr 0.82fr;
+  grid-template-columns: 4fr 1fr;
+  transition: grid-template-columns 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.split-showcase--duo.is-panel-2-active {
+  grid-template-columns: 1fr 4fr;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .split-showcase--duo {
-    transition: grid-template-columns 0.7s cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
   .split-showcase--duo:has(.split-showcase__panel:last-child:hover) {
-    grid-template-columns: 0.82fr 1.18fr;
+    grid-template-columns: 1fr 4fr;
   }
+}
+
+/* Live-tracks the pointer while dragging the handle -- see the --split-showcase-live-columns
+   custom property set on every pointermove in custom.js. No transition here: it needs to
+   follow 1:1, the transition above would just fight the drag with lag. */
+.split-showcase--duo.is-dragging {
+  grid-template-columns: var(--split-showcase-live-columns, 4fr 1fr);
+  transition: none;
 }
 
 /* Generic (non-duo, N-panel) fallback stacks on narrow screens. */
@@ -2108,6 +2121,77 @@ section-container.color-scheme .circle-button:before {
   }
 }
 
+/* Draggable handle, before/after-slider style -- sits on the boundary between the two panels.
+   Resting position mirrors whatever the hover/tap swap already decided (same .is-panel-2-active
+   class, same transition), so it glides along with the panels on those too, not just its own
+   drag. While actively dragging (.is-dragging, set in custom.js), the transition is dropped and
+   the position instead tracks the pointer 1:1 via --split-showcase-live-ratio, set on every
+   pointermove -- no lag, no easing fighting the drag. */
+.split-showcase--duo .split-showcase__handle {
+  position: absolute;
+  z-index: 5;
+  inset-block: 0;
+  inset-inline-start: 80%;
+  width: 2.5rem;
+  margin-inline-start: -1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+  cursor: ew-resize;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: inset-inline-start 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__handle {
+  inset-inline-start: 20%;
+}
+
+.split-showcase--duo.is-dragging .split-showcase__handle {
+  inset-inline-start: var(--split-showcase-live-ratio, 80%);
+  transition: none;
+}
+
+.split-showcase__handle-bar {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 50%;
+  width: 2px;
+  margin-inline-start: -1px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.35);
+}
+
+.split-showcase__handle-label {
+  position: relative;
+  z-index: 1;
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  transform: rotate(-90deg);
+  color: #fff;
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.split-showcase--duo:not(.is-panel-2-active) .split-showcase__handle-label--first,
+.split-showcase--duo.is-panel-2-active .split-showcase__handle-label--second {
+  display: flex;
+}
+
+.split-showcase__handle-chevron {
+  flex-shrink: 0;
+}
+
+.split-showcase__handle-chevron--left {
+  transform: rotate(180deg);
+}
+
 .split-showcase__panel {
   position: relative;
   display: flex;
@@ -2115,6 +2199,7 @@ section-container.color-scheme .circle-button:before {
   min-height: clamp(20rem, 65vh, 44rem);
   overflow: hidden;
   color: #fff;
+  cursor: pointer;
   border-inline-end: 1px solid rgba(255, 255, 255, 0.3);
 }
 
@@ -2208,18 +2293,82 @@ section-container.color-scheme .circle-button:before {
   }
 }
 
+/* Persistent equivalent of the block above, driven by the .is-panel-2-active class (custom.js)
+   instead of :has(:hover) -- this is what tapping and dragging the handle set. Unconditional
+   (not scoped to touch): dragging the handle works with a mouse too, and needs the dim/image
+   swap to follow it there just the same. */
+.split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child .split-showcase__image {
+  filter: saturate(0.45) brightness(0.5);
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child .split-showcase__dim {
+  opacity: 1;
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child .split-showcase__image {
+  filter: saturate(0.85) brightness(0.92);
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child .split-showcase__dim {
+  opacity: 0;
+}
+
+/* Deliberately NOT width: 100% of the panel: that would tie the content's width to the grid
+   column's live width while it animates (hover-grow on desktop, tap-focus on mobile), causing
+   the text to visibly re-wrap and the content box to change height mid-transition. Sized in vw
+   instead -- independent of the animating column -- so wrapping/height stay constant and the
+   panel's own `overflow: hidden` clips it instead of it reflowing. */
 .split-showcase__content {
-  position: relative;
+  position: absolute;
   z-index: 2;
+  inset-block-end: 0;
+  inset-inline-start: 0;
   padding: clamp(1.25rem, 5vw, 2.5rem);
-  width: 100%;
+  width: min(78vw, 26rem);
   transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@media screen and (min-width: 1000px) {
+  .split-showcase__content {
+    /* The dominant panel is now 80% wide on desktop too (matches touch/drag), so there's more
+       room to use than the mobile-sized cap above. */
+    width: min(42vw, 36rem);
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
   .split-showcase__panel:hover .split-showcase__content {
     transform: translateY(-0.5rem);
   }
+}
+
+/* At a 20/80 column split there isn't room for the title/tagline to wrap sanely in the narrow
+   panel, so the non-focused panel's text fades out entirely instead -- only the focused panel
+   reveals its copy, the other recedes to just its image sliver. Unconditional for the same
+   reason as the block above: the 80/20 persistent ratio now applies on every device. */
+.split-showcase--duo .split-showcase__content {
+  transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.split-showcase--duo .split-showcase__panel:first-child .split-showcase__content {
+  transform: translateY(-0.5rem);
+}
+
+.split-showcase--duo .split-showcase__panel:last-child .split-showcase__content {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child .split-showcase__content {
+  opacity: 0;
+  pointer-events: none;
+  transform: none;
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child .split-showcase__content {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-0.5rem);
 }
 
 .split-showcase__tagline {
@@ -2240,12 +2389,16 @@ section-container.color-scheme .circle-button:before {
 
 .split-showcase__actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 0.75rem;
 }
 
-.split-showcase__cta {
-  display: inline-block;
+/* Keeps whatever the Meety app block renders from stretching/stacking oddly -- app blocks
+   often set their own width: 100% internally. A flex-basis of 0 overrides that: it's what the
+   flex item's main-axis size is computed from instead of its own `width`. */
+.split-showcase__actions > * {
+  flex: 1 1 0;
+  min-width: 0;
 }
 

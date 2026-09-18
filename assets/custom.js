@@ -193,3 +193,132 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 })();
+
+// Split showcase: the panel background/image is the product link (there's no plain <a> wrapping
+// it any more -- the actions row holds an app block, which can't be nested inside an anchor).
+// Behavior differs by input:
+//   - mouse: :hover already previews/brightens the panel before any click happens, so a click
+//     always navigates straight away.
+//   - touch/pen: there's no hover preview, so the first tap on a panel only focuses it
+//     (mirrors what hover does -- brightens it, narrows the other), same as tapping it always
+//     did. Only a second tap, on the panel that's now already focused, navigates -- otherwise
+//     tapping the non-focused panel to bring it into view would immediately and unintentionally
+//     send you to its product page.
+//
+// Activation is driven by `click`, not `pointerup`/`pointerdown`: those are raw, lower-level
+// signals that don't have `click`'s built-in tap-vs-scroll disambiguation -- on touch, a
+// `pointerup` can simply not fire at all if the browser decides the gesture was a scroll
+// instead (fires `pointercancel` then), so relying on it directly can make tapping silently
+// stop working. `click` is what's reliable across mouse and touch. A separate `pointerdown`
+// listener just records which input type was actually used (real event.pointerType, not a
+// matchMedia guess) for the click handler to branch on -- it doesn't act on anything itself.
+(function() {
+  const containers = document.querySelectorAll('.split-showcase--duo');
+  if (!containers.length) return;
+
+  containers.forEach(function(container) {
+    const panels = container.querySelectorAll('.split-showcase__panel');
+    if (panels.length !== 2) return;
+
+    panels.forEach(function(panel, index) {
+      let lastPointerType = 'mouse';
+
+      panel.addEventListener('pointerdown', function(event) {
+        lastPointerType = event.pointerType || 'mouse';
+      });
+
+      panel.addEventListener('click', function(event) {
+        // Let taps on the actual app block (Meety) act normally -- only the image/background
+        // itself drives focus/navigation.
+        if (event.target.closest('.split-showcase__actions')) return;
+
+        const url = panel.dataset.productUrl;
+        const isTouch = lastPointerType === 'touch' || lastPointerType === 'pen';
+
+        if (isTouch) {
+          const isActive = index === 1
+            ? container.classList.contains('is-panel-2-active')
+            : !container.classList.contains('is-panel-2-active');
+
+          if (!isActive) {
+            container.classList.toggle('is-panel-2-active', index === 1);
+            return;
+          }
+        }
+
+        if (url) window.location.href = url;
+      });
+    });
+  });
+})();
+
+// Split showcase: draggable handle between the two panels, before/after-slider style. Works
+// with mouse, touch or pen alike via Pointer Events. While dragging, the ratio tracks the
+// pointer live (rAF-throttled) via the --split-showcase-live-ratio/-columns custom properties,
+// which custom.css consumes with transitions disabled (.is-dragging) so there's no lag behind
+// the pointer. On release those inline properties are cleared and .is-panel-2-active is left
+// set to whichever side the drag ended past the midpoint on -- the same class the hover/tap
+// swap use, so CSS takes over and animates the rest of the way to a clean 80/20 (or 20/80) with
+// its normal transition, instead of resting wherever the pointer happened to let go.
+(function() {
+  const MIN_RATIO = 0.2;
+  const MAX_RATIO = 0.8;
+
+  document.querySelectorAll('.split-showcase--duo').forEach(function(container) {
+    const handle = container.querySelector('.split-showcase__handle');
+    if (!handle) return;
+
+    let dragging = false;
+    let ticking = false;
+    let pendingRatio = 0.8;
+
+    function apply(ratio) {
+      const firstPct = ratio * 100;
+      const secondPct = 100 - firstPct;
+      container.style.setProperty('--split-showcase-live-ratio', firstPct.toFixed(2) + '%');
+      container.style.setProperty('--split-showcase-live-columns', firstPct.toFixed(2) + 'fr ' + secondPct.toFixed(2) + 'fr');
+      container.classList.toggle('is-panel-2-active', ratio < 0.5);
+      ticking = false;
+    }
+
+    function queueRatio(ratio) {
+      pendingRatio = ratio;
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(function() {
+          apply(pendingRatio);
+        });
+      }
+    }
+
+    function ratioFromEvent(event) {
+      const rect = container.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width;
+      return Math.min(MAX_RATIO, Math.max(MIN_RATIO, x));
+    }
+
+    handle.addEventListener('pointerdown', function(event) {
+      dragging = true;
+      handle.setPointerCapture(event.pointerId);
+      container.classList.add('is-dragging');
+      queueRatio(ratioFromEvent(event));
+      event.preventDefault();
+    });
+
+    handle.addEventListener('pointermove', function(event) {
+      if (!dragging) return;
+      queueRatio(ratioFromEvent(event));
+    });
+
+    function endDrag() {
+      if (!dragging) return;
+      dragging = false;
+      container.classList.remove('is-dragging');
+      container.style.removeProperty('--split-showcase-live-ratio');
+      container.style.removeProperty('--split-showcase-live-columns');
+    }
+
+    handle.addEventListener('pointerup', endDrag);
+    handle.addEventListener('pointercancel', endDrag);
+  });
+})();
