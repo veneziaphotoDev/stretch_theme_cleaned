@@ -194,12 +194,14 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 })();
 
-// Split showcase: tap-to-focus on touch devices, mirroring the desktop hover swap (brighten/
-// widen the tapped panel, dim/narrow the other). Hover-capable pointers already get this via
-// CSS :hover/:has() alone -- this only runs where there's no hover to drive that.
+// Split showcase: click/tap-to-focus, mirroring the desktop hover swap (brighten/widen the
+// tapped panel, dim/narrow the other). Always attached, regardless of pointer type -- the
+// .is-panel-2-active class it toggles only has any visual effect where the matching
+// `@media (hover: none)` CSS rules apply, so this is a no-op on real desktop/mouse anyway.
+// (Deliberately not gated behind a matchMedia('hover'/'pointer') check: that check is what
+// silently broke tapping on real devices before -- pointer/hover media features are reported
+// inconsistently enough across mobile browsers and devices that it isn't a safe gate here.)
 (function() {
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-
   const containers = document.querySelectorAll('.split-showcase--duo');
   if (!containers.length) return;
 

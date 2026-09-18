@@ -2304,12 +2304,23 @@ section-container.color-scheme .circle-button:before {
 
 .split-showcase__actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 0.75rem;
 }
 
+/* Force both actions (our button + whatever the Meety app block renders) to share the row
+   evenly instead of stacking -- app blocks often set their own width: 100% internally. A
+   flex-basis of 0 overrides that: it's what the flex item's main-axis size is computed from
+   instead of its own `width`, regardless of what CSS the app block ships with. */
+.split-showcase__actions > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
 .split-showcase__cta {
   display: inline-block;
+  width: 100%;
+  text-align: center;
 }
 
