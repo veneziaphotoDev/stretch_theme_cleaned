@@ -2119,12 +2119,6 @@ section-container.color-scheme .circle-button:before {
   border-inline-end: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .split-showcase__panel {
-    cursor: none;
-  }
-}
-
 .split-showcase__panel:last-child {
   border-inline-end: 0;
 }
@@ -2247,13 +2241,6 @@ section-container.color-scheme .circle-button:before {
 
 .split-showcase__cta {
   display: inline-block;
-  transition: opacity 0.4s ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .split-showcase__cta {
-    opacity: 0;
-  }
 }
 
 /* Editorial index number, top-left of each panel, same visual language as
@@ -2294,53 +2281,5 @@ section-container.color-scheme .circle-button:before {
 
   .split-showcase__panel:hover .split-showcase__index {
     transform: translateY(-0.25rem);
-  }
-}
-
-/* Custom cursor "View" pill -- follows the pointer within its panel, fully hidden on
-   touch/coarse pointers where there is no hover state (mobile keeps the plain CTA button
-   instead). Positioning uses `transform`, never `top`/`left`: those are layout properties,
-   and setting them from JS on every mousemove forces a synchronous reflow each frame,
-   which is what made this feel laggy -- transform is compositor-only, no layout cost. */
-.split-showcase__cursor-label {
-  display: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .split-showcase__cursor-label {
-    display: block;
-    position: absolute;
-    z-index: 3;
-    top: 0;
-    left: 0;
-    width: 6rem;
-    height: 6rem;
-    margin-block-start: -3rem;
-    margin-inline-start: -3rem;
-    pointer-events: none;
-    transform: translate3d(var(--cursor-x, 3rem), var(--cursor-y, 3rem), 0);
-    will-change: transform;
-  }
-
-  .split-showcase__cursor-label-inner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.95);
-    color: #111;
-    font-size: var(--text-xs);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0;
-    transform: scale(0.8);
-    transition: opacity 0.35s cubic-bezier(0.65, 0, 0.35, 1), transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  .split-showcase__panel:hover .split-showcase__cursor-label-inner {
-    opacity: 1;
-    transform: scale(1);
   }
 }
