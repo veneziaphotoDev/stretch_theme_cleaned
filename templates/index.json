@@ -520,12 +520,12 @@
   "order": [
     "slideshow",
     "intro_stats_laguna01",
-    "text_with_media_about01",
     "split_showcase_laguna01",
     "steps_howitworks01",
     "gallery_laguna01",
     "video_carousel_community01",
     "testimonial_quotes_laguna01",
+    "text_with_media_about01",
     "activity_cards_ecosystem01"
   ]
 }
