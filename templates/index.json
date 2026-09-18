@@ -20,7 +20,7 @@
             "content_max_width": 900,
             "mobile_content_position": "place-self-center",
             "desktop_content_position": "sm:place-self-center",
-            "overlay_color": "#000000",
+            "overlay_color": "#321e1e",
             "overlay_opacity": 15
           },
           "blocks": {
@@ -133,7 +133,7 @@
       ],
       "settings": {
         "anchor": "",
-        "color_scheme": "",
+        "color_scheme": "scheme-5",
         "subheading": "The Laguna Experience",
         "heading": "Venice Like No One Has Ever Seen It.",
         "heading_tag": "h4",
@@ -275,7 +275,7 @@
       ],
       "settings": {
         "anchor": "",
-        "color_scheme": "",
+        "color_scheme": "scheme-6",
         "subheading": "How It Works",
         "heading": "From embarkation to a photograph you'll keep forever.",
         "heading_tag": "h3",
@@ -457,7 +457,7 @@
       ],
       "settings": {
         "anchor": "",
-        "color_scheme": "",
+        "color_scheme": "scheme-2",
         "subheading": "Community Gallery",
         "heading": "A vlog-style look, created by our guests.",
         "heading_tag": "h3",
@@ -494,7 +494,7 @@
       ],
       "settings": {
         "anchor": "",
-        "color_scheme": "",
+        "color_scheme": "scheme-5",
         "subheading": "What Our Guests Are Saying",
         "autoplay": true,
         "cycle_speed": 4,
