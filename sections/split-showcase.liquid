@@ -53,7 +53,9 @@
           </div>
 
           {%- if block.settings.button_text != blank -%}
-            <span class="split-showcase__cursor-label" aria-hidden="true">{{ block.settings.button_text }}</span>
+            <span class="split-showcase__cursor-label" aria-hidden="true">
+              <span class="split-showcase__cursor-label-inner">{{ block.settings.button_text }}</span>
+            </span>
           {%- endif -%}
         </a>
       {%- endfor -%}

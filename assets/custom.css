@@ -2082,13 +2082,17 @@ section-container.color-scheme .circle-button:before {
   grid-template-columns: repeat(var(--split-showcase-panel-count, 2), minmax(0, 1fr));
 }
 
-/* Duo variant (exactly two panels): the first panel (morning/sunrise) is the default
-   "active" one -- slightly wider, brighter, undimmed -- until the second panel is
-   hovered, at which point they swap. Both the width swap and the dim/brighten swap
-   share the same easing so nothing snaps when the pointer enters or leaves. */
-@media screen and (min-width: 1000px) {
+/* Duo variant (exactly two panels): same side-by-side diptych at every viewport width --
+   it never collapses to a vertical stack, mobile included. The first panel (morning/sunrise)
+   is the default "active" one -- slightly wider, brighter, undimmed -- until the second panel
+   is hovered, at which point they swap (hover-capable pointers only; on touch it just rests
+   in the default state). */
+.split-showcase--duo {
+  grid-template-columns: 1.18fr 0.82fr;
+}
+
+@media (hover: hover) and (pointer: fine) {
   .split-showcase--duo {
-    grid-template-columns: 1.18fr 0.82fr;
     transition: grid-template-columns 0.7s cubic-bezier(0.65, 0, 0.35, 1);
   }
 
@@ -2097,8 +2101,9 @@ section-container.color-scheme .circle-button:before {
   }
 }
 
+/* Generic (non-duo, N-panel) fallback stacks on narrow screens. */
 @media screen and (max-width: 699px) {
-  .split-showcase {
+  .split-showcase:not(.split-showcase--duo) {
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -2107,7 +2112,7 @@ section-container.color-scheme .circle-button:before {
   position: relative;
   display: flex;
   align-items: flex-end;
-  min-height: 26rem;
+  min-height: clamp(20rem, 65vh, 44rem);
   overflow: hidden;
   color: #fff;
   text-decoration: none;
@@ -2124,19 +2129,13 @@ section-container.color-scheme .circle-button:before {
   border-inline-end: 0;
 }
 
-@media screen and (min-width: 1000px) {
-  .split-showcase__panel {
-    min-height: 65vh;
-  }
-}
-
 @media screen and (max-width: 699px) {
-  .split-showcase__panel {
+  .split-showcase:not(.split-showcase--duo) .split-showcase__panel {
     border-inline-end: 0;
     border-block-end: 1px solid rgba(255, 255, 255, 0.3);
   }
 
-  .split-showcase__panel:last-child {
+  .split-showcase:not(.split-showcase--duo) .split-showcase__panel:last-child {
     border-block-end: 0;
   }
 }
@@ -2171,30 +2170,34 @@ section-container.color-scheme .circle-button:before {
   filter: saturate(0.85) brightness(0.92);
 }
 
-.split-showcase__panel:hover .split-showcase__image {
-  transform: scale(1.04);
-  filter: saturate(1.05) brightness(1);
-}
+@media (hover: hover) and (pointer: fine) {
+  .split-showcase__panel:hover .split-showcase__image {
+    transform: scale(1.04);
+    filter: saturate(1.05) brightness(1);
+  }
 
-/* Generic (non-duo) hover dimming: only the hovered panel is undimmed. */
-.split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) .split-showcase__image {
-  filter: saturate(0.45) brightness(0.5);
-}
-
-.split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) .split-showcase__dim {
-  opacity: 1;
-}
-
-/* Duo variant: first panel active by default, swaps to the last panel on its hover. */
-@media screen and (min-width: 1000px) {
-  .split-showcase--duo .split-showcase__panel:last-child .split-showcase__image {
+  /* Generic (non-duo) hover dimming: only the hovered panel is undimmed. */
+  .split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) .split-showcase__image {
     filter: saturate(0.45) brightness(0.5);
   }
 
-  .split-showcase--duo .split-showcase__panel:last-child .split-showcase__dim {
+  .split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) .split-showcase__dim {
     opacity: 1;
   }
+}
 
+/* Duo variant: first panel active by default (dim/bright split is a resting state, not just
+   a hover effect), swapping to the last panel on its hover -- same on mobile and desktop,
+   the swap just only triggers where a real hover exists. */
+.split-showcase--duo .split-showcase__panel:last-child .split-showcase__image {
+  filter: saturate(0.45) brightness(0.5);
+}
+
+.split-showcase--duo .split-showcase__panel:last-child .split-showcase__dim {
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
   .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:first-child .split-showcase__image {
     filter: saturate(0.45) brightness(0.5);
   }
@@ -2212,22 +2215,15 @@ section-container.color-scheme .circle-button:before {
   }
 }
 
-@media screen and (max-width: 999px) {
-  /* Below desktop there's no hover state to swap on, so nothing should stay dimmed. */
-  .split-showcase--duo .split-showcase__panel:last-child .split-showcase__image {
-    filter: saturate(0.85) brightness(0.92);
-  }
-}
-
 .split-showcase__content {
   position: relative;
   z-index: 2;
-  padding: 2.5rem;
+  padding: clamp(1.25rem, 5vw, 2.5rem);
   width: 100%;
   transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-@media screen and (min-width: 1000px) {
+@media (hover: hover) and (pointer: fine) {
   .split-showcase__panel:hover .split-showcase__content {
     transform: translateY(-0.5rem);
   }
@@ -2236,13 +2232,14 @@ section-container.color-scheme .circle-button:before {
 .split-showcase__tagline {
   color: rgba(255, 255, 255, 0.85);
   margin: 0 0 0.5rem;
+  font-size: clamp(0.75rem, 2.2vw, var(--text-sm, 0.875rem));
 }
 
 .split-showcase__title {
   font-family: var(--heading-italic-font-family);
   font-weight: var(--heading-italic-font-weight);
   font-style: var(--heading-italic-font-style);
-  font-size: var(--text-h2);
+  font-size: clamp(1.25rem, 5.5vw, var(--text-h2));
   line-height: 1.05;
   margin: 0 0 1.5rem;
   color: #fff;
@@ -2264,24 +2261,26 @@ section-container.color-scheme .circle-button:before {
 .split-showcase__index {
   position: absolute;
   z-index: 2;
-  inset-block-start: 2rem;
-  inset-inline-start: 2.5rem;
+  inset-block-start: clamp(1rem, 4vw, 2rem);
+  inset-inline-start: clamp(1rem, 5vw, 2.5rem);
   margin: 0;
   font-family: var(--heading-italic-font-family);
   font-weight: var(--heading-italic-font-weight);
   font-style: italic;
-  font-size: var(--text-display-m);
+  font-size: clamp(1.75rem, 8vw, var(--text-display-m));
   line-height: 1;
   color: rgba(255, 255, 255, 0.9);
   transition: color 0.6s cubic-bezier(0.65, 0, 0.35, 1), transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-@media screen and (min-width: 1000px) {
-  .split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) .split-showcase__index {
-    color: rgba(255, 255, 255, 0.55);
-  }
+/* Duo variant: dimmed by default on the (inactive) last panel, same resting state on
+   mobile and desktop; only swaps interactively where a real hover exists. */
+.split-showcase--duo .split-showcase__panel:last-child .split-showcase__index {
+  color: rgba(255, 255, 255, 0.55);
+}
 
-  .split-showcase--duo .split-showcase__panel:last-child .split-showcase__index {
+@media (hover: hover) and (pointer: fine) {
+  .split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) .split-showcase__index {
     color: rgba(255, 255, 255, 0.55);
   }
 
@@ -2298,47 +2297,50 @@ section-container.color-scheme .circle-button:before {
   }
 }
 
-@media screen and (max-width: 699px) {
-  .split-showcase__index {
-    inset-inline-start: 1.25rem;
-    inset-block-start: 1.25rem;
-    font-size: var(--text-h2);
-  }
-}
-
-/* Custom cursor "View" pill -- follows the pointer within its panel,
-   fully hidden on touch/coarse pointers where there is no hover state. */
+/* Custom cursor "View" pill -- follows the pointer within its panel, fully hidden on
+   touch/coarse pointers where there is no hover state (mobile keeps the plain CTA button
+   instead). Positioning uses `transform`, never `top`/`left`: those are layout properties,
+   and setting them from JS on every mousemove forces a synchronous reflow each frame,
+   which is what made this feel laggy -- transform is compositor-only, no layout cost. */
 .split-showcase__cursor-label {
   display: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .split-showcase__cursor-label {
+    display: block;
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 6rem;
+    height: 6rem;
+    margin-block-start: -3rem;
+    margin-inline-start: -3rem;
+    pointer-events: none;
+    transform: translate3d(var(--cursor-x, 3rem), var(--cursor-y, 3rem), 0);
+    will-change: transform;
+  }
+
+  .split-showcase__cursor-label-inner {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    z-index: 3;
-    top: var(--cursor-y, 50%);
-    left: var(--cursor-x, 50%);
-    width: 6rem;
-    height: 6rem;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.95);
     color: #111;
     font-size: var(--text-xs);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    pointer-events: none;
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
-    transition: opacity 0.35s cubic-bezier(0.65, 0, 0.35, 1), transform 0.35s cubic-bezier(0.65, 0, 0.35, 1),
-      top 0.12s linear, left 0.12s linear;
-    will-change: transform, top, left;
+    transform: scale(0.8);
+    transition: opacity 0.35s cubic-bezier(0.65, 0, 0.35, 1), transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
   }
 
-  .split-showcase__panel:hover .split-showcase__cursor-label {
+  .split-showcase__panel:hover .split-showcase__cursor-label-inner {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: scale(1);
   }
 }
