@@ -5,14 +5,20 @@
 
   Full-width, edge-to-edge showcase split evenly into panels (built for exactly two products that are intrinsically
   linked -- e.g. a sunrise and a sunset departure of the same route -- but works with any number of "Panel" blocks).
-  Each panel is a full-bleed background image with a tagline, title and two actions overlaid: a "View product" link
-  and a slot for an app block (Meety) so a merchant can drop in a direct booking/scheduling button per panel. On
-  hover, the hovered panel brightens and gently zooms while the others dim, using :has() (no JS needed).
+  Each panel is a full-bleed background image with a tagline and title, plus a slot for an app block (Meety) so a
+  merchant can drop in a direct booking/scheduling button per panel. On hover, the hovered panel brightens and
+  gently zooms while the others dim, using :has() (no JS needed).
+
+  The panel itself (image/background, excluding the actions row) is the product link -- handled in custom.js
+  rather than as a plain <a> so a booking app block can sit in the actions row without ending up nested inside an
+  anchor, and so the interaction can differ by input: on a real hover-capable pointer, hovering already previews
+  the panel, so a click always navigates straight away; on touch there's no hover preview, so the first tap on a
+  panel only brings it into focus (mirroring what hover does) and only a second tap on the now-focused panel
+  navigates -- otherwise tapping the non-focused panel to look at it would immediately and unintentionally send
+  you to its product page.
 
   Each block pulls its product's title, featured image and tagline metafield by default; every field can be
-  overridden per block if a merchant wants a custom image or copy instead. Panels are no longer themselves a link --
-  only the "View product" button navigates -- so a booking app block can also be placed without being nested inside
-  an anchor.
+  overridden per block if a merchant wants a custom image or copy instead.
 
   App blocks (e.g. Meety) can't be nested inside another block's schema in this section format (Shopify only
   supports "blocks within blocks" in the newer flexible-section architecture, not classic section schema) -- so
@@ -45,7 +51,7 @@
             assign next_index = forloop.index0 | plus: 1
             assign next_block = section.blocks[next_index]
           -%}
-          <div class="split-showcase__panel" data-split-panel {{ block.shopify_attributes }}>
+          <div class="split-showcase__panel" data-split-panel {% if panel_url != blank %}data-product-url="{{ panel_url }}"{% endif %} {{ block.shopify_attributes }}>
             {%- if panel_image != blank -%}
               {{- panel_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(max-width: 999px) 100vw, 50vw', widths: '600, 900, 1200, 1600, 2000', class: 'split-showcase__image' -}}
             {%- endif -%}
@@ -61,15 +67,11 @@
                 <p class="split-showcase__title">{{ panel_title }}</p>
               {%- endif -%}
 
-              <div class="split-showcase__actions">
-                {%- if panel_url != blank and block.settings.button_text != blank -%}
-                  <a href="{{ panel_url }}" class="button split-showcase__cta">{{ block.settings.button_text }}</a>
-                {%- endif -%}
-
-                {%- if next_block.type == '@app' -%}
+              {%- if next_block.type == '@app' -%}
+                <div class="split-showcase__actions">
                   {%- render next_block -%}
-                {%- endif -%}
-              </div>
+                </div>
+              {%- endif -%}
             </div>
           </div>
         {%- endif -%}
@@ -122,12 +124,6 @@
           "id": "title",
           "label": "Title",
           "info": "Optional -- defaults to the product's title."
-        },
-        {
-          "type": "text",
-          "id": "button_text",
-          "label": "\"View product\" button text",
-          "default": "View product"
         }
       ]
     },

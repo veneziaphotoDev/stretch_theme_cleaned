@@ -194,13 +194,18 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 })();
 
-// Split showcase: click/tap-to-focus, mirroring the desktop hover swap (brighten/widen the
-// tapped panel, dim/narrow the other). Always attached, regardless of pointer type -- the
-// .is-panel-2-active class it toggles only has any visual effect where the matching
-// `@media (hover: none)` CSS rules apply, so this is a no-op on real desktop/mouse anyway.
-// (Deliberately not gated behind a matchMedia('hover'/'pointer') check: that check is what
-// silently broke tapping on real devices before -- pointer/hover media features are reported
-// inconsistently enough across mobile browsers and devices that it isn't a safe gate here.)
+// Split showcase: the panel background/image is the product link (there's no plain <a> wrapping
+// it any more -- the actions row holds an app block, which can't be nested inside an anchor).
+// Behavior differs by input, using the real event's pointerType rather than a matchMedia
+// hover/pointer check (unreliable enough across real mobile browsers that it silently broke
+// tapping before):
+//   - mouse: :hover already previews/brightens the panel before any click happens, so a click
+//     always navigates straight away.
+//   - touch/pen: there's no hover preview, so the first tap on a panel only focuses it
+//     (mirrors what hover does -- brightens it, narrows the other), same as tapping it always
+//     did. Only a second tap, on the panel that's now already focused, navigates -- otherwise
+//     tapping the non-focused panel to bring it into view would immediately and unintentionally
+//     send you to its product page.
 (function() {
   const containers = document.querySelectorAll('.split-showcase--duo');
   if (!containers.length) return;
@@ -210,12 +215,26 @@ document.addEventListener('DOMContentLoaded', function() {
     if (panels.length !== 2) return;
 
     panels.forEach(function(panel, index) {
-      panel.addEventListener('click', function(event) {
-        // Let taps on the actual buttons (view product / Meety) navigate normally -- only
-        // tapping the image/background itself should toggle focus.
+      panel.addEventListener('pointerup', function(event) {
+        // Let taps on the actual app block (Meety) act normally -- only the image/background
+        // itself drives focus/navigation.
         if (event.target.closest('.split-showcase__actions')) return;
 
-        container.classList.toggle('is-panel-2-active', index === 1);
+        const url = panel.dataset.productUrl;
+        const isTouch = event.pointerType === 'touch' || event.pointerType === 'pen';
+
+        if (isTouch) {
+          const isActive = index === 1
+            ? container.classList.contains('is-panel-2-active')
+            : !container.classList.contains('is-panel-2-active');
+
+          if (!isActive) {
+            container.classList.toggle('is-panel-2-active', index === 1);
+            return;
+          }
+        }
+
+        if (url) window.location.href = url;
       });
     });
   });
