@@ -5,11 +5,14 @@
 
   Full-width, edge-to-edge showcase split evenly into panels (built for exactly two products that are intrinsically
   linked -- e.g. a sunrise and a sunset departure of the same route -- but works with any number of "Panel" blocks).
-  Each panel is a full-bleed background image with a tagline, title and CTA overlaid. On hover, the hovered panel
-  brightens and gently zooms while the others dim, using :has() (no JS needed).
+  Each panel is a full-bleed background image with a tagline, title and two actions overlaid: a "View product" link
+  and a slot for an app block (Meety) so a merchant can drop in a direct booking/scheduling button per panel. On
+  hover, the hovered panel brightens and gently zooms while the others dim, using :has() (no JS needed).
 
   Each block pulls its product's title, featured image and tagline metafield by default; every field can be
-  overridden per block if a merchant wants a custom image or copy instead.
+  overridden per block if a merchant wants a custom image or copy instead. Panels are no longer themselves a link --
+  only the "View product" button navigates -- so a booking app block can also be placed without being nested inside
+  an anchor.
 {%- endcomment -%}
 
 {%- if section.blocks.size > 0 -%}
@@ -29,14 +32,12 @@
           endif
           assign panel_url = product.url
         -%}
-        <a {% if panel_url != blank %}href="{{ panel_url }}"{% endif %} class="split-showcase__panel" data-split-panel {{ block.shopify_attributes }}>
+        <div class="split-showcase__panel" data-split-panel {{ block.shopify_attributes }}>
           {%- if panel_image != blank -%}
             {{- panel_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(max-width: 999px) 100vw, 50vw', widths: '600, 900, 1200, 1600, 2000', class: 'split-showcase__image' -}}
           {%- endif -%}
 
           <span class="split-showcase__dim" aria-hidden="true"></span>
-
-          <p class="split-showcase__index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</p>
 
           <div class="split-showcase__content">
             {%- if panel_tagline != blank -%}
@@ -47,11 +48,20 @@
               <p class="split-showcase__title">{{ panel_title }}</p>
             {%- endif -%}
 
-            {%- if block.settings.button_text != blank -%}
-              <span class="button split-showcase__cta">{{ block.settings.button_text }}</span>
-            {%- endif -%}
+            <div class="split-showcase__actions">
+              {%- if panel_url != blank and block.settings.button_text != blank -%}
+                <a href="{{ panel_url }}" class="button split-showcase__cta">{{ block.settings.button_text }}</a>
+              {%- endif -%}
+
+              {%- for child_block in block.blocks -%}
+                {%- case child_block.type -%}
+                  {%- when '@app' -%}
+                    {%- render child_block -%}
+                {%- endcase -%}
+              {%- endfor -%}
+            </div>
           </div>
-        </a>
+        </div>
       {%- endfor -%}
     </div>
   </div>
@@ -105,8 +115,14 @@
         {
           "type": "text",
           "id": "button_text",
-          "label": "Button text",
-          "default": "Book My Place"
+          "label": "\"View product\" button text",
+          "default": "View product"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "@app",
+          "name": "App block (e.g. Meety booking button)"
         }
       ]
     }
