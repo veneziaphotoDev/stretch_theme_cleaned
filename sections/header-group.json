@@ -48,7 +48,6 @@
         "hide_on_scroll": false,
         "mobile_layout": "logo_left_navigation_right",
         "desktop_layout": "logo_left_navigation_center",
-        "logo": "shopify://shop_images/logo-with-box-white.svg",
         "logo_max_width": 180,
         "logo_mobile_max_width": 200,
         "menu": "main-menu",
@@ -66,8 +65,7 @@
         "show_country_name": true,
         "show_country_flag": false,
         "show_locale_selector": true,
-        "transparent_header_text_color": "#ffffff",
-        "transparent_logo": "shopify://shop_images/logo-with-box-white.svg"
+        "transparent_header_text_color": "#ffffff"
       }
     }
   },

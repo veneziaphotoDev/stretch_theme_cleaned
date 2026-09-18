@@ -23,6 +23,7 @@
     "text_font_text_transform": "normal",
     "text_font_letter_spacing": 2,
     "heading_font": "noto_serif_n3",
+    "heading_custom_font": "gascogne",
     "heading_font_size_factor": 0.8,
     "heading_text_transform": "none",
     "heading_letter_spacing": 2,
@@ -31,16 +32,23 @@
     "subheading_custom_font": "helvetica_neue",
     "subheading_font_size": 15,
     "subheading_text_transform": "uppercase",
+    "subheading_letter_spacing": 5,
     "subheading_icon": "none",
+    "button_text_font": "body",
     "button_font_size_mobile": 15,
     "button_font_size_desktop": 16,
     "button_text_transform": "none",
+    "button_letter_spacing": 5,
+    "input_uppercase": false,
     "heading_default_highlight_effect": "italic",
     "heading_italic_custom_font": "gascogne",
+    "heading_italic_font_size_multiplier": 6,
+    "apply_italic_override_to_paragraphs": true,
     "show_page_transition": true,
     "button_animation": "none",
     "image_hover_animation": "none",
     "show_heading_effect_animation": false,
+    "stagger_products": true,
     "product_card_color_scheme": "scheme-1",
     "product_card_image_aspect_ratio": "short_crop",
     "product_card_show_secondary_image": false,
@@ -66,6 +74,48 @@
     "social_instagram": "",
     "social_youtube": "",
     "content_for_index": [],
+    "blocks": {
+      "18384125943788576634": {
+        "type": "shopify://apps/meety-booking-app/blocks/bookings-v2/47f38863-0648-44e3-873d-c84301243dcb",
+        "disabled": false,
+        "settings": {
+          "use_add_to_cart_style": false,
+          "horizontal_alignment": "center",
+          "font_family": "poppins_n4",
+          "font_size": 14,
+          "schedule_text": "Schedule your time",
+          "schedule_text_color": "#fffffd",
+          "schedule_background_color": "#000001",
+          "bundle_button_type": "1",
+          "bundle_text": "Schedule your bundle",
+          "bundle_book_text": "Book a new bundle",
+          "bundle_manage_text": "Manage your booked bundle",
+          "bundle_text_color": "#fffffd",
+          "bundle_background_color": "#000001",
+          "css_customization": "--meety-block-button-border-radius: 10px;\n--meety-block-button-width: 100%;\n--meety-block-button-height: 48px;\n--meety-block-button-margin: 0px 0px 0px 0px;\n--meety-block-button-schedule-border-color:#000001;\n--meety-block-button-schedule-border-width: 0px;\n--meety-block-button-subs-book-border-color:#000001;\n--meety-block-button-subs-book-border-width: 0px;"
+        }
+      },
+      "11793083337665231478": {
+        "type": "shopify://apps/meety-booking-app/blocks/meety-button-floating/47f38863-0648-44e3-873d-c84301243dcb",
+        "disabled": false,
+        "settings": {
+          "widget_url_handle": "",
+          "product": "sunrise-lights",
+          "text": "Book an Experience",
+          "text_color": "#fffffd",
+          "background_color": "#9C5C49",
+          "position": "right",
+          "width": "fit-content",
+          "height": "fit-content",
+          "border_width": 8,
+          "border_radius": 0,
+          "border_color": "#9C5C49",
+          "font_family": "sans_serif_n4",
+          "font_size": 20,
+          "hide_on_scroll_down": false
+        }
+      }
+    },
     "color_schemes": {
       "scheme-1": {
         "settings": {
@@ -201,36 +251,6 @@
           "heading_highlight_text_color": "#000000",
           "input_background": "rgba(0,0,0,0)",
           "input_text_color": "#2a2a2a"
-        }
-      }
-    },
-    "heading_custom_font": "gascogne",
-    "subheading_letter_spacing": 5,
-    "button_text_font": "body",
-    "button_letter_spacing": 5,
-    "input_uppercase": false,
-    "heading_italic_font_size_multiplier": 6,
-    "apply_italic_override_to_paragraphs": true,
-    "stagger_products": true,
-    "blocks": {
-      "18384125943788576634": {
-        "type": "shopify://apps/meety-booking-app/blocks/bookings-v2/47f38863-0648-44e3-873d-c84301243dcb",
-        "disabled": false,
-        "settings": {
-          "use_add_to_cart_style": false,
-          "horizontal_alignment": "center",
-          "font_family": "poppins_n4",
-          "font_size": 14,
-          "schedule_text": "Schedule your time",
-          "schedule_text_color": "#fffffd",
-          "schedule_background_color": "#000001",
-          "bundle_button_type": "1",
-          "bundle_text": "Schedule your bundle",
-          "bundle_book_text": "Book a new bundle",
-          "bundle_manage_text": "Manage your booked bundle",
-          "bundle_text_color": "#fffffd",
-          "bundle_background_color": "#000001",
-          "css_customization": "--meety-block-button-border-radius: 10px;\n--meety-block-button-width: 100%;\n--meety-block-button-height: 48px;\n--meety-block-button-margin: 0px 0px 0px 0px;\n--meety-block-button-schedule-border-color:#000001;\n--meety-block-button-schedule-border-width: 0px;\n--meety-block-button-subs-book-border-color:#000001;\n--meety-block-button-subs-book-border-width: 0px;"
         }
       }
     }

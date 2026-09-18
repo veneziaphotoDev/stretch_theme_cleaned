@@ -33,15 +33,11 @@
         "intro_text"
       ],
       "settings": {
-        "anchor": "",
-        "fit_screen": false,
         "color_scheme": "",
-        "content_width": "lg",
-        "text_alignment": "center",
-        "layout": "default",
-        "reverse_columns": false,
         "group_with_next": false,
-        "group_color_scheme": ""
+        "group_color_scheme": "",
+        "content_width": "lg",
+        "text_alignment": "center"
       }
     },
     "sitemap_pages": {

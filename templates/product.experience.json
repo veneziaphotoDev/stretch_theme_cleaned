@@ -42,6 +42,10 @@
           "type": "experience_summary",
           "settings": {}
         },
+        "experience_included": {
+          "type": "experience_included",
+          "settings": {}
+        },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
@@ -54,6 +58,10 @@
             "variant_image_options": "",
             "size_chart_page": ""
           }
+        },
+        "experience_sibling": {
+          "type": "experience_sibling",
+          "settings": {}
         },
         "buy_buttons": {
           "type": "buy_buttons",
@@ -69,16 +77,8 @@
             "payment_button_text_color": ""
           }
         },
-        "experience_included": {
-          "type": "experience_included",
-          "settings": {}
-        },
         "experience_privatize": {
           "type": "experience_privatize",
-          "settings": {}
-        },
-        "experience_sibling": {
-          "type": "experience_sibling",
           "settings": {}
         }
       },
@@ -112,6 +112,12 @@
         "max_image_zoom_level": 3
       }
     },
+    "experience-details": {
+      "type": "product-experience-details",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    },
     "related-products": {
       "type": "related-products",
       "blocks": {
@@ -143,43 +149,37 @@
         "show_scrolling_bar": true
       }
     },
-    "experience-details": {
-      "type": "product-experience-details",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
-    },
     "video-carousel": {
       "type": "video-carousel",
       "blocks": {
         "video01": {
           "type": "video",
           "settings": {
-            "guest_video": null
+            "guest_video": "guest-video-4choap2l"
           }
         },
         "video02": {
           "type": "video",
           "settings": {
-            "guest_video": null
+            "guest_video": "guest-video-7fyagubx"
           }
         },
         "video03": {
           "type": "video",
           "settings": {
-            "guest_video": null
+            "guest_video": "guest-video-lhwswequ"
           }
         },
         "video04": {
           "type": "video",
           "settings": {
-            "guest_video": null
+            "guest_video": "guest-video-4choap2l"
           }
         },
         "video05": {
           "type": "video",
           "settings": {
-            "guest_video": null
+            "guest_video": "guest-video-lhwswequ"
           }
         }
       },
@@ -206,25 +206,32 @@
         "quote01": {
           "type": "testimonial",
           "settings": {
-            "testimonial": null
+            "testimonial": "intimate-unhurried-beautifully-organised-nothing-like-the-usual-gondola-circuit-1"
           }
         },
         "quote02": {
           "type": "testimonial",
           "settings": {
-            "testimonial": null
+            "testimonial": "the-editing-session-on-san-servolo-was-the-best-part-i-left-with-a-print-ill-keep-forever-1"
+          }
+        },
+        "testimonial_hhNTwd": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": "we-saw-a-venice-we-didnt-know-existed-empty-silent-glowing-the-photographers-eye-made-all-the-difference-1"
           }
         },
         "quote03": {
           "type": "testimonial",
           "settings": {
-            "testimonial": null
+            "testimonial": "the-editing-session-on-san-servolo-was-the-best-part-i-left-with-a-print-ill-keep-forever-1"
           }
         }
       },
       "block_order": [
         "quote01",
         "quote02",
+        "testimonial_hhNTwd",
         "quote03"
       ],
       "settings": {
