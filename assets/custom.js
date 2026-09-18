@@ -196,9 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Split showcase: the panel background/image is the product link (there's no plain <a> wrapping
 // it any more -- the actions row holds an app block, which can't be nested inside an anchor).
-// Behavior differs by input, using the real event's pointerType rather than a matchMedia
-// hover/pointer check (unreliable enough across real mobile browsers that it silently broke
-// tapping before):
+// Behavior differs by input:
 //   - mouse: :hover already previews/brightens the panel before any click happens, so a click
 //     always navigates straight away.
 //   - touch/pen: there's no hover preview, so the first tap on a panel only focuses it
@@ -206,6 +204,14 @@ document.addEventListener('DOMContentLoaded', function() {
 //     did. Only a second tap, on the panel that's now already focused, navigates -- otherwise
 //     tapping the non-focused panel to bring it into view would immediately and unintentionally
 //     send you to its product page.
+//
+// Activation is driven by `click`, not `pointerup`/`pointerdown`: those are raw, lower-level
+// signals that don't have `click`'s built-in tap-vs-scroll disambiguation -- on touch, a
+// `pointerup` can simply not fire at all if the browser decides the gesture was a scroll
+// instead (fires `pointercancel` then), so relying on it directly can make tapping silently
+// stop working. `click` is what's reliable across mouse and touch. A separate `pointerdown`
+// listener just records which input type was actually used (real event.pointerType, not a
+// matchMedia guess) for the click handler to branch on -- it doesn't act on anything itself.
 (function() {
   const containers = document.querySelectorAll('.split-showcase--duo');
   if (!containers.length) return;
@@ -215,13 +221,19 @@ document.addEventListener('DOMContentLoaded', function() {
     if (panels.length !== 2) return;
 
     panels.forEach(function(panel, index) {
-      panel.addEventListener('pointerup', function(event) {
+      let lastPointerType = 'mouse';
+
+      panel.addEventListener('pointerdown', function(event) {
+        lastPointerType = event.pointerType || 'mouse';
+      });
+
+      panel.addEventListener('click', function(event) {
         // Let taps on the actual app block (Meety) act normally -- only the image/background
         // itself drives focus/navigation.
         if (event.target.closest('.split-showcase__actions')) return;
 
         const url = panel.dataset.productUrl;
-        const isTouch = event.pointerType === 'touch' || event.pointerType === 'pen';
+        const isTouch = lastPointerType === 'touch' || lastPointerType === 'pen';
 
         if (isTouch) {
           const isActive = index === 1
