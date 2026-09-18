@@ -2072,3 +2072,180 @@ section-container.color-scheme .circle-button:before {
 .experience-included__item {
   font-size: var(--text-base);
 }
+
+/* ============================================
+   SPLIT SHOWCASE
+   ============================================ */
+
+.split-showcase {
+  display: grid;
+  grid-template-columns: repeat(var(--split-showcase-panel-count, 2), minmax(0, 1fr));
+}
+
+/* Duo variant (exactly two panels): same side-by-side diptych at every viewport width --
+   it never collapses to a vertical stack, mobile included. The first panel (morning/sunrise)
+   is the default "active" one -- slightly wider, brighter, undimmed -- until the second panel
+   is hovered, at which point they swap (hover-capable pointers only; on touch it just rests
+   in the default state). */
+.split-showcase--duo {
+  grid-template-columns: 1.18fr 0.82fr;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .split-showcase--duo {
+    transition: grid-template-columns 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) {
+    grid-template-columns: 0.82fr 1.18fr;
+  }
+}
+
+/* Generic (non-duo, N-panel) fallback stacks on narrow screens. */
+@media screen and (max-width: 699px) {
+  .split-showcase:not(.split-showcase--duo) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.split-showcase__panel {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(20rem, 65vh, 44rem);
+  overflow: hidden;
+  color: #fff;
+  border-inline-end: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.split-showcase__panel:last-child {
+  border-inline-end: 0;
+}
+
+@media screen and (max-width: 699px) {
+  .split-showcase:not(.split-showcase--duo) .split-showcase__panel {
+    border-inline-end: 0;
+    border-block-end: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .split-showcase:not(.split-showcase--duo) .split-showcase__panel:last-child {
+    border-block-end: 0;
+  }
+}
+
+.split-showcase__panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.1) 55%, rgba(0, 0, 0, 0.35));
+  z-index: 1;
+}
+
+/* Solid dim layer, separate from the (always-on) gradient above. Kept as its own element
+   so the transition is a pure opacity animation -- browsers can't smoothly interpolate a
+   gradient into a flat color, which is what caused the previous swap to snap instantly. */
+.split-showcase__dim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.split-showcase__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), filter 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  filter: saturate(0.85) brightness(0.92);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .split-showcase__panel:hover .split-showcase__image {
+    transform: scale(1.04);
+    filter: saturate(1.05) brightness(1);
+  }
+
+  /* Generic (non-duo) hover dimming: only the hovered panel is undimmed. */
+  .split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) .split-showcase__image {
+    filter: saturate(0.45) brightness(0.5);
+  }
+
+  .split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) .split-showcase__dim {
+    opacity: 1;
+  }
+}
+
+/* Duo variant: first panel active by default (dim/bright split is a resting state, not just
+   a hover effect), swapping to the last panel on its hover -- same on mobile and desktop,
+   the swap just only triggers where a real hover exists. */
+.split-showcase--duo .split-showcase__panel:last-child .split-showcase__image {
+  filter: saturate(0.45) brightness(0.5);
+}
+
+.split-showcase--duo .split-showcase__panel:last-child .split-showcase__dim {
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:first-child .split-showcase__image {
+    filter: saturate(0.45) brightness(0.5);
+  }
+
+  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:first-child .split-showcase__dim {
+    opacity: 1;
+  }
+
+  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:last-child .split-showcase__image {
+    filter: saturate(0.85) brightness(0.92);
+  }
+
+  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:last-child .split-showcase__dim {
+    opacity: 0;
+  }
+}
+
+.split-showcase__content {
+  position: relative;
+  z-index: 2;
+  padding: clamp(1.25rem, 5vw, 2.5rem);
+  width: 100%;
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .split-showcase__panel:hover .split-showcase__content {
+    transform: translateY(-0.5rem);
+  }
+}
+
+.split-showcase__tagline {
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 0.5rem;
+  font-size: clamp(0.75rem, 2.2vw, var(--text-sm, 0.875rem));
+}
+
+.split-showcase__title {
+  font-family: var(--heading-italic-font-family);
+  font-weight: var(--heading-italic-font-weight);
+  font-style: var(--heading-italic-font-style);
+  font-size: clamp(1.25rem, 5.5vw, var(--text-h2));
+  line-height: 1.05;
+  margin: 0 0 1.5rem;
+  color: #fff;
+}
+
+.split-showcase__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.split-showcase__cta {
+  display: inline-block;
+}
+

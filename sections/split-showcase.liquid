@@ -1,0 +1,148 @@
+{%- comment -%}
+  ----------------------------------------------------------------------------------------------------------------------
+  SPLIT SHOWCASE SECTION
+  ----------------------------------------------------------------------------------------------------------------------
+
+  Full-width, edge-to-edge showcase split evenly into panels (built for exactly two products that are intrinsically
+  linked -- e.g. a sunrise and a sunset departure of the same route -- but works with any number of "Panel" blocks).
+  Each panel is a full-bleed background image with a tagline, title and two actions overlaid: a "View product" link
+  and a slot for an app block (Meety) so a merchant can drop in a direct booking/scheduling button per panel. On
+  hover, the hovered panel brightens and gently zooms while the others dim, using :has() (no JS needed).
+
+  Each block pulls its product's title, featured image and tagline metafield by default; every field can be
+  overridden per block if a merchant wants a custom image or copy instead. Panels are no longer themselves a link --
+  only the "View product" button navigates -- so a booking app block can also be placed without being nested inside
+  an anchor.
+
+  App blocks (e.g. Meety) can't be nested inside another block's schema in this section format (Shopify only
+  supports "blocks within blocks" in the newer flexible-section architecture, not classic section schema) -- so
+  "App block" is a top-level block type here instead. To attach one to a specific panel, place it directly after
+  that panel in the block order (theme editor: drag it right below the panel it belongs to); it's then rendered
+  inside that panel's actions row instead of as its own grid cell. An app block with no panel immediately before
+  it in the order is simply not rendered.
+{%- endcomment -%}
+
+{%- liquid
+  assign panel_blocks = section.blocks | where: 'type', 'panel'
+-%}
+{%- if panel_blocks.size > 0 -%}
+  <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="split-showcase{% if panel_blocks.size == 2 %} split-showcase--duo{% endif %}" style="--split-showcase-panel-count: {{ panel_blocks.size }};">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'panel' -%}
+          {%- liquid
+            assign product = block.settings.product
+            assign panel_image = block.settings.image | default: product.featured_image
+            assign panel_tagline = block.settings.tagline
+            if panel_tagline == blank
+              assign panel_tagline = product.metafields.custom.tagline.value
+            endif
+            assign panel_title = block.settings.title
+            if panel_title == blank
+              assign panel_title = product.title
+            endif
+            assign panel_url = product.url
+            assign next_index = forloop.index0 | plus: 1
+            assign next_block = section.blocks[next_index]
+          -%}
+          <div class="split-showcase__panel" data-split-panel {{ block.shopify_attributes }}>
+            {%- if panel_image != blank -%}
+              {{- panel_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(max-width: 999px) 100vw, 50vw', widths: '600, 900, 1200, 1600, 2000', class: 'split-showcase__image' -}}
+            {%- endif -%}
+
+            <span class="split-showcase__dim" aria-hidden="true"></span>
+
+            <div class="split-showcase__content">
+              {%- if panel_tagline != blank -%}
+                <p class="split-showcase__tagline subheading">{{ panel_tagline }}</p>
+              {%- endif -%}
+
+              {%- if panel_title != blank -%}
+                <p class="split-showcase__title">{{ panel_title }}</p>
+              {%- endif -%}
+
+              <div class="split-showcase__actions">
+                {%- if panel_url != blank and block.settings.button_text != blank -%}
+                  <a href="{{ panel_url }}" class="button split-showcase__cta">{{ block.settings.button_text }}</a>
+                {%- endif -%}
+
+                {%- if next_block.type == '@app' -%}
+                  {%- render next_block -%}
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Split showcase",
+  "class": "shopify-section--split-showcase",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "panel",
+      "name": "Panel",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product",
+          "info": "Powers the link, and the default title/image/tagline whenever the fields below are left blank."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Optional -- defaults to the product's featured image."
+        },
+        {
+          "type": "text",
+          "id": "tagline",
+          "label": "Tagline",
+          "info": "Optional -- defaults to the product's tagline metafield."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Optional -- defaults to the product's title."
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "\"View product\" button text",
+          "default": "View product"
+        }
+      ]
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Split showcase",
+      "blocks": [
+        { "type": "panel" },
+        { "type": "panel" }
+      ]
+    }
+  ]
+}
+{% endschema %}

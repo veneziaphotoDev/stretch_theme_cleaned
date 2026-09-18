@@ -218,23 +218,6 @@
         "secondary_media_shape": "none"
       }
     },
-    "sessions_grid_laguna01": {
-      "type": "sessions-grid",
-      "settings": {
-        "anchor": "sessions",
-        "color_scheme": "",
-        "heading": "Upcoming Sessions",
-        "subheading": "Sunrise & Sunset · small-group departures",
-        "product_list": [
-          "golden-and-blue-hour",
-          "les-iles-de-la-lagune-sunrise",
-          "sunrise-lights",
-          "sunrise-lights-1"
-        ],
-        "products_per_row_mobile": "1",
-        "products_per_row_desktop": 4
-      }
-    },
     "steps_howitworks01": {
       "type": "steps",
       "blocks": {
@@ -500,13 +483,45 @@
         "cycle_speed": 4,
         "pause_on_hover": true
       }
+    },
+    "split_showcase_laguna01": {
+      "type": "split-showcase",
+      "blocks": {
+        "panel_sunrise": {
+          "type": "panel",
+          "settings": {
+            "product": "sunrise-lights",
+            "image": null,
+            "tagline": "",
+            "title": "",
+            "button_text": "View product"
+          }
+        },
+        "panel_sunset": {
+          "type": "panel",
+          "settings": {
+            "product": "golden-and-blue-hour",
+            "image": null,
+            "tagline": "",
+            "title": "",
+            "button_text": "View product"
+          }
+        }
+      },
+      "block_order": [
+        "panel_sunrise",
+        "panel_sunset"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
     }
   },
   "order": [
     "slideshow",
     "intro_stats_laguna01",
     "text_with_media_about01",
-    "sessions_grid_laguna01",
+    "split_showcase_laguna01",
     "steps_howitworks01",
     "gallery_laguna01",
     "video_carousel_community01",
