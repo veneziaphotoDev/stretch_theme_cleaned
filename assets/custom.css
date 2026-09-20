@@ -2087,22 +2087,22 @@ section-container.color-scheme .circle-button:before {
    never collapses to a vertical stack, mobile included. The first panel (morning/sunrise) is
    the default "active" one -- clearly wider, brighter, undimmed -- until the other becomes
    focused, at which point they swap. Three independent ways to trigger that swap, all landing
-   on the exact same 80/20 ratio so they stay visually consistent with each other and with the
+   on the exact same 70/30 ratio so they stay visually consistent with each other and with the
    drag handle's resting position: hovering (desktop, ephemeral -- reverts on mouse-out),
    tapping (touch, persistent -- see custom.js) and dragging the handle (any pointer,
    persistent, see below). */
 .split-showcase--duo {
-  grid-template-columns: 4fr 1fr;
+  grid-template-columns: 7fr 3fr;
   transition: grid-template-columns 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .split-showcase--duo.is-panel-2-active {
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 3fr 7fr;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .split-showcase--duo:has(.split-showcase__panel:last-child:hover) {
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 3fr 7fr;
   }
 }
 
@@ -2110,7 +2110,7 @@ section-container.color-scheme .circle-button:before {
    custom property set on every pointermove in custom.js. No transition here: it needs to
    follow 1:1, the transition above would just fight the drag with lag. */
 .split-showcase--duo.is-dragging {
-  grid-template-columns: var(--split-showcase-live-columns, 4fr 1fr);
+  grid-template-columns: var(--split-showcase-live-columns, 7fr 3fr);
   transition: none;
 }
 
@@ -2131,7 +2131,10 @@ section-container.color-scheme .circle-button:before {
   position: absolute;
   z-index: 5;
   inset-block: 0;
-  inset-inline-start: 50%;
+  /* Must match the default (non-active) grid-template-columns ratio above (70/30) -- this was
+     previously left at 50%, which never matched either resting state, so the handle sat on
+     the wrong spot until the first interaction. */
+  inset-inline-start: 70%;
   width: 2.5rem;
   margin-inline-start: -1.25rem;
   display: flex;
@@ -2145,11 +2148,11 @@ section-container.color-scheme .circle-button:before {
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__handle {
-  inset-inline-start: 20%;
+  inset-inline-start: 30%;
 }
 
 .split-showcase--duo.is-dragging .split-showcase__handle {
-  inset-inline-start: var(--split-showcase-live-ratio, 80%);
+  inset-inline-start: var(--split-showcase-live-ratio, 70%);
   transition: none;
 }
 
@@ -2357,7 +2360,7 @@ section-container.color-scheme .circle-button:before {
 
 @media screen and (min-width: 1000px) {
   .split-showcase__content {
-    /* The dominant panel is now 80% wide on desktop too (matches touch/drag), so there's more
+    /* The dominant panel is now 70% wide on desktop too (matches touch/drag), so there's more
        room to use than the mobile-sized cap above. */
     width: min(42vw, 36rem);
   }

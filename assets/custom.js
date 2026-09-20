@@ -258,11 +258,11 @@ document.addEventListener('DOMContentLoaded', function() {
 // which custom.css consumes with transitions disabled (.is-dragging) so there's no lag behind
 // the pointer. On release those inline properties are cleared and .is-panel-2-active is left
 // set to whichever side the drag ended past the midpoint on -- the same class the hover/tap
-// swap use, so CSS takes over and animates the rest of the way to a clean 80/20 (or 20/80) with
+// swap use, so CSS takes over and animates the rest of the way to a clean 70/30 (or 30/70) with
 // its normal transition, instead of resting wherever the pointer happened to let go.
 (function() {
-  const MIN_RATIO = 0.2;
-  const MAX_RATIO = 0.8;
+  const MIN_RATIO = 0.3;
+  const MAX_RATIO = 0.7;
 
   document.querySelectorAll('.split-showcase--duo').forEach(function(container) {
     const handle = container.querySelector('.split-showcase__handle');
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let dragging = false;
     let ticking = false;
-    let pendingRatio = 0.8;
+    let pendingRatio = 0.7;
 
     function apply(ratio) {
       const firstPct = ratio * 100;
