@@ -42,6 +42,28 @@
 {%- if panel_blocks.size > 0 -%}
   <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
     <div class="split-showcase{% if panel_blocks.size == 2 %} split-showcase--duo{% endif %}" style="--split-showcase-panel-count: {{ panel_blocks.size }};">
+      {%- comment -%}
+        The handle renders BEFORE the panels (not after) so the last panel is still genuinely
+        :last-child of .split-showcase -- it's position: absolute so this doesn't move it
+        visually, but every :last-child-based rule in custom.css (dim, blur, filter, anchor)
+        was silently never matching the second panel at all when this sat after the loop.
+      {%- endcomment -%}
+      {%- if panel_blocks.size == 2 -%}
+        <div class="split-showcase__handle" data-split-handle aria-hidden="true">
+          <span class="split-showcase__handle-bar"></span>
+
+          <span class="split-showcase__handle-label split-showcase__handle-label--first">
+            {{ section.settings.slider_label_first }}
+            {%- render 'icon' with 'chevron-right', class: 'split-showcase__handle-chevron' -%}
+          </span>
+
+          <span class="split-showcase__handle-label split-showcase__handle-label--second">
+            {{ section.settings.slider_label_second }}
+            {%- render 'icon' with 'chevron-right', class: 'split-showcase__handle-chevron split-showcase__handle-chevron--left' -%}
+          </span>
+        </div>
+      {%- endif -%}
+
       {%- for block in section.blocks -%}
         {%- if block.type == 'panel' -%}
           {%- liquid
@@ -84,22 +106,6 @@
           </div>
         {%- endif -%}
       {%- endfor -%}
-
-      {%- if panel_blocks.size == 2 -%}
-        <div class="split-showcase__handle" data-split-handle aria-hidden="true">
-          <span class="split-showcase__handle-bar"></span>
-
-          <span class="split-showcase__handle-label split-showcase__handle-label--first">
-            {{ section.settings.slider_label_first }}
-            {%- render 'icon' with 'chevron-right', class: 'split-showcase__handle-chevron' -%}
-          </span>
-
-          <span class="split-showcase__handle-label split-showcase__handle-label--second">
-            {{ section.settings.slider_label_second }}
-            {%- render 'icon' with 'chevron-right', class: 'split-showcase__handle-chevron split-showcase__handle-chevron--left' -%}
-          </span>
-        </div>
-      {%- endif -%}
     </div>
   </div>
 {%- endif -%}
