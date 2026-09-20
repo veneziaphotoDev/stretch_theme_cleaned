@@ -2202,7 +2202,7 @@ section-container.color-scheme .circle-button:before {
   transition: filter 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-.split-showcase__panel:last-child {
+.split-showcase__panel--last {
   border-inline-end: 0;
 }
 
@@ -2212,7 +2212,7 @@ section-container.color-scheme .circle-button:before {
     border-block-end: 1px solid rgba(255, 255, 255, 0.3);
   }
 
-  .split-showcase:not(.split-showcase--duo) .split-showcase__panel:last-child {
+  .split-showcase:not(.split-showcase--duo) .split-showcase__panel--last {
     border-block-end: 0;
   }
 }
@@ -2261,48 +2261,48 @@ section-container.color-scheme .circle-button:before {
   filter: saturate(0.85) brightness(0.92);
 }
 
-.split-showcase__panel:last-child .split-showcase__image {
+.split-showcase__panel--last .split-showcase__image {
   inset-inline-start: auto;
   inset-inline-end: 0;
 }
 
 /* Duo variant: first panel active by default (dim/bright split is a resting state, always on
    regardless of device -- see the persistent, unconditional block below for the swap). */
-.split-showcase--duo .split-showcase__panel:last-child .split-showcase__image {
+.split-showcase--duo .split-showcase__panel--last .split-showcase__image {
   filter: saturate(0.45) brightness(0.5);
 }
 
-.split-showcase--duo .split-showcase__panel:last-child .split-showcase__dim {
+.split-showcase--duo .split-showcase__panel--last .split-showcase__dim {
   opacity: 1;
 }
 
-.split-showcase--duo .split-showcase__panel:last-child {
+.split-showcase--duo .split-showcase__panel--last {
   filter: blur(8px);
 }
 
 /* Driven by the .is-panel-2-active class (custom.js) -- what clicking, tapping and dragging the
    handle all set, the same way on every device. Unconditional: no hover handling on desktop. */
-.split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child .split-showcase__image {
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__image {
   filter: saturate(0.45) brightness(0.5);
 }
 
-.split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child .split-showcase__dim {
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__dim {
   opacity: 1;
 }
 
-.split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child {
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--first {
   filter: blur(8px);
 }
 
-.split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child .split-showcase__image {
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__image {
   filter: saturate(0.85) brightness(0.92);
 }
 
-.split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child .split-showcase__dim {
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__dim {
   opacity: 0;
 }
 
-.split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child {
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--last {
   filter: none;
 }
 
@@ -2324,7 +2324,7 @@ section-container.color-scheme .circle-button:before {
    between them. Without this, the last panel's content -- still anchored at inset-inline-start:
    0 relative to itself -- was positioned against the divider, which moves as that panel
    resizes, so its text visibly slid around instead of staying put. */
-.split-showcase__panel:last-child .split-showcase__content {
+.split-showcase__panel--last .split-showcase__content {
   inset-inline-start: auto;
   inset-inline-end: 0;
 }
@@ -2342,15 +2342,15 @@ section-container.color-scheme .circle-button:before {
    anchored per-panel now, so it doesn't shift around while that happens). pointer-events stays
    gated on focus, though, so the sliver of an inactive panel's actions button can't be
    accidentally tapped through the narrow reveal. */
-.split-showcase--duo .split-showcase__panel:last-child .split-showcase__content {
+.split-showcase--duo .split-showcase__panel--last .split-showcase__content {
   pointer-events: none;
 }
 
-.split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child .split-showcase__content {
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__content {
   pointer-events: none;
 }
 
-.split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child .split-showcase__content {
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__content {
   pointer-events: auto;
 }
 

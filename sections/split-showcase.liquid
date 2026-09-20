@@ -38,15 +38,22 @@
 
 {%- liquid
   assign panel_blocks = section.blocks | where: 'type', 'panel'
+  assign panel_counter = 0
 -%}
 {%- if panel_blocks.size > 0 -%}
   <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
     <div class="split-showcase{% if panel_blocks.size == 2 %} split-showcase--duo{% endif %}" style="--split-showcase-panel-count: {{ panel_blocks.size }};">
       {%- comment -%}
-        The handle renders BEFORE the panels (not after) so the last panel is still genuinely
-        :last-child of .split-showcase -- it's position: absolute so this doesn't move it
-        visually, but every :last-child-based rule in custom.css (dim, blur, filter, anchor)
-        was silently never matching the second panel at all when this sat after the loop.
+        The drag handle is a sibling of the panels (needs to be, so it can sit visually on top
+        of the boundary between them). That means :first-child/:last-child on
+        .split-showcase__panel is NOT safe to use in custom.css for duo styling -- whichever
+        side the handle renders on becomes the structural first/last child instead of the panel
+        that's actually there, silently breaking the dim/blur/filter/anchor rules for whichever
+        panel the handle displaced (this happened twice: once with the handle after the panels,
+        once after moving it before them). Each panel below gets explicit
+        .split-showcase__panel--first / --last modifier classes instead, driven by its actual
+        position among PANEL blocks specifically (not its raw position in section.blocks, which
+        can have app blocks interspersed) -- immune to wherever the handle ends up in the DOM.
       {%- endcomment -%}
       {%- if panel_blocks.size == 2 -%}
         <div class="split-showcase__handle" data-split-handle aria-hidden="true">
@@ -80,8 +87,16 @@
             assign panel_url = product.url
             assign next_index = forloop.index0 | plus: 1
             assign next_block = section.blocks[next_index]
+            assign panel_counter = panel_counter | plus: 1
+            assign panel_position_class = ''
+            if panel_counter == 1
+              assign panel_position_class = ' split-showcase__panel--first'
+            endif
+            if panel_counter == panel_blocks.size
+              assign panel_position_class = panel_position_class | append: ' split-showcase__panel--last'
+            endif
           -%}
-          <div class="split-showcase__panel" data-split-panel {% if panel_url != blank %}data-product-url="{{ panel_url }}"{% endif %} {{ block.shopify_attributes }}>
+          <div class="split-showcase__panel{{ panel_position_class }}" data-split-panel {% if panel_url != blank %}data-product-url="{{ panel_url }}"{% endif %} {{ block.shopify_attributes }}>
             {%- if panel_image != blank -%}
               {{- panel_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '100vw', widths: '600, 900, 1200, 1600, 2000', class: 'split-showcase__image' -}}
             {%- endif -%}
