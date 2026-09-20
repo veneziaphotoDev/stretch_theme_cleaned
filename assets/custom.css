@@ -2196,10 +2196,6 @@ section-container.color-scheme .circle-button:before {
   color: #fff;
   cursor: pointer;
   border-inline-end: 1px solid rgba(255, 255, 255, 0.3);
-  /* Blurs the whole panel as one composite -- image, gradient, dim overlay and the clipped
-     text sliver together -- rather than just the photo, so the non-focused side reads as a
-     single soft, out-of-focus block instead of a sharp image with blurry edges around it. */
-  transition: filter 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .split-showcase__panel--last {
@@ -2276,10 +2272,6 @@ section-container.color-scheme .circle-button:before {
   opacity: 1;
 }
 
-.split-showcase--duo .split-showcase__panel--last {
-  filter: blur(8px);
-}
-
 /* Driven by the .is-panel-2-active class (custom.js) -- what clicking, tapping and dragging the
    handle all set, the same way on every device. Unconditional: no hover handling on desktop. */
 .split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__image {
@@ -2290,20 +2282,12 @@ section-container.color-scheme .circle-button:before {
   opacity: 1;
 }
 
-.split-showcase--duo.is-panel-2-active .split-showcase__panel--first {
-  filter: blur(8px);
-}
-
 .split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__image {
   filter: saturate(0.85) brightness(0.92);
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__dim {
   opacity: 0;
-}
-
-.split-showcase--duo.is-panel-2-active .split-showcase__panel--last {
-  filter: none;
 }
 
 /* Deliberately NOT width: 100% of the panel: that would tie the content's width to the grid
@@ -2318,6 +2302,22 @@ section-container.color-scheme .circle-button:before {
   inset-inline-start: 0;
   padding: clamp(1.25rem, 5vw, 2.5rem);
   width: min(78vw, 26rem);
+  /* Blur lives here, not on the panel/image: only the non-focused panel's text and button
+     (both inside this element) should read as soft/out-of-focus -- the photo itself stays
+     sharp, just darkened. */
+  transition: filter 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.split-showcase--duo .split-showcase__panel--last .split-showcase__content {
+  filter: blur(8px);
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__content {
+  filter: blur(8px);
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__content {
+  filter: none;
 }
 
 /* Same fix as the image: anchored to each panel's OWN edge, not the shared/moving divider
@@ -2337,11 +2337,11 @@ section-container.color-scheme .circle-button:before {
   }
 }
 
-/* No animation on the text at all (no lift, no fade): it stays put and simply gets clipped by
-   the panel's own overflow: hidden as it narrows, exactly like the image (and correctly
-   anchored per-panel now, so it doesn't shift around while that happens). pointer-events stays
-   gated on focus, though, so the sliver of an inactive panel's actions button can't be
-   accidentally tapped through the narrow reveal. */
+/* No position/opacity animation on the text (no lift, no fade, only the blur above): it stays
+   put and simply gets clipped by the panel's own overflow: hidden as it narrows, exactly like
+   the image (and correctly anchored per-panel now, so it doesn't shift around while that
+   happens). pointer-events stays gated on focus, though, so the sliver of an inactive panel's
+   actions button can't be accidentally tapped through the narrow reveal. */
 .split-showcase--duo .split-showcase__panel--last .split-showcase__content {
   pointer-events: none;
 }
