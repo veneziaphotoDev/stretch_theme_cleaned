@@ -2131,7 +2131,7 @@ section-container.color-scheme .circle-button:before {
   position: absolute;
   z-index: 5;
   inset-block: 0;
-  inset-inline-start: 80%;
+  inset-inline-start: 50%;
   width: 2.5rem;
   margin-inline-start: -1.25rem;
   display: flex;
@@ -2257,6 +2257,7 @@ section-container.color-scheme .circle-button:before {
   height: 100%;
   max-height: none;
   object-fit: cover;
+  object-position: bottom;
   transition: filter 0.6s cubic-bezier(0.65, 0, 0.35, 1);
   filter: saturate(0.85) brightness(0.92);
 }
@@ -2345,6 +2346,15 @@ section-container.color-scheme .circle-button:before {
   transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
+/* Same fix as the image: anchored to each panel's OWN edge, not the shared/moving divider
+   between them. Without this, the last panel's content -- still anchored at inset-inline-start:
+   0 relative to itself -- was positioned against the divider, which moves as that panel
+   resizes, so its text visibly slid around instead of staying put. */
+.split-showcase__panel:last-child .split-showcase__content {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
 @media screen and (min-width: 1000px) {
   .split-showcase__content {
     /* The dominant panel is now 80% wide on desktop too (matches touch/drag), so there's more
@@ -2359,12 +2369,15 @@ section-container.color-scheme .circle-button:before {
   }
 }
 
-/* At a 20/80 column split there isn't room for the title/tagline to wrap sanely in the narrow
-   panel, so the non-focused panel's text fades out entirely instead -- only the focused panel
-   reveals its copy, the other recedes to just its image sliver. Unconditional for the same
-   reason as the block above: the 80/20 persistent ratio now applies on every device. */
+/* No longer faded out on the non-focused panel -- text stays put and simply gets clipped by
+   the panel's own overflow: hidden as it narrows, exactly like the image (and correctly
+   anchored per-panel now, so it doesn't shift around while that happens). A separate opacity
+   transition here was also fighting the live drag: its own 0.35s easing could fall out of
+   sync with the grid width, which tracks the pointer with no easing at all while dragging.
+   pointer-events stays gated on focus, though, so the sliver of an inactive panel's actions
+   button can't be accidentally tapped through the narrow reveal. */
 .split-showcase--duo .split-showcase__content {
-  transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .split-showcase--duo .split-showcase__panel:first-child .split-showcase__content {
@@ -2372,18 +2385,15 @@ section-container.color-scheme .circle-button:before {
 }
 
 .split-showcase--duo .split-showcase__panel:last-child .split-showcase__content {
-  opacity: 0;
   pointer-events: none;
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child .split-showcase__content {
-  opacity: 0;
   pointer-events: none;
   transform: none;
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child .split-showcase__content {
-  opacity: 1;
   pointer-events: auto;
   transform: translateY(-0.5rem);
 }
