@@ -2204,6 +2204,10 @@ section-container.color-scheme .circle-button:before {
   color: #fff;
   cursor: pointer;
   border-inline-end: 1px solid rgba(255, 255, 255, 0.3);
+  /* Blurs the whole panel as one composite -- image, gradient, dim overlay and the clipped
+     text sliver together -- rather than just the photo, so the non-focused side reads as a
+     single soft, out-of-focus block instead of a sharp image with blurry edges around it. */
+  transition: filter 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .split-showcase__panel:last-child {
@@ -2283,6 +2287,10 @@ section-container.color-scheme .circle-button:before {
   .split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) .split-showcase__dim {
     opacity: 1;
   }
+
+  .split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) {
+    filter: blur(8px);
+  }
 }
 
 /* Duo variant: first panel active by default (dim/bright split is a resting state, not just
@@ -2296,6 +2304,10 @@ section-container.color-scheme .circle-button:before {
   opacity: 1;
 }
 
+.split-showcase--duo .split-showcase__panel:last-child {
+  filter: blur(8px);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:first-child .split-showcase__image {
     filter: saturate(0.45) brightness(0.5);
@@ -2305,12 +2317,20 @@ section-container.color-scheme .circle-button:before {
     opacity: 1;
   }
 
+  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:first-child {
+    filter: blur(8px);
+  }
+
   .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:last-child .split-showcase__image {
     filter: saturate(0.85) brightness(0.92);
   }
 
   .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:last-child .split-showcase__dim {
     opacity: 0;
+  }
+
+  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:last-child {
+    filter: none;
   }
 }
 
@@ -2326,12 +2346,20 @@ section-container.color-scheme .circle-button:before {
   opacity: 1;
 }
 
+.split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child {
+  filter: blur(8px);
+}
+
 .split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child .split-showcase__image {
   filter: saturate(0.85) brightness(0.92);
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child .split-showcase__dim {
   opacity: 0;
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child {
+  filter: none;
 }
 
 /* Deliberately NOT width: 100% of the panel: that would tie the content's width to the grid
