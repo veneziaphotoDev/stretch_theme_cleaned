@@ -2238,14 +2238,26 @@ section-container.color-scheme .circle-button:before {
   transition: opacity 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
+/* Deliberately not width: 100% of the panel -- object-fit: cover recomputes its crop every
+   time the box it's covering changes size, so as the panel's grid column animates, a
+   width-100% image visibly "grows"/re-crops along with it. Anchored to the component's outer
+   edge instead, at a fixed width that doesn't track the panel: the underlying image stays
+   completely still, and the panel's own overflow: hidden reveals more or less of it as it
+   animates, exactly like the content-width fix above. */
 .split-showcase__image {
   position: absolute;
-  inset: 0;
-  width: 100%;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 100vw;
   height: 100%;
   object-fit: cover;
   transition: filter 0.6s cubic-bezier(0.65, 0, 0.35, 1);
   filter: saturate(0.85) brightness(0.92);
+}
+
+.split-showcase__panel:last-child .split-showcase__image {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
 }
 
 @media (hover: hover) and (pointer: fine) {
