@@ -2243,13 +2243,19 @@ section-container.color-scheme .circle-button:before {
    width-100% image visibly "grows"/re-crops along with it. Anchored to the component's outer
    edge instead, at a fixed width that doesn't track the panel: the underlying image stays
    completely still, and the panel's own overflow: hidden reveals more or less of it as it
-   animates, exactly like the content-width fix above. */
+   animates, exactly like the content-width fix above.
+   max-width/max-height: none is required here -- theme.css has a global `img { max-width:
+   100%; max-height: 100% }` reset, which (being a separate property, not overridden just
+   because this rule wins the cascade for `width`) silently caps width: 100vw back down to
+   100% of the panel regardless, which is exactly what kept re-introducing the resize bug. */
 .split-showcase__image {
   position: absolute;
   inset-block: 0;
   inset-inline-start: 0;
   width: 100vw;
+  max-width: none;
   height: 100%;
+  max-height: none;
   object-fit: cover;
   transition: filter 0.6s cubic-bezier(0.65, 0, 0.35, 1);
   filter: saturate(0.85) brightness(0.92);

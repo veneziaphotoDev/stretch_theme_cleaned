@@ -61,7 +61,7 @@
           -%}
           <div class="split-showcase__panel" data-split-panel {% if panel_url != blank %}data-product-url="{{ panel_url }}"{% endif %} {{ block.shopify_attributes }}>
             {%- if panel_image != blank -%}
-              {{- panel_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(max-width: 999px) 100vw, 50vw', widths: '600, 900, 1200, 1600, 2000', class: 'split-showcase__image' -}}
+              {{- panel_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '100vw', widths: '600, 900, 1200, 1600, 2000', class: 'split-showcase__image' -}}
             {%- endif -%}
 
             <span class="split-showcase__dim" aria-hidden="true"></span>
