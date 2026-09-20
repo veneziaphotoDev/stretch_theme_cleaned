@@ -2086,11 +2086,9 @@ section-container.color-scheme .circle-button:before {
 /* Duo variant (exactly two panels): same side-by-side diptych at every viewport width -- it
    never collapses to a vertical stack, mobile included. The first panel (morning/sunrise) is
    the default "active" one -- clearly wider, brighter, undimmed -- until the other becomes
-   focused, at which point they swap. Three independent ways to trigger that swap, all landing
-   on the exact same 70/30 ratio so they stay visually consistent with each other and with the
-   drag handle's resting position: hovering (desktop, ephemeral -- reverts on mouse-out),
-   tapping (touch, persistent -- see custom.js) and dragging the handle (any pointer,
-   persistent, see below). */
+   focused, at which point they swap. No hover handling at all on desktop any more -- the swap
+   is driven purely by the persistent .is-panel-2-active class (click, tap or drag, see
+   custom.js), the same on every device. */
 .split-showcase--duo {
   grid-template-columns: 7fr 3fr;
   transition: grid-template-columns 0.6s cubic-bezier(0.65, 0, 0.35, 1);
@@ -2098,12 +2096,6 @@ section-container.color-scheme .circle-button:before {
 
 .split-showcase--duo.is-panel-2-active {
   grid-template-columns: 3fr 7fr;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) {
-    grid-template-columns: 3fr 7fr;
-  }
 }
 
 /* Live-tracks the pointer while dragging the handle -- see the --split-showcase-live-columns
@@ -2122,10 +2114,10 @@ section-container.color-scheme .circle-button:before {
 }
 
 /* Draggable handle, before/after-slider style -- sits on the boundary between the two panels.
-   Resting position mirrors whatever the hover/tap swap already decided (same .is-panel-2-active
-   class, same transition), so it glides along with the panels on those too, not just its own
-   drag. While actively dragging (.is-dragging, set in custom.js), the transition is dropped and
-   the position instead tracks the pointer 1:1 via --split-showcase-live-ratio, set on every
+   Resting position mirrors whatever click/tap already decided (same .is-panel-2-active class,
+   same transition), so it glides along with the panels on those too, not just its own drag.
+   While actively dragging (.is-dragging, set in custom.js), the transition is dropped and the
+   position instead tracks the pointer 1:1 via --split-showcase-live-ratio, set on every
    pointermove -- no lag, no easing fighting the drag. */
 .split-showcase--duo .split-showcase__handle {
   position: absolute;
@@ -2274,28 +2266,8 @@ section-container.color-scheme .circle-button:before {
   inset-inline-end: 0;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .split-showcase__panel:hover .split-showcase__image {
-    filter: saturate(1.05) brightness(1);
-  }
-
-  /* Generic (non-duo) hover dimming: only the hovered panel is undimmed. */
-  .split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) .split-showcase__image {
-    filter: saturate(0.45) brightness(0.5);
-  }
-
-  .split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) .split-showcase__dim {
-    opacity: 1;
-  }
-
-  .split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) {
-    filter: blur(8px);
-  }
-}
-
-/* Duo variant: first panel active by default (dim/bright split is a resting state, not just
-   a hover effect), swapping to the last panel on its hover -- same on mobile and desktop,
-   the swap just only triggers where a real hover exists. */
+/* Duo variant: first panel active by default (dim/bright split is a resting state, always on
+   regardless of device -- see the persistent, unconditional block below for the swap). */
 .split-showcase--duo .split-showcase__panel:last-child .split-showcase__image {
   filter: saturate(0.45) brightness(0.5);
 }
@@ -2308,36 +2280,8 @@ section-container.color-scheme .circle-button:before {
   filter: blur(8px);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:first-child .split-showcase__image {
-    filter: saturate(0.45) brightness(0.5);
-  }
-
-  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:first-child .split-showcase__dim {
-    opacity: 1;
-  }
-
-  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:first-child {
-    filter: blur(8px);
-  }
-
-  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:last-child .split-showcase__image {
-    filter: saturate(0.85) brightness(0.92);
-  }
-
-  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:last-child .split-showcase__dim {
-    opacity: 0;
-  }
-
-  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:last-child {
-    filter: none;
-  }
-}
-
-/* Persistent equivalent of the block above, driven by the .is-panel-2-active class (custom.js)
-   instead of :has(:hover) -- this is what tapping and dragging the handle set. Unconditional
-   (not scoped to touch): dragging the handle works with a mouse too, and needs the dim/image
-   swap to follow it there just the same. */
+/* Driven by the .is-panel-2-active class (custom.js) -- what clicking, tapping and dragging the
+   handle all set, the same way on every device. Unconditional: no hover handling on desktop. */
 .split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child .split-showcase__image {
   filter: saturate(0.45) brightness(0.5);
 }
@@ -2363,9 +2307,9 @@ section-container.color-scheme .circle-button:before {
 }
 
 /* Deliberately NOT width: 100% of the panel: that would tie the content's width to the grid
-   column's live width while it animates (hover-grow on desktop, tap-focus on mobile), causing
-   the text to visibly re-wrap and the content box to change height mid-transition. Sized in vw
-   instead -- independent of the animating column -- so wrapping/height stay constant and the
+   column's live width while it animates (click/tap/drag focus swap), causing the text to
+   visibly re-wrap and the content box to change height mid-transition. Sized in vw instead --
+   independent of the animating column -- so wrapping/height stay constant and the
    panel's own `overflow: hidden` clips it instead of it reflowing. */
 .split-showcase__content {
   position: absolute;
@@ -2374,7 +2318,6 @@ section-container.color-scheme .circle-button:before {
   inset-inline-start: 0;
   padding: clamp(1.25rem, 5vw, 2.5rem);
   width: min(78vw, 26rem);
-  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 /* Same fix as the image: anchored to each panel's OWN edge, not the shared/moving divider
@@ -2394,39 +2337,21 @@ section-container.color-scheme .circle-button:before {
   }
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .split-showcase__panel:hover .split-showcase__content {
-    transform: translateY(-0.5rem);
-  }
-}
-
-/* No longer faded out on the non-focused panel -- text stays put and simply gets clipped by
+/* No animation on the text at all (no lift, no fade): it stays put and simply gets clipped by
    the panel's own overflow: hidden as it narrows, exactly like the image (and correctly
-   anchored per-panel now, so it doesn't shift around while that happens). A separate opacity
-   transition here was also fighting the live drag: its own 0.35s easing could fall out of
-   sync with the grid width, which tracks the pointer with no easing at all while dragging.
-   pointer-events stays gated on focus, though, so the sliver of an inactive panel's actions
-   button can't be accidentally tapped through the narrow reveal. */
-.split-showcase--duo .split-showcase__content {
-  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-.split-showcase--duo .split-showcase__panel:first-child .split-showcase__content {
-  transform: translateY(-0.5rem);
-}
-
+   anchored per-panel now, so it doesn't shift around while that happens). pointer-events stays
+   gated on focus, though, so the sliver of an inactive panel's actions button can't be
+   accidentally tapped through the narrow reveal. */
 .split-showcase--duo .split-showcase__panel:last-child .split-showcase__content {
   pointer-events: none;
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__panel:first-child .split-showcase__content {
   pointer-events: none;
-  transform: none;
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__panel:last-child .split-showcase__content {
   pointer-events: auto;
-  transform: translateY(-0.5rem);
 }
 
 .split-showcase__tagline {
