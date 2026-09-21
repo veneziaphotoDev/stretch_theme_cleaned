@@ -2458,16 +2458,27 @@ section-container.color-scheme .circle-button:before {
      --split-showcase-ratio override above). Kept a bit narrower than that so the text still
      reads comfortably once it fades in, rather than sizing all the way up to the edge.
 
-     Vertically centered on the image rather than bottom-anchored like desktop: with the panel
-     this narrow, a short min-height and a tall title, bottom-anchoring left the text sitting
-     awkwardly low relative to the icon centered above it -- centering both on the same axis
-     reads better at this aspect ratio. Horizontal anchor (inset-inline-start: 0, set on the
-     base rule above) is unchanged -- only the vertical position differs from desktop. */
+     Split top/bottom instead of grouped at the bottom like desktop: the tagline sits at the top
+     of the panel, while the title + CTA (grouped in .split-showcase__content-bottom, see the
+     Liquid markup) sit at the bottom -- spans the full panel height (inset-block: 0) as a flex
+     column with space-between so the two ends land exactly at the panel's own top/bottom edges
+     regardless of how much text either one has. Horizontal anchor (inset-inline-start: 0, set
+     on the base rule above) is unchanged -- only the vertical arrangement differs from desktop. */
   .split-showcase--duo .split-showcase__content {
     width: min(78vw, 26rem);
-    inset-block-end: auto;
-    top: 50%;
-    transform: translateY(-50%);
+    inset-block: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Title reads a bit small at the size tuned for desktop's wider column -- and once
+     .split-showcase__content-bottom groups it with the CTA, its own bottom margin (the gap
+     before the button) can shrink too, since it no longer also has to visually separate it from
+     the tagline above (that's now a full flex column apart, at the top of the panel). */
+  .split-showcase--duo .split-showcase__title {
+    font-size: clamp(1.5rem, 7vw, var(--text-h2));
+    margin-block-end: 0.5rem;
   }
 }
 

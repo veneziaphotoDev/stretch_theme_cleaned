@@ -145,20 +145,28 @@
               </span>
             {%- endif -%}
 
+            {%- comment -%}
+              split-showcase__content-bottom groups the title + actions so they can be pushed to
+              the bottom as a unit on mobile (tagline top, title+CTA bottom -- see custom.css)
+              while staying part of the same content block/anchor on desktop, where all three
+              stay together at the bottom regardless.
+            {%- endcomment -%}
             <div class="split-showcase__content">
               {%- if panel_tagline != blank -%}
                 <p class="split-showcase__tagline subheading">{{ panel_tagline }}</p>
               {%- endif -%}
 
-              {%- if panel_title != blank -%}
-                <p class="split-showcase__title">{{ panel_title }}</p>
-              {%- endif -%}
+              <div class="split-showcase__content-bottom">
+                {%- if panel_title != blank -%}
+                  <p class="split-showcase__title">{{ panel_title }}</p>
+                {%- endif -%}
 
-              {%- if next_block.type == '@app' -%}
-                <div class="split-showcase__actions">
-                  {%- render next_block -%}
-                </div>
-              {%- endif -%}
+                {%- if next_block.type == '@app' -%}
+                  <div class="split-showcase__actions">
+                    {%- render next_block -%}
+                  </div>
+                {%- endif -%}
+              </div>
             </div>
           </div>
         {%- endif -%}
