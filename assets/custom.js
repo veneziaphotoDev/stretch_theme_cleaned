@@ -263,6 +263,16 @@ document.addEventListener('DOMContentLoaded', function() {
       container.style.setProperty('--split-showcase-live-ratio', firstPct.toFixed(2) + '%');
       container.style.setProperty('--split-showcase-live-columns', firstPct.toFixed(2) + 'fr ' + secondPct.toFixed(2) + 'fr');
       container.classList.toggle('is-panel-2-active', ratio < 0.5);
+
+      // Sun/moon icon opacity+scale, continuous with drag progress rather than snapping at the
+      // midpoint: 0 = that panel is fully focused (icon hidden/small), 1 = fully non-focused
+      // (icon full size). Each panel's own inactiveness is how close its ratio is to its own
+      // MIN_RATIO extreme.
+      const firstInactiveness = (MAX_RATIO - ratio) / (MAX_RATIO - MIN_RATIO);
+      const lastInactiveness = (ratio - MIN_RATIO) / (MAX_RATIO - MIN_RATIO);
+      container.style.setProperty('--split-showcase-icon-first', firstInactiveness.toFixed(3));
+      container.style.setProperty('--split-showcase-icon-last', lastInactiveness.toFixed(3));
+
       ticking = false;
     }
 
@@ -301,6 +311,8 @@ document.addEventListener('DOMContentLoaded', function() {
       container.classList.remove('is-dragging');
       container.style.removeProperty('--split-showcase-live-ratio');
       container.style.removeProperty('--split-showcase-live-columns');
+      container.style.removeProperty('--split-showcase-icon-first');
+      container.style.removeProperty('--split-showcase-icon-last');
     }
 
     handle.addEventListener('pointerup', endDrag);

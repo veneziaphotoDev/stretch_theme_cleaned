@@ -2302,7 +2302,8 @@ section-container.color-scheme .circle-button:before {
 }
 
 /* Sun/moon icon, centered over the darkened non-focused panel -- same opacity swap as the dim
-   layer above, just inverted (visible when the panel is NOT focused, not when it is). */
+   layer above, just inverted (visible when the panel is NOT focused, not when it is), plus a
+   scale swap: big at full rest (fully non-focused) shrinking down as the panel gains focus. */
 .split-showcase__icon {
   position: absolute;
   inset: 0;
@@ -2312,21 +2313,46 @@ section-container.color-scheme .circle-button:before {
   justify-content: center;
   color: #fff;
   opacity: 0;
+  transform: scale(0.5);
   filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.35));
-  transition: opacity 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease;
   pointer-events: none;
+}
+
+.split-showcase__icon svg {
+  width: clamp(3.5rem, 9vw, 6.5rem);
+  height: auto;
 }
 
 .split-showcase--duo .split-showcase__panel--last .split-showcase__icon {
   opacity: 1;
+  transform: scale(1);
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__icon {
   opacity: 1;
+  transform: scale(1);
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__icon {
   opacity: 0;
+  transform: scale(0.5);
+}
+
+/* While actively dragging the handle, opacity/scale track the live drag progress continuously
+   instead of jumping at the 50% threshold -- set every pointermove in custom.js as
+   --split-showcase-icon-first/-last (0 = fully focused/hidden, 1 = fully non-focused/full size).
+   No transition: needs to follow the pointer 1:1, same reasoning as the grid columns/handle. */
+.split-showcase--duo.is-dragging .split-showcase__panel--first .split-showcase__icon {
+  opacity: var(--split-showcase-icon-first, 0);
+  transform: scale(calc(0.5 + (0.5 * var(--split-showcase-icon-first, 0))));
+  transition: none;
+}
+
+.split-showcase--duo.is-dragging .split-showcase__panel--last .split-showcase__icon {
+  opacity: var(--split-showcase-icon-last, 1);
+  transform: scale(calc(0.5 + (0.5 * var(--split-showcase-icon-last, 1))));
+  transition: none;
 }
 
 /* Deliberately NOT width: 100% of the panel: that would tie the content's width to the grid
