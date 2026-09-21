@@ -217,6 +217,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     panels.forEach(function(panel, index) {
       panel.addEventListener('click', function(event) {
+        // Suppresses exactly one stray click right after a handle drag ends -- see the comment
+        // on endDrag() in the drag-handling script below for why that's needed.
+        if (container.dataset.splitShowcaseSuppressClick) {
+          delete container.dataset.splitShowcaseSuppressClick;
+          return;
+        }
+
         // Let clicks on the actual app block (Meety) act normally -- only the image/background
         // itself drives focus/navigation.
         if (event.target.closest('.split-showcase__actions')) return;
@@ -320,6 +327,18 @@ document.addEventListener('DOMContentLoaded', function() {
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', endDrag);
       window.removeEventListener('pointercancel', endDrag);
+
+      // Some browsers still synthesize a `click` on whatever panel the finger happens to end up
+      // over when the drag releases, even though this was clearly a drag and not a tap. That
+      // panel has its own click handler (separate IIFE below, for navigation/focus) which would
+      // then re-toggle is-panel-2-active -- silently undoing the exact state the drag just set,
+      // which is what read as the drag getting "cancelled" right past the midpoint. Flagged here
+      // so that handler can ignore exactly one stray click; self-clears on the next real click
+      // too, via a short timeout as a safety net in case no stray click actually follows.
+      container.dataset.splitShowcaseSuppressClick = '1';
+      window.setTimeout(function() {
+        delete container.dataset.splitShowcaseSuppressClick;
+      }, 400);
     }
 
     handle.addEventListener('pointerdown', function(event) {
