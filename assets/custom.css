@@ -2313,22 +2313,31 @@ section-container.color-scheme .circle-button:before {
   inset-inline-start: 0;
   padding: clamp(1.25rem, 5vw, 2.5rem);
   width: min(78vw, 26rem);
-  /* Blur lives here, not on the panel/image: only the non-focused panel's text and button
-     (both inside this element) should read as soft/out-of-focus -- the photo itself stays
-     sharp, just darkened. */
-  transition: filter 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Simpler than clipping/blurring the text via the panel's own overflow: hidden (which made
+   responsive sizing fragile -- the content box had to stay narrower than whatever width the
+   panel happens to be at any viewport, or it visibly truncated). Instead the non-focused
+   panel's text/button just fade out via opacity and fade back in when focused; width no longer
+   needs to track the panel's live width as tightly since it's invisible while inactive anyway. */
+.split-showcase__content {
+  opacity: 1;
+  transition: opacity 0.4s ease;
 }
 
 .split-showcase--duo .split-showcase__panel--last .split-showcase__content {
-  filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__content {
-  filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__content {
-  filter: none;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Same fix as the image: anchored to each panel's OWN edge, not the shared/moving divider
@@ -2341,11 +2350,10 @@ section-container.color-scheme .circle-button:before {
 }
 
 @media screen and (max-width: 999px) {
-  /* The base 78vw above was sized for the generic (non-duo) fallback, where each panel is
-     effectively 100vw wide once panels stack below 700px. Duo panels never stack -- they stay
-     side by side at every width, including on phones -- so the active panel is only ~70vw wide
-     even on the smallest screens. 78vw was wider than that, so the panel's own overflow: hidden
-     was silently clipping the right edge of the tagline/title/button on every phone. */
+  /* Duo panels don't stack like the generic fallback does -- they stay side by side at every
+     width, including on phones -- so the active panel is only ~70vw wide even on the smallest
+     screens. Kept narrower than that so the text still reads comfortably once it fades in,
+     rather than sizing all the way up to the edge. */
   .split-showcase--duo .split-showcase__content {
     width: min(60vw, 24rem);
   }
@@ -2357,23 +2365,6 @@ section-container.color-scheme .circle-button:before {
        room to use than the mobile-sized cap above. */
     width: min(42vw, 36rem);
   }
-}
-
-/* No position/opacity animation on the text (no lift, no fade, only the blur above): it stays
-   put and simply gets clipped by the panel's own overflow: hidden as it narrows, exactly like
-   the image (and correctly anchored per-panel now, so it doesn't shift around while that
-   happens). pointer-events stays gated on focus, though, so the sliver of an inactive panel's
-   actions button can't be accidentally tapped through the narrow reveal. */
-.split-showcase--duo .split-showcase__panel--last .split-showcase__content {
-  pointer-events: none;
-}
-
-.split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__content {
-  pointer-events: none;
-}
-
-.split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__content {
-  pointer-events: auto;
 }
 
 .split-showcase__tagline {
