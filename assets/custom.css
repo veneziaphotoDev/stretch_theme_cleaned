@@ -2091,34 +2091,48 @@ section-container.color-scheme .circle-button:before {
   grid-template-columns: repeat(var(--split-showcase-panel-count, 2), minmax(0, 1fr));
 }
 
+/* Registered (typed) so the browser can smoothly INTERPOLATE it, not just swap it -- this is
+   what makes the single-source-of-truth trick below work at all. An unregistered custom
+   property can't be transitioned. */
+@property --split-showcase-ratio {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 70%;
+}
+
 /* Duo variant (exactly two panels): same side-by-side diptych at every viewport width -- it
    never collapses to a vertical stack, mobile included. The first panel (morning/sunrise) is
    the default "active" one -- clearly wider, brighter, undimmed -- until the other becomes
    focused, at which point they swap. No hover handling at all on desktop any more -- the swap
    is driven purely by the persistent .is-panel-2-active class (click, tap or drag, see
-   custom.js), the same on every device. */
+   custom.js), the same on every device.
+
+   The grid columns AND the handle's position both derive from the single
+   --split-showcase-ratio custom property below, instead of each having its own independently
+   animated property (grid-template-columns on the container, inset-inline-start on the handle).
+   Two separate transitions -- even with byte-identical duration and easing -- are two separate
+   things the browser's transition engine computes; there's no guarantee they're evaluated in
+   perfect lockstep every frame across two different elements, and in practice they visibly
+   drifted. With one shared, already-interpolated value that both simply read via var()/calc(),
+   there is nothing left TO drift -- the grid and the handle can only ever agree, by
+   construction. Neither grid-template-columns below nor the handle's inset-inline-start needs
+   its own transition any more: they just track whatever --split-showcase-ratio currently
+   resolves to, every frame, automatically. */
 .split-showcase--duo {
-  grid-template-columns: 7fr 3fr;
-  transition: grid-template-columns 0.6s cubic-bezier(0.65, 0, 0.35, 1);
-  /* grid-template-columns is a layout-triggering property -- animating it means the browser
-     recalculates the whole grid (and reflows both panels) every frame, which is much more
-     expensive per-frame than the handle's simple inset-inline-start offset. Under real load
-     the two can visibly fall out of sync even with identical duration/easing, the grid side
-     lagging behind. will-change hints the browser to prepare for this ahead of time instead of
-     discovering it mid-animation, which is the standard mitigation for this exact class of
-     issue (animated grid tracks aren't GPU-accelerated the way transform/opacity are). */
-  will-change: grid-template-columns;
+  --split-showcase-ratio: 70%;
+  grid-template-columns: var(--split-showcase-ratio) calc(100% - var(--split-showcase-ratio));
+  transition: --split-showcase-ratio 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .split-showcase--duo.is-panel-2-active {
-  grid-template-columns: 3fr 7fr;
+  --split-showcase-ratio: 30%;
 }
 
-/* Live-tracks the pointer while dragging the handle -- see the --split-showcase-live-columns
-   custom property set on every pointermove in custom.js. No transition here: it needs to
-   follow 1:1, the transition above would just fight the drag with lag. */
+/* Live-tracks the pointer while dragging the handle -- see --split-showcase-live-ratio, set on
+   every pointermove in custom.js. No transition here: it needs to follow 1:1, the transition
+   above would just fight the drag with lag. */
 .split-showcase--duo.is-dragging {
-  grid-template-columns: var(--split-showcase-live-columns, 7fr 3fr);
+  --split-showcase-ratio: var(--split-showcase-live-ratio, 70%);
   transition: none;
 }
 
@@ -2130,19 +2144,14 @@ section-container.color-scheme .circle-button:before {
 }
 
 /* Draggable handle, before/after-slider style -- sits on the boundary between the two panels.
-   Resting position mirrors whatever click/tap already decided (same .is-panel-2-active class,
-   same transition), so it glides along with the panels on those too, not just its own drag.
-   While actively dragging (.is-dragging, set in custom.js), the transition is dropped and the
-   position instead tracks the pointer 1:1 via --split-showcase-live-ratio, set on every
-   pointermove -- no lag, no easing fighting the drag. */
+   Just reads the same --split-showcase-ratio the grid columns above derive from -- see the
+   comment on .split-showcase--duo for why this (a single shared value) replaced two
+   independently-transitioned properties that could drift apart. */
 .split-showcase--duo .split-showcase__handle {
   position: absolute;
   z-index: 5;
   inset-block: 0;
-  /* Must match the default (non-active) grid-template-columns ratio above (70/30) -- this was
-     previously left at 50%, which never matched either resting state, so the handle sat on
-     the wrong spot until the first interaction. */
-  inset-inline-start: 70%;
+  inset-inline-start: var(--split-showcase-ratio);
   width: 2.5rem;
   margin-inline-start: -1.25rem;
   display: flex;
@@ -2152,21 +2161,6 @@ section-container.color-scheme .circle-button:before {
   cursor: ew-resize;
   -webkit-user-select: none;
   user-select: none;
-  /* Must match .split-showcase--duo's grid-template-columns transition exactly (duration and
-     easing) -- they're animating the same boundary from two different properties, so any
-     mismatch between them (this was 0.7s here vs 0.6s there) reads as the handle lagging behind
-     the panel width when the drag is released and both animate back to their resting position. */
-  transition: inset-inline-start 0.6s cubic-bezier(0.65, 0, 0.35, 1);
-  will-change: inset-inline-start;
-}
-
-.split-showcase--duo.is-panel-2-active .split-showcase__handle {
-  inset-inline-start: 30%;
-}
-
-.split-showcase--duo.is-dragging .split-showcase__handle {
-  inset-inline-start: var(--split-showcase-live-ratio, 70%);
-  transition: none;
 }
 
 .split-showcase__handle-bar {

@@ -239,12 +239,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Split showcase: draggable handle between the two panels, before/after-slider style. Works
 // with mouse, touch or pen alike via Pointer Events. While dragging, the ratio tracks the
-// pointer live (rAF-throttled) via the --split-showcase-live-ratio/-columns custom properties,
-// which custom.css consumes with transitions disabled (.is-dragging) so there's no lag behind
-// the pointer. On release those inline properties are cleared and .is-panel-2-active is left
-// set to whichever side the drag ended past the midpoint on -- the same class the hover/tap
-// swap use, so CSS takes over and animates the rest of the way to a clean 70/30 (or 30/70) with
-// its normal transition, instead of resting wherever the pointer happened to let go.
+// pointer live (rAF-throttled) via the --split-showcase-live-ratio custom property, which
+// custom.css consumes with transitions disabled (.is-dragging) so there's no lag behind the
+// pointer -- both the grid columns and the handle position derive from that single value (see
+// custom.css), so there's nothing here to keep in sync between two separate properties any
+// more. On release the inline property is cleared and .is-panel-2-active is left set to
+// whichever side the drag ended past the midpoint on -- the same class the hover/tap swap use,
+// so CSS takes over and animates the rest of the way to a clean 70/30 (or 30/70) with its
+// normal transition, instead of resting wherever the pointer happened to let go.
 (function() {
   const MIN_RATIO = 0.3;
   const MAX_RATIO = 0.7;
@@ -258,10 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let pendingRatio = 0.7;
 
     function apply(ratio) {
-      const firstPct = ratio * 100;
-      const secondPct = 100 - firstPct;
-      container.style.setProperty('--split-showcase-live-ratio', firstPct.toFixed(2) + '%');
-      container.style.setProperty('--split-showcase-live-columns', firstPct.toFixed(2) + 'fr ' + secondPct.toFixed(2) + 'fr');
+      container.style.setProperty('--split-showcase-live-ratio', (ratio * 100).toFixed(2) + '%');
       container.classList.toggle('is-panel-2-active', ratio < 0.5);
 
       // Sun/moon icon opacity+scale, continuous with drag progress rather than snapping at the
@@ -315,7 +314,6 @@ document.addEventListener('DOMContentLoaded', function() {
       dragging = false;
       container.classList.remove('is-dragging');
       container.style.removeProperty('--split-showcase-live-ratio');
-      container.style.removeProperty('--split-showcase-live-columns');
       container.style.removeProperty('--split-showcase-icon-first');
       container.style.removeProperty('--split-showcase-icon-last');
     }
