@@ -44,9 +44,14 @@
   <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
     {%- if section.settings.subheading != blank or section.settings.heading != blank or section.settings.description != blank -%}
       <div class="container">
-        <div class="split-showcase__header prose prose-justify-center" data-animate>
+        <div class="split-showcase__header prose prose-justify-start" data-animate>
           {%- if section.settings.subheading != blank -%}
-            {%- render 'subheading', content: section.settings.subheading, size: 'large' -%}
+            {%- comment -%}
+              class: 'split-showcase__header-subheading' overrides the sitewide subheading font
+              (Helvetica Neue) to Gascogne italic instead -- unlike the heading below, the
+              subheading eyebrow is meant to keep that editorial accent.
+            {%- endcomment -%}
+            {%- render 'subheading', content: section.settings.subheading, class: 'split-showcase__header-subheading', size: 'large' -%}
           {%- endif -%}
 
           {%- if section.settings.heading != blank -%}
@@ -177,7 +182,7 @@
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": ""
+      "default": "Two Ways to See Venice"
     },
     {
       "type": "inline_richtext",
@@ -201,7 +206,7 @@
         { "value": "h6", "label": "X-Small" },
         { "value": "h7", "label": "XX-Small" }
       ],
-      "default": "display-l"
+      "default": "display-m"
     },
     {
       "type": "richtext",

@@ -2089,6 +2089,14 @@ section-container.color-scheme .circle-button:before {
    as too ornate/editorial next to this section's own Helvetica copy and CTAs. Overrides the
    shared .display-l/.h2/etc font-family rule back to the body font; the size class (e.g.
    .display-l) still applies separately for the actual font-size. */
+/* Kept in Gascogne (unlike the heading below it, which was moved to Helvetica) -- the eyebrow
+   is meant to keep that editorial accent. */
+.split-showcase__header-subheading {
+  font-family: var(--heading-italic-font-family);
+  font-weight: var(--heading-italic-font-weight);
+  font-style: var(--heading-italic-font-style);
+}
+
 .split-showcase__header-heading {
   font-family: var(--text-font-family);
   font-weight: 400;
