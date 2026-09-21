@@ -2077,28 +2077,91 @@ section-container.color-scheme .circle-button:before {
    SPLIT SHOWCASE
    ============================================ */
 
+/* The panels below stay edge-to-edge (no .container, no .section-spacing -- that's the whole
+   point of this component), so the optional header above them needs its own top padding
+   instead of inheriting it from a section-level wrapper. */
+.split-showcase__header {
+  padding-block-start: var(--section-vertical-spacing);
+  margin-block-end: var(--section-stack-row-gap);
+}
+
 .split-showcase {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(var(--split-showcase-panel-count, 2), minmax(0, 1fr));
+  /* Single source of truth for the two image filter states (focused vs non-focused), reused at
+     every spot they'd otherwise be repeated as raw values: the default, the duo resting state,
+     and the is-panel-2-active swap. */
+  --split-showcase-focused-filter: saturate(0.85) brightness(0.92);
+  --split-showcase-unfocused-filter: saturate(0.45) brightness(0.5);
 }
 
-/* Duo variant (exactly two panels): same side-by-side diptych at every viewport width --
-   it never collapses to a vertical stack, mobile included. The first panel (morning/sunrise)
-   is the default "active" one -- slightly wider, brighter, undimmed -- until the second panel
-   is hovered, at which point they swap (hover-capable pointers only; on touch it just rests
-   in the default state). */
+/* Registered (typed) so the browser can smoothly INTERPOLATE it, not just swap it -- this is
+   what makes the single-source-of-truth trick below work at all. An unregistered custom
+   property can't be transitioned. */
+@property --split-showcase-ratio {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 70%;
+}
+
+/* Duo variant (exactly two panels): same side-by-side diptych at every viewport width -- it
+   never collapses to a vertical stack, mobile included. The first panel (morning/sunrise) is
+   the default "active" one -- clearly wider, brighter, undimmed -- until the other becomes
+   focused, at which point they swap. No hover handling at all on desktop any more -- the swap
+   is driven purely by the persistent .is-panel-2-active class (click, tap or drag, see
+   custom.js), the same on every device.
+
+   The grid columns AND the handle's position both derive from the single
+   --split-showcase-ratio custom property below, instead of each having its own independently
+   animated property (grid-template-columns on the container, inset-inline-start on the handle).
+   Two separate transitions -- even with byte-identical duration and easing -- are two separate
+   things the browser's transition engine computes; there's no guarantee they're evaluated in
+   perfect lockstep every frame across two different elements, and in practice they visibly
+   drifted. With one shared, already-interpolated value that both simply read via var()/calc(),
+   there is nothing left TO drift -- the grid and the handle can only ever agree, by
+   construction. Neither grid-template-columns below nor the handle's inset-inline-start needs
+   its own transition any more: they just track whatever --split-showcase-ratio currently
+   resolves to, every frame, automatically. */
 .split-showcase--duo {
-  grid-template-columns: 1.18fr 0.82fr;
+  --split-showcase-ratio: 70%;
+  grid-template-columns: var(--split-showcase-ratio) calc(100% - var(--split-showcase-ratio));
+  transition: --split-showcase-ratio 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-@media (hover: hover) and (pointer: fine) {
+.split-showcase--duo.is-panel-2-active {
+  --split-showcase-ratio: 30%;
+}
+
+/* Mobile gets a much more dramatic ratio -- the focused panel reads as essentially full-bleed,
+   with just a sliver of the other showing. custom.js mirrors this exact 80/20 split for the
+   drag bounds (getBounds()), matching this media query's breakpoint. */
+@media screen and (max-width: 999px) {
   .split-showcase--duo {
-    transition: grid-template-columns 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+    --split-showcase-ratio: 80%;
   }
 
-  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) {
-    grid-template-columns: 0.82fr 1.18fr;
+  .split-showcase--duo.is-panel-2-active {
+    --split-showcase-ratio: 20%;
   }
+}
+
+/* Live-tracks the pointer while dragging the handle -- see --split-showcase-live-ratio, set on
+   every pointermove in custom.js. No transition here: it needs to follow 1:1, the transition
+   above would just fight the drag with lag.
+
+   MUST be declared after every other rule above that also sets --split-showcase-ratio
+   (including the mobile media query's .is-panel-2-active override): .is-dragging and
+   .is-panel-2-active are BOTH present at once for the second half of any drag past the
+   midpoint, and they have equal specificity (two classes each), so the one declared LAST wins
+   the tie. With the mobile override declared after this rule (as it briefly was), that mobile
+   rule won instead once is-panel-2-active got added mid-drag -- snapping --split-showcase-ratio
+   straight to the fixed resting value (20% on mobile) and completely overriding the live drag
+   position, which is exactly what read as the drag getting cancelled right at the 50% mark,
+   mobile only (desktop had no such override to lose the tie to). */
+.split-showcase--duo.is-dragging {
+  --split-showcase-ratio: var(--split-showcase-live-ratio, 70%);
+  transition: none;
 }
 
 /* Generic (non-duo, N-panel) fallback stacks on narrow screens. */
@@ -2108,17 +2171,96 @@ section-container.color-scheme .circle-button:before {
   }
 }
 
+/* Draggable handle, before/after-slider style -- sits on the boundary between the two panels.
+   Just reads the same --split-showcase-ratio the grid columns above derive from -- see the
+   comment on .split-showcase--duo for why this (a single shared value) replaced two
+   independently-transitioned properties that could drift apart. */
+.split-showcase--duo .split-showcase__handle {
+  position: absolute;
+  z-index: 5;
+  inset-block: 0;
+  inset-inline-start: var(--split-showcase-ratio);
+  width: 2.5rem;
+  margin-inline-start: -1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+  cursor: ew-resize;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.split-showcase__handle-bar {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 50%;
+  width: 2px;
+  margin-inline-start: -1px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.35);
+}
+
+.split-showcase__handle-label {
+  position: relative;
+  z-index: 1;
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  transform: rotate(-90deg);
+  background: #fff;
+  color: #111;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 999px) {
+  .split-showcase__handle-label {
+    gap: 0.25rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.625rem;
+  }
+
+  .split-showcase__handle-chevron {
+    width: 7px;
+  }
+}
+
+.split-showcase--duo:not(.is-panel-2-active) .split-showcase__handle-label--first,
+.split-showcase--duo.is-panel-2-active .split-showcase__handle-label--second {
+  display: flex;
+}
+
+.split-showcase__handle-chevron {
+  flex-shrink: 0;
+}
+
+.split-showcase__handle-chevron--left {
+  transform: rotate(180deg);
+}
+
 .split-showcase__panel {
   position: relative;
   display: flex;
   align-items: flex-end;
-  min-height: clamp(20rem, 65vh, 44rem);
+  /* The old cap (44rem) meant on tall/wide monitors the active (70%-wide) panel could get
+     quite short relative to its width -- an overly elongated, banner-like ratio instead of a
+     proper landscape photo frame. Raised both the vh multiplier and the cap so it keeps pace
+     with width further before flattening out. */
+  min-height: clamp(22rem, 75vh, 56rem);
   overflow: hidden;
   color: #fff;
+  cursor: pointer;
   border-inline-end: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.split-showcase__panel:last-child {
+.split-showcase__panel--last {
   border-inline-end: 0;
 }
 
@@ -2128,7 +2270,7 @@ section-container.color-scheme .circle-button:before {
     border-block-end: 1px solid rgba(255, 255, 255, 0.3);
   }
 
-  .split-showcase:not(.split-showcase--duo) .split-showcase__panel:last-child {
+  .split-showcase:not(.split-showcase--duo) .split-showcase__panel--last {
     border-block-end: 0;
   }
 }
@@ -2153,72 +2295,194 @@ section-container.color-scheme .circle-button:before {
   transition: opacity 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
+/* Deliberately not width: 100% of the panel -- object-fit: cover recomputes its crop every
+   time the box it's covering changes size, so as the panel's grid column animates, a
+   width-100% image visibly "grows"/re-crops along with it. Anchored to the component's outer
+   edge instead, at a fixed width that doesn't track the panel: the underlying image stays
+   completely still, and the panel's own overflow: hidden reveals more or less of it as it
+   animates, exactly like the content-width fix above.
+   max-width/max-height: none is required here -- theme.css has a global `img { max-width:
+   100%; max-height: 100% }` reset, which (being a separate property, not overridden just
+   because this rule wins the cascade for `width`) silently caps width: 100vw back down to
+   100% of the panel regardless, which is exactly what kept re-introducing the resize bug. */
 .split-showcase__image {
   position: absolute;
-  inset: 0;
-  width: 100%;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 100vw;
+  max-width: none;
   height: 100%;
+  max-height: none;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), filter 0.6s cubic-bezier(0.65, 0, 0.35, 1);
-  filter: saturate(0.85) brightness(0.92);
+  object-position: center;
+  transition: filter 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  filter: var(--split-showcase-focused-filter);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .split-showcase__panel:hover .split-showcase__image {
-    transform: scale(1.04);
-    filter: saturate(1.05) brightness(1);
-  }
-
-  /* Generic (non-duo) hover dimming: only the hovered panel is undimmed. */
-  .split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) .split-showcase__image {
-    filter: saturate(0.45) brightness(0.5);
-  }
-
-  .split-showcase:not(.split-showcase--duo):has(.split-showcase__panel:hover) .split-showcase__panel:not(:hover) .split-showcase__dim {
-    opacity: 1;
-  }
+.split-showcase__panel--last .split-showcase__image {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
 }
 
-/* Duo variant: first panel active by default (dim/bright split is a resting state, not just
-   a hover effect), swapping to the last panel on its hover -- same on mobile and desktop,
-   the swap just only triggers where a real hover exists. */
-.split-showcase--duo .split-showcase__panel:last-child .split-showcase__image {
-  filter: saturate(0.45) brightness(0.5);
+/* Duo variant: first panel active by default (dim/bright split is a resting state, always on
+   regardless of device -- see the persistent, unconditional block below for the swap). */
+.split-showcase--duo .split-showcase__panel--last .split-showcase__image {
+  filter: var(--split-showcase-unfocused-filter);
 }
 
-.split-showcase--duo .split-showcase__panel:last-child .split-showcase__dim {
+.split-showcase--duo .split-showcase__panel--last .split-showcase__dim {
   opacity: 1;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:first-child .split-showcase__image {
-    filter: saturate(0.45) brightness(0.5);
-  }
-
-  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:first-child .split-showcase__dim {
-    opacity: 1;
-  }
-
-  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:last-child .split-showcase__image {
-    filter: saturate(0.85) brightness(0.92);
-  }
-
-  .split-showcase--duo:has(.split-showcase__panel:last-child:hover) .split-showcase__panel:last-child .split-showcase__dim {
-    opacity: 0;
-  }
+/* Driven by the .is-panel-2-active class (custom.js) -- what clicking, tapping and dragging the
+   handle all set, the same way on every device. Unconditional: no hover handling on desktop. */
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__image {
+  filter: var(--split-showcase-unfocused-filter);
 }
 
-.split-showcase__content {
-  position: relative;
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__dim {
+  opacity: 1;
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__image {
+  filter: var(--split-showcase-focused-filter);
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__dim {
+  opacity: 0;
+}
+
+/* Sun/moon icon, centered over the darkened non-focused panel -- same opacity swap as the dim
+   layer above, just inverted (visible when the panel is NOT focused, not when it is), plus a
+   scale swap: big at full rest (fully non-focused) shrinking down as the panel gains focus. */
+.split-showcase__icon {
+  position: absolute;
+  inset: 0;
   z-index: 2;
-  padding: clamp(1.25rem, 5vw, 2.5rem);
-  width: 100%;
-  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.5);
+  filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.35));
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .split-showcase__panel:hover .split-showcase__content {
-    transform: translateY(-0.5rem);
+.split-showcase__icon svg {
+  width: clamp(3.5rem, 9vw, 6.5rem);
+  height: auto;
+}
+
+@media screen and (max-width: 999px) {
+  /* The non-focused panel is only ~20vw wide on mobile -- the desktop-tuned floor (3.5rem) was
+     wider than that once the drop-shadow's own spread is added on top, so the icon visibly
+     overflowed the panel's edge. */
+  .split-showcase__icon svg {
+    width: clamp(2rem, 6vw, 2.75rem);
+  }
+}
+
+.split-showcase--duo .split-showcase__panel--last .split-showcase__icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__icon {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+/* While actively dragging the handle, opacity/scale track the live drag progress continuously
+   instead of jumping at the 50% threshold -- set every pointermove in custom.js as
+   --split-showcase-icon-first/-last (0 = fully focused/hidden, 1 = fully non-focused/full size).
+   No transition: needs to follow the pointer 1:1, same reasoning as the grid columns/handle. */
+.split-showcase--duo.is-dragging .split-showcase__panel--first .split-showcase__icon {
+  opacity: var(--split-showcase-icon-first, 0);
+  transform: scale(calc(0.5 + (0.5 * var(--split-showcase-icon-first, 0))));
+  transition: none;
+}
+
+.split-showcase--duo.is-dragging .split-showcase__panel--last .split-showcase__icon {
+  opacity: var(--split-showcase-icon-last, 1);
+  transform: scale(calc(0.5 + (0.5 * var(--split-showcase-icon-last, 1))));
+  transition: none;
+}
+
+/* Width deliberately NOT 100% of the panel: that would tie it to the grid column's live width
+   while it animates (click/tap/drag focus swap), causing the text to visibly re-wrap and the
+   content box to change height mid-transition. Sized in vw instead -- independent of the
+   animating column -- so wrapping/height stay constant and the panel's own `overflow: hidden`
+   clips it instead of it reflowing.
+
+   Opacity, for the same underlying reason clipping/blurring the text was dropped in favor of a
+   fade: relying on the panel's overflow: hidden to hide non-focused text made responsive sizing
+   fragile (the content box had to stay narrower than whatever width the panel happens to be at
+   any viewport, or it visibly truncated). Fading via opacity instead means width no longer needs
+   to track the panel's live width as tightly, since it's invisible while inactive anyway. */
+.split-showcase__content {
+  position: absolute;
+  z-index: 2;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  padding: clamp(1.25rem, 5vw, 2.5rem);
+  width: min(78vw, 26rem);
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.split-showcase--duo .split-showcase__panel--last .split-showcase__content {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__content {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__content {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media screen and (max-width: 999px) {
+  /* Duo panels don't stack like the generic fallback does -- they stay side by side at every
+     width, including on phones -- the active panel is ~80vw wide on mobile (see the
+     --split-showcase-ratio override above). Kept a bit narrower than that so the text still
+     reads comfortably once it fades in, rather than sizing all the way up to the edge.
+
+     Split top/bottom instead of grouped at the bottom like desktop: the tagline sits at the top
+     of the panel, while the title + CTA (grouped in .split-showcase__content-bottom, see the
+     Liquid markup) sit at the bottom -- spans the full panel height (inset-block: 0) as a flex
+     column with space-between so the two ends land exactly at the panel's own top/bottom edges
+     regardless of how much text either one has. Horizontal anchor (inset-inline-start: 0, set
+     on the base rule above) is unchanged -- only the vertical arrangement differs from desktop. */
+  .split-showcase--duo .split-showcase__content {
+    width: min(78vw, 26rem);
+    inset-block: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Title reads a bit small at the size tuned for desktop's wider column. */
+  .split-showcase--duo .split-showcase__title {
+    font-size: clamp(1.5rem, 7vw, var(--text-h2));
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .split-showcase__content {
+    /* The dominant panel is now 70% wide on desktop too (matches touch/drag), so there's more
+       room to use than the mobile-sized cap above. */
+    width: min(42vw, 36rem);
   }
 }
 
@@ -2228,24 +2492,37 @@ section-container.color-scheme .circle-button:before {
   font-size: clamp(0.75rem, 2.2vw, var(--text-sm, 0.875rem));
 }
 
+/* Title and CTA share one div (see the Liquid markup) -- spaced with gap on that wrapper rather
+   than a margin on the title, so there's exactly one place controlling the space between them
+   regardless of which is present. */
+.split-showcase__content-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .split-showcase__title {
   font-family: var(--heading-italic-font-family);
   font-weight: var(--heading-italic-font-weight);
   font-style: var(--heading-italic-font-style);
   font-size: clamp(1.25rem, 5.5vw, var(--text-h2));
   line-height: 1.05;
-  margin: 0 0 1.5rem;
+  margin: 0;
   color: #fff;
 }
 
 .split-showcase__actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 0.75rem;
 }
 
-.split-showcase__cta {
-  display: inline-block;
+/* Keeps whatever the Meety app block renders from stretching/stacking oddly -- app blocks
+   often set their own width: 100% internally. A flex-basis of 0 overrides that: it's what the
+   flex item's main-axis size is computed from instead of its own `width`. */
+.split-showcase__actions > * {
+  flex: 1 1 0;
+  min-width: 0;
 }
 

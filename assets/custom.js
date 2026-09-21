@@ -193,3 +193,195 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 })();
+
+// Split showcase: the panel background/image is the product link (there's no plain <a> wrapping
+// it any more -- the actions row holds an app block, which can't be nested inside an anchor).
+// No hover handling on desktop any more, so mouse and touch/pen behave identically here: the
+// first click/tap on a panel only brings it into focus (mirrors what tapping already did) --
+// only a second click/tap, on the panel that's now already focused, navigates. Otherwise
+// clicking the non-focused panel to bring it into view would immediately and unintentionally
+// send you to its product page.
+//
+// Activation is driven by `click`, not `pointerup`/`pointerdown`: those are raw, lower-level
+// signals that don't have `click`'s built-in tap-vs-scroll disambiguation -- on touch, a
+// `pointerup` can simply not fire at all if the browser decides the gesture was a scroll
+// instead (fires `pointercancel` then), so relying on it directly can make tapping silently
+// stop working. `click` is what's reliable across mouse and touch.
+(function() {
+  const containers = document.querySelectorAll('.split-showcase--duo');
+  if (!containers.length) return;
+
+  containers.forEach(function(container) {
+    const panels = container.querySelectorAll('.split-showcase__panel');
+    if (panels.length !== 2) return;
+
+    panels.forEach(function(panel, index) {
+      panel.addEventListener('click', function(event) {
+        // Let clicks on the actual app block (Meety) act normally -- only the image/background
+        // itself drives focus/navigation. Checked first, before the drag-suppression flag below:
+        // a genuine tap on the button shouldn't get eaten just because it happens to land within
+        // that flag's window right after an unrelated drag on the same panel.
+        if (event.target.closest('.split-showcase__actions')) return;
+
+        // Suppresses exactly one stray click right after a handle drag ends -- see the comment
+        // on endDrag() in the drag-handling script below for why that's needed.
+        if (container.dataset.splitShowcaseSuppressClick) {
+          delete container.dataset.splitShowcaseSuppressClick;
+          return;
+        }
+
+        const isActive = index === 1
+          ? container.classList.contains('is-panel-2-active')
+          : !container.classList.contains('is-panel-2-active');
+
+        if (!isActive) {
+          container.classList.toggle('is-panel-2-active', index === 1);
+          return;
+        }
+
+        const url = panel.dataset.productUrl;
+        if (url) window.location.href = url;
+      });
+    });
+  });
+})();
+
+// Split showcase: draggable handle between the two panels, before/after-slider style. Works
+// with mouse, touch or pen alike via Pointer Events. While dragging, the ratio tracks the
+// pointer live (rAF-throttled) via the --split-showcase-live-ratio custom property, which
+// custom.css consumes with transitions disabled (.is-dragging) so there's no lag behind the
+// pointer -- both the grid columns and the handle position derive from that single value (see
+// custom.css), so there's nothing here to keep in sync between two separate properties any
+// more. On release the inline property is cleared and .is-panel-2-active is left set to
+// whichever side the drag ended past the midpoint on -- the same class the hover/tap swap use,
+// so CSS takes over and animates the rest of the way to a clean resting ratio (70/30 on
+// desktop, 80/20 on mobile -- see getBounds() below) with its normal transition, instead of
+// resting wherever the pointer happened to let go.
+(function() {
+  const isMobileQuery = window.matchMedia('(max-width: 999px)');
+
+  // Mobile uses a much more dramatic 80/20 split (matches the --split-showcase-ratio override
+  // in custom.css for the same breakpoint) instead of desktop's 70/30 -- checked fresh each
+  // time rather than cached once, so it still tracks correctly across an orientation change.
+  function getBounds() {
+    return isMobileQuery.matches ? { min: 0.2, max: 0.8 } : { min: 0.3, max: 0.7 };
+  }
+
+  document.querySelectorAll('.split-showcase--duo').forEach(function(container) {
+    const handle = container.querySelector('.split-showcase__handle');
+    if (!handle) return;
+
+    let dragging = false;
+    let ticking = false;
+    let pendingClientX = 0;
+
+    // Both cached once per drag session (set at pointerdown), not re-read on every pointermove
+    // or recomputed twice per applied frame: the container's box doesn't change size mid-drag
+    // (only its internal grid ratio does), and the device class isn't going to flip mid-gesture
+    // either. Still re-read fresh at the START of every new drag, so an orientation change
+    // between drags is picked up correctly.
+    let rect = null;
+    let bounds = null;
+    let lastIsPanel2Active = null;
+
+    // Runs at most once per rendered frame (queued via rAF below) -- does the actual
+    // clientX-to-ratio math here rather than on every raw pointermove, since most of those
+    // never end up rendered anyway (pointermove commonly fires faster than the display refreshes).
+    function apply() {
+      const x = (pendingClientX - rect.left) / rect.width;
+      const ratio = Math.min(bounds.max, Math.max(bounds.min, x));
+
+      container.style.setProperty('--split-showcase-live-ratio', (ratio * 100).toFixed(2) + '%');
+
+      const isPanel2Active = ratio < 0.5;
+      if (isPanel2Active !== lastIsPanel2Active) {
+        container.classList.toggle('is-panel-2-active', isPanel2Active);
+        lastIsPanel2Active = isPanel2Active;
+      }
+
+      // Sun/moon icon opacity+scale, continuous with drag progress rather than snapping at the
+      // midpoint: 0 = that panel is fully focused (icon hidden/small), 1 = fully non-focused
+      // (icon full size). Each panel's own inactiveness is how close its ratio is to its own
+      // min extreme.
+      const firstInactiveness = (bounds.max - ratio) / (bounds.max - bounds.min);
+      const lastInactiveness = (ratio - bounds.min) / (bounds.max - bounds.min);
+      container.style.setProperty('--split-showcase-icon-first', firstInactiveness.toFixed(3));
+      container.style.setProperty('--split-showcase-icon-last', lastInactiveness.toFixed(3));
+    }
+
+    function queueUpdate(clientX) {
+      pendingClientX = clientX;
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(function() {
+          ticking = false;
+          // A pointermove right before release can queue this for the next frame, which then
+          // fires AFTER pointerup already ran endDrag() and started the resting transition.
+          // Applying it anyway would re-set the live properties (and can re-toggle
+          // is-panel-2-active) mid-transition -- a stray, delayed update fighting the animation
+          // that already started, which is what read as a lag/desync right as it released.
+          if (!dragging) return;
+          apply();
+        });
+      }
+    }
+
+    function onMove(event) {
+      if (!dragging) return;
+      queueUpdate(event.clientX);
+    }
+
+    function endDrag() {
+      if (!dragging) return;
+      dragging = false;
+      container.classList.remove('is-dragging');
+      container.style.removeProperty('--split-showcase-live-ratio');
+      container.style.removeProperty('--split-showcase-icon-first');
+      container.style.removeProperty('--split-showcase-icon-last');
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', endDrag);
+      window.removeEventListener('pointercancel', endDrag);
+
+      // Some browsers still synthesize a `click` on whatever panel the finger happens to end up
+      // over when the drag releases, even though this was clearly a drag and not a tap. That
+      // panel has its own click handler (separate IIFE below, for navigation/focus) which would
+      // then re-toggle is-panel-2-active -- silently undoing the exact state the drag just set,
+      // which is what read as the drag getting "cancelled" right past the midpoint. Flagged here
+      // so that handler can ignore exactly one stray click; self-clears on the next real click
+      // too, via a short timeout as a safety net in case no stray click actually follows.
+      container.dataset.splitShowcaseSuppressClick = '1';
+      window.setTimeout(function() {
+        delete container.dataset.splitShowcaseSuppressClick;
+      }, 400);
+    }
+
+    handle.addEventListener('pointerdown', function(event) {
+      dragging = true;
+      rect = container.getBoundingClientRect();
+      bounds = getBounds();
+      lastIsPanel2Active = container.classList.contains('is-panel-2-active');
+
+      // Belt and suspenders: capture still helps on browsers where it's solid (keeps the
+      // cursor/touch feedback associated with the handle). But move/up/cancel are tracked on
+      // window, not the handle -- during a real drag the finger spends almost the whole gesture
+      // physically over the (much larger) panels, not the 40px handle strip, and relying only on
+      // the handle to keep receiving events via capture was cutting drags short partway through
+      // on mobile: the moment capture didn't hold (or the browser's gesture recognizer decided
+      // the touch belonged to whatever was underneath), the drag just stopped dead instead of
+      // tracking to where the finger actually let go, which read as an abrupt, premature snap.
+      try {
+        handle.setPointerCapture(event.pointerId);
+      } catch (error) {
+        // Capture can throw in some browsers for a pointerId that's already gone (e.g. a very
+        // fast tap-and-release) -- window-level tracking below doesn't depend on it anyway.
+      }
+      container.classList.add('is-dragging');
+      queueUpdate(event.clientX);
+      event.preventDefault();
+
+      window.addEventListener('pointermove', onMove);
+      window.addEventListener('pointerup', endDrag);
+      window.addEventListener('pointercancel', endDrag);
+    });
+  });
+})();

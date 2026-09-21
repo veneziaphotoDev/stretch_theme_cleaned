@@ -5,14 +5,22 @@
 
   Full-width, edge-to-edge showcase split evenly into panels (built for exactly two products that are intrinsically
   linked -- e.g. a sunrise and a sunset departure of the same route -- but works with any number of "Panel" blocks).
-  Each panel is a full-bleed background image with a tagline, title and two actions overlaid: a "View product" link
-  and a slot for an app block (Meety) so a merchant can drop in a direct booking/scheduling button per panel. On
-  hover, the hovered panel brightens and gently zooms while the others dim, using :has() (no JS needed).
+  Each panel is a full-bleed background image with a tagline and title, plus a slot for an app block (Meety) so a
+  merchant can drop in a direct booking/scheduling button per panel.
+
+  Which panel is focused (brighter, wider, un-dimmed) is tracked by a single persistent
+  .is-panel-2-active class on the .split-showcase--duo container, kept in sync across three independent ways of
+  changing it -- clicking/tapping a panel, or dragging the handle between them -- identically on every device;
+  there's no hover-based behavior at all (custom.js).
+
+  The panel itself (image/background, excluding the actions row) is the product link -- handled in custom.js
+  rather than as a plain <a> so a booking app block can sit in the actions row without ending up nested inside an
+  anchor. The first click/tap on a non-focused panel only brings it into focus; a second click/tap, now that it's
+  focused, navigates -- otherwise tapping the non-focused panel to bring it into view would immediately and
+  unintentionally send you to its product page.
 
   Each block pulls its product's title, featured image and tagline metafield by default; every field can be
-  overridden per block if a merchant wants a custom image or copy instead. Panels are no longer themselves a link --
-  only the "View product" button navigates -- so a booking app block can also be placed without being nested inside
-  an anchor.
+  overridden per block if a merchant wants a custom image or copy instead.
 
   App blocks (e.g. Meety) can't be nested inside another block's schema in this section format (Shopify only
   supports "blocks within blocks" in the newer flexible-section architecture, not classic section schema) -- so
@@ -20,14 +28,66 @@
   that panel in the block order (theme editor: drag it right below the panel it belongs to); it's then rendered
   inside that panel's actions row instead of as its own grid cell. An app block with no panel immediately before
   it in the order is simply not rendered.
+
+  Duo variant only: a draggable handle sits on the boundary between the two panels (like a before/after image
+  comparison slider) -- dragging it live-tracks the pointer between the two panels, snapping to whichever side's
+  focus state it ends closer to on release (custom.js), the same .is-panel-2-active class described above. The
+  handle carries a small vertical text prompt naming whichever panel is currently NOT in focus, inviting a drag
+  toward it; the two prompts are merchant-editable section settings since the copy ("More an evening person?" /
+  "More a morning person?") is specific to this sunrise/sunset pairing.
 {%- endcomment -%}
 
 {%- liquid
   assign panel_blocks = section.blocks | where: 'type', 'panel'
+  assign panel_counter = 0
 -%}
 {%- if panel_blocks.size > 0 -%}
   <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    {%- if section.settings.subheading != blank or section.settings.heading != blank -%}
+      <div class="container">
+        <div class="split-showcase__header prose prose-justify-start" data-animate>
+          {%- if section.settings.subheading != blank -%}
+            {%- render 'subheading', content: section.settings.subheading, size: 'medium' -%}
+          {%- endif -%}
+
+          {%- if section.settings.heading != blank -%}
+            <div class="max-w-{{ section.settings.heading_content_width }}">
+              {%- render 'heading', content: section.settings.heading, style: section.settings.heading_tag, indent: 'none', highlight_effect: 'default', balance_text: true -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
     <div class="split-showcase{% if panel_blocks.size == 2 %} split-showcase--duo{% endif %}" style="--split-showcase-panel-count: {{ panel_blocks.size }};">
+      {%- comment -%}
+        The drag handle is a sibling of the panels (needs to be, so it can sit visually on top
+        of the boundary between them). That means :first-child/:last-child on
+        .split-showcase__panel is NOT safe to use in custom.css for duo styling -- whichever
+        side the handle renders on becomes the structural first/last child instead of the panel
+        that's actually there, silently breaking the dim/blur/filter/anchor rules for whichever
+        panel the handle displaced (this happened twice: once with the handle after the panels,
+        once after moving it before them). Each panel below gets explicit
+        .split-showcase__panel--first / --last modifier classes instead, driven by its actual
+        position among PANEL blocks specifically (not its raw position in section.blocks, which
+        can have app blocks interspersed) -- immune to wherever the handle ends up in the DOM.
+      {%- endcomment -%}
+      {%- if panel_blocks.size == 2 -%}
+        <div class="split-showcase__handle" data-split-handle aria-hidden="true">
+          <span class="split-showcase__handle-bar"></span>
+
+          <span class="split-showcase__handle-label split-showcase__handle-label--first">
+            {{ section.settings.slider_label_first }}
+            {%- render 'icon' with 'chevron-right', class: 'split-showcase__handle-chevron' -%}
+          </span>
+
+          <span class="split-showcase__handle-label split-showcase__handle-label--second">
+            {{ section.settings.slider_label_second }}
+            {%- render 'icon' with 'chevron-right', class: 'split-showcase__handle-chevron split-showcase__handle-chevron--left' -%}
+          </span>
+        </div>
+      {%- endif -%}
+
       {%- for block in section.blocks -%}
         {%- if block.type == 'panel' -%}
           {%- liquid
@@ -44,30 +104,67 @@
             assign panel_url = product.url
             assign next_index = forloop.index0 | plus: 1
             assign next_block = section.blocks[next_index]
+            assign panel_counter = panel_counter | plus: 1
+            assign panel_position_class = ''
+            if panel_counter == 1
+              assign panel_position_class = ' split-showcase__panel--first'
+            endif
+            if panel_counter == panel_blocks.size
+              assign panel_position_class = panel_position_class | append: ' split-showcase__panel--last'
+            endif
           -%}
-          <div class="split-showcase__panel" data-split-panel {{ block.shopify_attributes }}>
+          <div class="split-showcase__panel{{ panel_position_class }}" data-split-panel {% if panel_url != blank %}data-product-url="{{ panel_url }}"{% endif %} {{ block.shopify_attributes }}>
             {%- if panel_image != blank -%}
-              {{- panel_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(max-width: 999px) 100vw, 50vw', widths: '600, 900, 1200, 1600, 2000', class: 'split-showcase__image' -}}
+              {{- panel_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '100vw', widths: '600, 900, 1200, 1600, 2000', class: 'split-showcase__image' -}}
             {%- endif -%}
 
             <span class="split-showcase__dim" aria-hidden="true"></span>
 
+            {%- if panel_blocks.size == 2 -%}
+              {%- comment -%}
+                Sun for the first panel (sunrise), moon for the last (sunset) -- shown centered
+                over the image only while that panel is the non-focused/darkened one (same
+                opacity swap as everything else here), duo-only since the imagery is specific to
+                a sunrise/sunset pairing.
+              {%- endcomment -%}
+              <span class="split-showcase__icon" aria-hidden="true">
+                {%- if panel_counter == 1 -%}
+                  {%- render 'icon' with 'picto-sun' -%}
+                {%- else -%}
+                  {%- comment -%}
+                    No moon icon in the theme's icon set -- inline SVG is the escape hatch here.
+                    stroke-width reads the same theme setting picto-sun uses (settings.
+                    icon_stroke_width, "Icon thickness" in theme settings) instead of a hardcoded
+                    value, so the two stay visually consistent with each other and update
+                    together if a merchant changes that setting.
+                  {%- endcomment -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="{{ settings.icon_stroke_width }}" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z" />
+                  </svg>
+                {%- endif -%}
+              </span>
+            {%- endif -%}
+
+            {%- comment -%}
+              split-showcase__content-bottom groups the title + actions so they can be pushed to
+              the bottom as a unit on mobile (tagline top, title+CTA bottom -- see custom.css)
+              while staying part of the same content block/anchor on desktop, where all three
+              stay together at the bottom regardless.
+            {%- endcomment -%}
             <div class="split-showcase__content">
               {%- if panel_tagline != blank -%}
                 <p class="split-showcase__tagline subheading">{{ panel_tagline }}</p>
               {%- endif -%}
 
-              {%- if panel_title != blank -%}
-                <p class="split-showcase__title">{{ panel_title }}</p>
-              {%- endif -%}
-
-              <div class="split-showcase__actions">
-                {%- if panel_url != blank and block.settings.button_text != blank -%}
-                  <a href="{{ panel_url }}" class="button split-showcase__cta">{{ block.settings.button_text }}</a>
+              <div class="split-showcase__content-bottom">
+                {%- if panel_title != blank -%}
+                  <p class="split-showcase__title">{{ panel_title }}</p>
                 {%- endif -%}
 
                 {%- if next_block.type == '@app' -%}
-                  {%- render next_block -%}
+                  <div class="split-showcase__actions">
+                    {%- render next_block -%}
+                  </div>
                 {%- endif -%}
               </div>
             </div>
@@ -92,6 +189,70 @@
       "id": "color_scheme",
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Two Ways to See Venice"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Choose your light"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "t:global.text.heading_size",
+      "options": [
+        { "value": "display-xl", "label": "Display XL" },
+        { "value": "display-l", "label": "Display L" },
+        { "value": "display-m", "label": "Display M" },
+        { "value": "h1", "label": "XX-Large" },
+        { "value": "h2", "label": "X-Large" },
+        { "value": "h3", "label": "Large" },
+        { "value": "h4", "label": "Medium" },
+        { "value": "h5", "label": "Small" },
+        { "value": "h6", "label": "X-Small" },
+        { "value": "h7", "label": "XX-Small" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "select",
+      "id": "heading_content_width",
+      "label": "t:global.sizes.content_width",
+      "options": [
+        { "value": "sm", "label": "t:global.sizes.small" },
+        { "value": "md", "label": "t:global.sizes.medium" },
+        { "value": "lg", "label": "t:global.sizes.large" },
+        { "value": "full", "label": "t:global.sizes.full_width" }
+      ],
+      "default": "md"
+    },
+    {
+      "type": "header",
+      "content": "Drag handle (duo only)"
+    },
+    {
+      "type": "text",
+      "id": "slider_label_first",
+      "label": "Prompt shown when the first panel is in focus",
+      "info": "Invites a drag toward the second panel.",
+      "default": "More an evening person?"
+    },
+    {
+      "type": "text",
+      "id": "slider_label_second",
+      "label": "Prompt shown when the second panel is in focus",
+      "info": "Invites a drag toward the first panel.",
+      "default": "More a morning person?"
     }
   ],
   "blocks": [
@@ -122,12 +283,6 @@
           "id": "title",
           "label": "Title",
           "info": "Optional -- defaults to the product's title."
-        },
-        {
-          "type": "text",
-          "id": "button_text",
-          "label": "\"View product\" button text",
-          "default": "View product"
         }
       ]
     },
