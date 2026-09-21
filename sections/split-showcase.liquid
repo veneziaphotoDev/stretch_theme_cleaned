@@ -44,7 +44,7 @@
   <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
     {%- if section.settings.subheading != blank or section.settings.heading != blank -%}
       <div class="container">
-        <div class="split-showcase__header prose prose-justify-center" data-animate>
+        <div class="split-showcase__header prose prose-justify-start" data-animate>
           {%- if section.settings.subheading != blank -%}
             {%- render 'subheading', content: section.settings.subheading, size: 'medium' -%}
           {%- endif -%}
