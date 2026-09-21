@@ -2209,7 +2209,11 @@ section-container.color-scheme .circle-button:before {
   position: relative;
   display: flex;
   align-items: flex-end;
-  min-height: clamp(20rem, 65vh, 44rem);
+  /* The old cap (44rem) meant on tall/wide monitors the active (70%-wide) panel could get
+     quite short relative to its width -- an overly elongated, banner-like ratio instead of a
+     proper landscape photo frame. Raised both the vh multiplier and the cap so it keeps pace
+     with width further before flattening out. */
+  min-height: clamp(22rem, 75vh, 56rem);
   overflow: hidden;
   color: #fff;
   cursor: pointer;
