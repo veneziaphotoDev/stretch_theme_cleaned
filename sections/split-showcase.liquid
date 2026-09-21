@@ -131,8 +131,14 @@
                 {%- if panel_counter == 1 -%}
                   {%- render 'icon' with 'picto-sun' -%}
                 {%- else -%}
-                  {%- comment -%} No moon icon in the theme's icon set -- inline SVG is the escape hatch here. {%- endcomment -%}
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  {%- comment -%}
+                    No moon icon in the theme's icon set -- inline SVG is the escape hatch here.
+                    stroke-width reads the same theme setting picto-sun uses (settings.
+                    icon_stroke_width, "Icon thickness" in theme settings) instead of a hardcoded
+                    value, so the two stay visually consistent with each other and update
+                    together if a merchant changes that setting.
+                  {%- endcomment -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="{{ settings.icon_stroke_width }}" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z" />
                   </svg>
                 {%- endif -%}

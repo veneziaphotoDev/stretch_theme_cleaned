@@ -2134,15 +2134,15 @@ section-container.color-scheme .circle-button:before {
 }
 
 /* Mobile gets a much more dramatic ratio -- the focused panel reads as essentially full-bleed,
-   with just a sliver of the other showing. custom.js mirrors this exact 85/15 split for the
+   with just a sliver of the other showing. custom.js mirrors this exact 80/20 split for the
    drag bounds (getBounds()), matching this media query's breakpoint. */
 @media screen and (max-width: 999px) {
   .split-showcase--duo {
-    --split-showcase-ratio: 85%;
+    --split-showcase-ratio: 80%;
   }
 
   .split-showcase--duo.is-panel-2-active {
-    --split-showcase-ratio: 15%;
+    --split-showcase-ratio: 20%;
   }
 }
 
@@ -2156,7 +2156,7 @@ section-container.color-scheme .circle-button:before {
    midpoint, and they have equal specificity (two classes each), so the one declared LAST wins
    the tie. With the mobile override declared after this rule (as it briefly was), that mobile
    rule won instead once is-panel-2-active got added mid-drag -- snapping --split-showcase-ratio
-   straight to the fixed resting value (15% on mobile) and completely overriding the live drag
+   straight to the fixed resting value (20% on mobile) and completely overriding the live drag
    position, which is exactly what read as the drag getting cancelled right at the 50% mark,
    mobile only (desktop had no such override to lose the tie to). */
 .split-showcase--duo.is-dragging {
@@ -2375,6 +2375,15 @@ section-container.color-scheme .circle-button:before {
   height: auto;
 }
 
+@media screen and (max-width: 999px) {
+  /* The non-focused panel is only ~20vw wide on mobile -- the desktop-tuned floor (3.5rem) was
+     wider than that once the drop-shadow's own spread is added on top, so the icon visibly
+     overflowed the panel's edge. */
+  .split-showcase__icon svg {
+    width: clamp(2rem, 6vw, 2.75rem);
+  }
+}
+
 .split-showcase--duo .split-showcase__panel--last .split-showcase__icon {
   opacity: 1;
   transform: scale(1);
@@ -2445,11 +2454,20 @@ section-container.color-scheme .circle-button:before {
 
 @media screen and (max-width: 999px) {
   /* Duo panels don't stack like the generic fallback does -- they stay side by side at every
-     width, including on phones -- the active panel is now ~90vw wide on mobile (see the
+     width, including on phones -- the active panel is ~80vw wide on mobile (see the
      --split-showcase-ratio override above). Kept a bit narrower than that so the text still
-     reads comfortably once it fades in, rather than sizing all the way up to the edge. */
+     reads comfortably once it fades in, rather than sizing all the way up to the edge.
+
+     Vertically centered on the image rather than bottom-anchored like desktop: with the panel
+     this narrow, a short min-height and a tall title, bottom-anchoring left the text sitting
+     awkwardly low relative to the icon centered above it -- centering both on the same axis
+     reads better at this aspect ratio. Horizontal anchor (inset-inline-start: 0, set on the
+     base rule above) is unchanged -- only the vertical position differs from desktop. */
   .split-showcase--duo .split-showcase__content {
     width: min(78vw, 26rem);
+    inset-block-end: auto;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 
