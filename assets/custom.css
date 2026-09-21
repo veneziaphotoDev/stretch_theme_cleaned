@@ -2340,6 +2340,17 @@ section-container.color-scheme .circle-button:before {
   inset-inline-end: 0;
 }
 
+@media screen and (max-width: 999px) {
+  /* The base 78vw above was sized for the generic (non-duo) fallback, where each panel is
+     effectively 100vw wide once panels stack below 700px. Duo panels never stack -- they stay
+     side by side at every width, including on phones -- so the active panel is only ~70vw wide
+     even on the smallest screens. 78vw was wider than that, so the panel's own overflow: hidden
+     was silently clipping the right edge of the tagline/title/button on every phone. */
+  .split-showcase--duo .split-showcase__content {
+    width: min(60vw, 24rem);
+  }
+}
+
 @media screen and (min-width: 1000px) {
   .split-showcase__content {
     /* The dominant panel is now 70% wide on desktop too (matches touch/drag), so there's more
