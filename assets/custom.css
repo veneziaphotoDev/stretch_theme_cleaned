@@ -2401,15 +2401,6 @@ section-container.color-scheme .circle-button:before {
   pointer-events: auto;
 }
 
-/* Same fix as the image: anchored to each panel's OWN edge, not the shared/moving divider
-   between them. Without this, the last panel's content -- still anchored at inset-inline-start:
-   0 relative to itself -- was positioned against the divider, which moves as that panel
-   resizes, so its text visibly slid around instead of staying put. */
-.split-showcase__panel--last .split-showcase__content {
-  inset-inline-start: auto;
-  inset-inline-end: 0;
-}
-
 @media screen and (max-width: 999px) {
   /* Duo panels don't stack like the generic fallback does -- they stay side by side at every
      width, including on phones -- so the active panel is only ~70vw wide even on the smallest
