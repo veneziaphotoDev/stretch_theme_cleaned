@@ -97,19 +97,19 @@
       },
       "11793083337665231478": {
         "type": "shopify://apps/meety-booking-app/blocks/meety-button-floating/47f38863-0648-44e3-873d-c84301243dcb",
-        "disabled": false,
+        "disabled": true,
         "settings": {
           "widget_url_handle": "",
           "product": "sunrise-lights",
           "text": "Book an Experience",
           "text_color": "#fffffd",
-          "background_color": "#9C5C49",
+          "background_color": "#9c5c49",
           "position": "right",
           "width": "fit-content",
           "height": "fit-content",
           "border_width": 8,
           "border_radius": 0,
-          "border_color": "#9C5C49",
+          "border_color": "#9c5c49",
           "font_family": "sans_serif_n4",
           "font_size": 20,
           "hide_on_scroll_down": false
