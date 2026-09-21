@@ -2144,7 +2144,11 @@ section-container.color-scheme .circle-button:before {
   cursor: ew-resize;
   -webkit-user-select: none;
   user-select: none;
-  transition: inset-inline-start 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  /* Must match .split-showcase--duo's grid-template-columns transition exactly (duration and
+     easing) -- they're animating the same boundary from two different properties, so any
+     mismatch between them (this was 0.7s here vs 0.6s there) reads as the handle lagging behind
+     the panel width when the drag is released and both animate back to their resting position. */
+  transition: inset-inline-start 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__handle {
