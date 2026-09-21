@@ -101,9 +101,18 @@
       "taxes_excluded": "Tasse escluse.",
       "shipping_policy_html": "<button aria-controls=\"{{ drawer_id }}\" class=\"link\">Spedizione calcolata</button> al checkout",
       "size_chart": "Tabella taglie",
+      "variant_in_cart_count": {
+        "one": "{{ count }} nel carrello",
+        "other": "{{ count }} nel carrello"
+      },
       "available_colors_count": {
         "one": "{{ count }} colore disponibile",
         "other": "{{ count }} colori disponibili"
+      },
+      "low_stock_badge": "Ultimi posti",
+      "low_stock_count_badge": {
+        "one": "{{ count }} posto rimasto",
+        "other": "{{ count }} posti rimasti"
       },
       "book_session_button": "Prenota il mio posto"
     },
@@ -133,6 +142,7 @@
       "price_at_each": "a {{ price }}/ciascuno"
     },
     "rating_count": {
+      "zero": "Nessuna recensione",
       "one": "{{ count }} recensione",
       "other": "{{ count }} recensioni"
     },
@@ -258,6 +268,10 @@
       "addresses": "Indirizzi",
       "logout": "Logout",
       "no_orders": "Non hai ancora effettuato alcun ordine.",
+      "orders_count": {
+        "one": "{{ count }} ordine",
+        "other": "{{ count }} ordini"
+      },
       "continue_shopping": "Continua gli acquisti"
     },
     "login": {
@@ -362,6 +376,7 @@
       "empty": "Il tuo carrello è vuoto",
       "remove_item": "Rimuovi elemento {{ title }}",
       "item_count": {
+        "zero": "{{ count }} articoli",
         "one": "{{ count }} articolo",
         "other": "{{ count }} articoli"
       },
