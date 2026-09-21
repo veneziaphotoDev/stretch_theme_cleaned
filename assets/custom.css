@@ -2091,10 +2091,16 @@ section-container.color-scheme .circle-button:before {
    .display-l) still applies separately for the actual font-size. */
 .split-showcase__header-heading {
   font-family: var(--text-font-family);
-  font-weight: var(--text-font-weight);
+  font-weight: 700;
   font-style: var(--text-font-style);
   letter-spacing: var(--text-letter-spacing);
   text-transform: var(--text-transform);
+}
+
+.split-showcase__header-description {
+  margin-block-start: 1rem;
+  font-size: var(--text-lg);
+  line-height: 1.5;
 }
 
 .split-showcase {

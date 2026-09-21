@@ -42,7 +42,7 @@
 -%}
 {%- if panel_blocks.size > 0 -%}
   <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
-    {%- if section.settings.subheading != blank or section.settings.heading != blank -%}
+    {%- if section.settings.subheading != blank or section.settings.heading != blank or section.settings.description != blank -%}
       <div class="container">
         <div class="split-showcase__header prose prose-justify-center" data-animate>
           {%- if section.settings.subheading != blank -%}
@@ -59,6 +59,12 @@
                 same reason: the site default emphasis effect renders in Gascogne italic too.
               {%- endcomment -%}
               {%- render 'heading', content: section.settings.heading, style: section.settings.heading_tag, class: 'split-showcase__header-heading', indent: 'none', highlight_effect: 'none', balance_text: true -%}
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.description != blank -%}
+            <div class="split-showcase__header-description max-w-{{ section.settings.heading_content_width }} text-subdued">
+              {{- section.settings.description -}}
             </div>
           {%- endif -%}
         </div>
@@ -171,13 +177,13 @@
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Two Ways to See Venice"
+      "default": ""
     },
     {
       "type": "inline_richtext",
       "id": "heading",
       "label": "Heading",
-      "default": "Sunrise or sunset -- which one are you?"
+      "default": "Choose your light"
     },
     {
       "type": "select",
@@ -196,6 +202,12 @@
         { "value": "h7", "label": "XX-Small" }
       ],
       "default": "display-l"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Pick your moment: the quiet gold of sunrise or the rose glow of sunset. Same boat, two Venices.</p>"
     },
     {
       "type": "select",
