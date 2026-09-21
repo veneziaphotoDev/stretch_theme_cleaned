@@ -2085,6 +2085,18 @@ section-container.color-scheme .circle-button:before {
   margin-block-end: var(--section-stack-row-gap);
 }
 
+/* The site's default heading font is Gascogne (set sitewide as a custom heading font) -- reads
+   as too ornate/editorial next to this section's own Helvetica copy and CTAs. Overrides the
+   shared .display-l/.h2/etc font-family rule back to the body font; the size class (e.g.
+   .display-l) still applies separately for the actual font-size. */
+.split-showcase__header-heading {
+  font-family: var(--text-font-family);
+  font-weight: var(--text-font-weight);
+  font-style: var(--text-font-style);
+  letter-spacing: var(--text-letter-spacing);
+  text-transform: var(--text-transform);
+}
+
 .split-showcase {
   position: relative;
   display: grid;

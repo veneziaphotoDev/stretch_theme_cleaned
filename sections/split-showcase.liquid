@@ -51,7 +51,14 @@
 
           {%- if section.settings.heading != blank -%}
             <div class="max-w-{{ section.settings.heading_content_width }}">
-              {%- render 'heading', content: section.settings.heading, style: section.settings.heading_tag, indent: 'none', highlight_effect: 'default', balance_text: true -%}
+              {%- comment -%}
+                class: 'split-showcase__header-heading' overrides the site's default heading
+                font (Gascogne, set as a custom heading font sitewide) back to the body font
+                (Helvetica) -- the rest of this section's copy/CTAs are already Helvetica, and
+                Gascogne here read as mismatched with that. highlight_effect: 'none' for the
+                same reason: the site default emphasis effect renders in Gascogne italic too.
+              {%- endcomment -%}
+              {%- render 'heading', content: section.settings.heading, style: section.settings.heading_tag, class: 'split-showcase__header-heading', indent: 'none', highlight_effect: 'none', balance_text: true -%}
             </div>
           {%- endif -%}
         </div>
