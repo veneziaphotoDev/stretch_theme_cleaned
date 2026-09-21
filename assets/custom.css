@@ -2077,6 +2077,14 @@ section-container.color-scheme .circle-button:before {
    SPLIT SHOWCASE
    ============================================ */
 
+/* The panels below stay edge-to-edge (no .container, no .section-spacing -- that's the whole
+   point of this component), so the optional header above them needs its own top padding
+   instead of inheriting it from a section-level wrapper. */
+.split-showcase__header {
+  padding-block-start: var(--section-vertical-spacing);
+  margin-block-end: var(--section-stack-row-gap);
+}
+
 .split-showcase {
   position: relative;
   display: grid;

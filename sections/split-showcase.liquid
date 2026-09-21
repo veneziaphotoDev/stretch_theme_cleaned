@@ -42,6 +42,22 @@
 -%}
 {%- if panel_blocks.size > 0 -%}
   <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    {%- if section.settings.subheading != blank or section.settings.heading != blank -%}
+      <div class="container">
+        <div class="split-showcase__header prose prose-justify-center" data-animate>
+          {%- if section.settings.subheading != blank -%}
+            {%- render 'subheading', content: section.settings.subheading, size: 'large' -%}
+          {%- endif -%}
+
+          {%- if section.settings.heading != blank -%}
+            <div class="max-w-{{ section.settings.heading_content_width }}">
+              {%- render 'heading', content: section.settings.heading, style: section.settings.heading_tag, indent: 'none', highlight_effect: 'default', balance_text: true -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
     <div class="split-showcase{% if panel_blocks.size == 2 %} split-showcase--duo{% endif %}" style="--split-showcase-panel-count: {{ panel_blocks.size }};">
       {%- comment -%}
         The drag handle is a sibling of the panels (needs to be, so it can sit visually on top
@@ -139,6 +155,52 @@
       "id": "color_scheme",
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Two Ways to See Venice"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Sunrise or sunset -- which one are you?"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "t:global.text.heading_size",
+      "options": [
+        { "value": "display-xl", "label": "Display XL" },
+        { "value": "display-l", "label": "Display L" },
+        { "value": "display-m", "label": "Display M" },
+        { "value": "h1", "label": "XX-Large" },
+        { "value": "h2", "label": "X-Large" },
+        { "value": "h3", "label": "Large" },
+        { "value": "h4", "label": "Medium" },
+        { "value": "h5", "label": "Small" },
+        { "value": "h6", "label": "X-Small" },
+        { "value": "h7", "label": "XX-Small" }
+      ],
+      "default": "display-l"
+    },
+    {
+      "type": "select",
+      "id": "heading_content_width",
+      "label": "t:global.sizes.content_width",
+      "options": [
+        { "value": "sm", "label": "t:global.sizes.small" },
+        { "value": "md", "label": "t:global.sizes.medium" },
+        { "value": "lg", "label": "t:global.sizes.large" },
+        { "value": "full", "label": "t:global.sizes.full_width" }
+      ],
+      "default": "lg"
     },
     {
       "type": "header",
