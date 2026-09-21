@@ -245,11 +245,18 @@ document.addEventListener('DOMContentLoaded', function() {
 // custom.css), so there's nothing here to keep in sync between two separate properties any
 // more. On release the inline property is cleared and .is-panel-2-active is left set to
 // whichever side the drag ended past the midpoint on -- the same class the hover/tap swap use,
-// so CSS takes over and animates the rest of the way to a clean 70/30 (or 30/70) with its
-// normal transition, instead of resting wherever the pointer happened to let go.
+// so CSS takes over and animates the rest of the way to a clean resting ratio (70/30 on
+// desktop, 90/10 on mobile -- see getBounds() below) with its normal transition, instead of
+// resting wherever the pointer happened to let go.
 (function() {
-  const MIN_RATIO = 0.3;
-  const MAX_RATIO = 0.7;
+  const isMobileQuery = window.matchMedia('(max-width: 999px)');
+
+  // Mobile uses a much more dramatic 90/10 split (matches the --split-showcase-ratio override
+  // in custom.css for the same breakpoint) instead of desktop's 70/30 -- checked fresh each
+  // time rather than cached once, so it still tracks correctly across an orientation change.
+  function getBounds() {
+    return isMobileQuery.matches ? { min: 0.1, max: 0.9 } : { min: 0.3, max: 0.7 };
+  }
 
   document.querySelectorAll('.split-showcase--duo').forEach(function(container) {
     const handle = container.querySelector('.split-showcase__handle');
@@ -266,9 +273,10 @@ document.addEventListener('DOMContentLoaded', function() {
       // Sun/moon icon opacity+scale, continuous with drag progress rather than snapping at the
       // midpoint: 0 = that panel is fully focused (icon hidden/small), 1 = fully non-focused
       // (icon full size). Each panel's own inactiveness is how close its ratio is to its own
-      // MIN_RATIO extreme.
-      const firstInactiveness = (MAX_RATIO - ratio) / (MAX_RATIO - MIN_RATIO);
-      const lastInactiveness = (ratio - MIN_RATIO) / (MAX_RATIO - MIN_RATIO);
+      // min extreme.
+      const bounds = getBounds();
+      const firstInactiveness = (bounds.max - ratio) / (bounds.max - bounds.min);
+      const lastInactiveness = (ratio - bounds.min) / (bounds.max - bounds.min);
       container.style.setProperty('--split-showcase-icon-first', firstInactiveness.toFixed(3));
       container.style.setProperty('--split-showcase-icon-last', lastInactiveness.toFixed(3));
     }
@@ -293,7 +301,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function ratioFromEvent(event) {
       const rect = container.getBoundingClientRect();
       const x = (event.clientX - rect.left) / rect.width;
-      return Math.min(MAX_RATIO, Math.max(MIN_RATIO, x));
+      const bounds = getBounds();
+      return Math.min(bounds.max, Math.max(bounds.min, x));
     }
 
     handle.addEventListener('pointerdown', function(event) {

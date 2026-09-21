@@ -2136,6 +2136,19 @@ section-container.color-scheme .circle-button:before {
   transition: none;
 }
 
+/* Mobile gets a much more dramatic ratio -- the focused panel reads as essentially full-bleed,
+   with just a sliver of the other showing. custom.js mirrors this exact 90/10 split for the
+   drag bounds (MIN_RATIO/MAX_RATIO), matching this media query's breakpoint. */
+@media screen and (max-width: 999px) {
+  .split-showcase--duo {
+    --split-showcase-ratio: 90%;
+  }
+
+  .split-showcase--duo.is-panel-2-active {
+    --split-showcase-ratio: 10%;
+  }
+}
+
 /* Generic (non-duo, N-panel) fallback stacks on narrow screens. */
 @media screen and (max-width: 699px) {
   .split-showcase:not(.split-showcase--duo) {
@@ -2190,6 +2203,18 @@ section-container.color-scheme .circle-button:before {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   pointer-events: none;
+}
+
+@media screen and (max-width: 999px) {
+  .split-showcase__handle-label {
+    gap: 0.25rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.625rem;
+  }
+
+  .split-showcase__handle-chevron {
+    width: 7px;
+  }
 }
 
 .split-showcase--duo:not(.is-panel-2-active) .split-showcase__handle-label--first,
@@ -2274,7 +2299,7 @@ section-container.color-scheme .circle-button:before {
   height: 100%;
   max-height: none;
   object-fit: cover;
-  object-position: bottom;
+  object-position: center;
   transition: filter 0.6s cubic-bezier(0.65, 0, 0.35, 1);
   filter: saturate(0.85) brightness(0.92);
 }
@@ -2407,11 +2432,11 @@ section-container.color-scheme .circle-button:before {
 
 @media screen and (max-width: 999px) {
   /* Duo panels don't stack like the generic fallback does -- they stay side by side at every
-     width, including on phones -- so the active panel is only ~70vw wide even on the smallest
-     screens. Kept narrower than that so the text still reads comfortably once it fades in,
-     rather than sizing all the way up to the edge. */
+     width, including on phones -- the active panel is now ~90vw wide on mobile (see the
+     --split-showcase-ratio override above). Kept a bit narrower than that so the text still
+     reads comfortably once it fades in, rather than sizing all the way up to the edge. */
   .split-showcase--duo .split-showcase__content {
-    width: min(60vw, 24rem);
+    width: min(78vw, 26rem);
   }
 }
 
