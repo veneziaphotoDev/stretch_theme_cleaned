@@ -253,16 +253,16 @@ document.addEventListener('DOMContentLoaded', function() {
 // more. On release the inline property is cleared and .is-panel-2-active is left set to
 // whichever side the drag ended past the midpoint on -- the same class the hover/tap swap use,
 // so CSS takes over and animates the rest of the way to a clean resting ratio (70/30 on
-// desktop, 90/10 on mobile -- see getBounds() below) with its normal transition, instead of
+// desktop, 85/15 on mobile -- see getBounds() below) with its normal transition, instead of
 // resting wherever the pointer happened to let go.
 (function() {
   const isMobileQuery = window.matchMedia('(max-width: 999px)');
 
-  // Mobile uses a much more dramatic 90/10 split (matches the --split-showcase-ratio override
+  // Mobile uses a much more dramatic 85/15 split (matches the --split-showcase-ratio override
   // in custom.css for the same breakpoint) instead of desktop's 70/30 -- checked fresh each
   // time rather than cached once, so it still tracks correctly across an orientation change.
   function getBounds() {
-    return isMobileQuery.matches ? { min: 0.1, max: 0.9 } : { min: 0.3, max: 0.7 };
+    return isMobileQuery.matches ? { min: 0.15, max: 0.85 } : { min: 0.3, max: 0.7 };
   }
 
   document.querySelectorAll('.split-showcase--duo').forEach(function(container) {

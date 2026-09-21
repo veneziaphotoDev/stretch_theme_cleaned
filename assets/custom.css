@@ -2129,15 +2129,15 @@ section-container.color-scheme .circle-button:before {
 }
 
 /* Mobile gets a much more dramatic ratio -- the focused panel reads as essentially full-bleed,
-   with just a sliver of the other showing. custom.js mirrors this exact 90/10 split for the
-   drag bounds (MIN_RATIO/MAX_RATIO), matching this media query's breakpoint. */
+   with just a sliver of the other showing. custom.js mirrors this exact 85/15 split for the
+   drag bounds (getBounds()), matching this media query's breakpoint. */
 @media screen and (max-width: 999px) {
   .split-showcase--duo {
-    --split-showcase-ratio: 90%;
+    --split-showcase-ratio: 85%;
   }
 
   .split-showcase--duo.is-panel-2-active {
-    --split-showcase-ratio: 10%;
+    --split-showcase-ratio: 15%;
   }
 }
 
