@@ -305,18 +305,10 @@ document.addEventListener('DOMContentLoaded', function() {
       return Math.min(bounds.max, Math.max(bounds.min, x));
     }
 
-    handle.addEventListener('pointerdown', function(event) {
-      dragging = true;
-      handle.setPointerCapture(event.pointerId);
-      container.classList.add('is-dragging');
-      queueRatio(ratioFromEvent(event));
-      event.preventDefault();
-    });
-
-    handle.addEventListener('pointermove', function(event) {
+    function onMove(event) {
       if (!dragging) return;
       queueRatio(ratioFromEvent(event));
-    });
+    }
 
     function endDrag() {
       if (!dragging) return;
@@ -325,9 +317,34 @@ document.addEventListener('DOMContentLoaded', function() {
       container.style.removeProperty('--split-showcase-live-ratio');
       container.style.removeProperty('--split-showcase-icon-first');
       container.style.removeProperty('--split-showcase-icon-last');
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', endDrag);
+      window.removeEventListener('pointercancel', endDrag);
     }
 
-    handle.addEventListener('pointerup', endDrag);
-    handle.addEventListener('pointercancel', endDrag);
+    handle.addEventListener('pointerdown', function(event) {
+      dragging = true;
+      // Belt and suspenders: capture still helps on browsers where it's solid (keeps the
+      // cursor/touch feedback associated with the handle). But move/up/cancel are tracked on
+      // window, not the handle -- during a real drag the finger spends almost the whole gesture
+      // physically over the (much larger) panels, not the 40px handle strip, and relying only on
+      // the handle to keep receiving events via capture was cutting drags short partway through
+      // on mobile: the moment capture didn't hold (or the browser's gesture recognizer decided
+      // the touch belonged to whatever was underneath), the drag just stopped dead instead of
+      // tracking to where the finger actually let go, which read as an abrupt, premature snap.
+      try {
+        handle.setPointerCapture(event.pointerId);
+      } catch (error) {
+        // Capture can throw in some browsers for a pointerId that's already gone (e.g. a very
+        // fast tap-and-release) -- window-level tracking below doesn't depend on it anyway.
+      }
+      container.classList.add('is-dragging');
+      queueRatio(ratioFromEvent(event));
+      event.preventDefault();
+
+      window.addEventListener('pointermove', onMove);
+      window.addEventListener('pointerup', endDrag);
+      window.addEventListener('pointercancel', endDrag);
+    });
   });
 })();
