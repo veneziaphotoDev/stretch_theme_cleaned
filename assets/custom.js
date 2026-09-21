@@ -272,8 +272,6 @@ document.addEventListener('DOMContentLoaded', function() {
       const lastInactiveness = (ratio - MIN_RATIO) / (MAX_RATIO - MIN_RATIO);
       container.style.setProperty('--split-showcase-icon-first', firstInactiveness.toFixed(3));
       container.style.setProperty('--split-showcase-icon-last', lastInactiveness.toFixed(3));
-
-      ticking = false;
     }
 
     function queueRatio(ratio) {
@@ -281,6 +279,13 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!ticking) {
         ticking = true;
         window.requestAnimationFrame(function() {
+          ticking = false;
+          // A pointermove right before release can queue this for the next frame, which then
+          // fires AFTER pointerup already ran endDrag() and started the resting transition.
+          // Applying it anyway would re-set the live properties (and can re-toggle
+          // is-panel-2-active) mid-transition -- a stray, delayed update fighting the animation
+          // that already started, which is what read as a lag/desync right as it released.
+          if (!dragging) return;
           apply(pendingRatio);
         });
       }
