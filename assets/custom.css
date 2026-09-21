@@ -2089,6 +2089,11 @@ section-container.color-scheme .circle-button:before {
   position: relative;
   display: grid;
   grid-template-columns: repeat(var(--split-showcase-panel-count, 2), minmax(0, 1fr));
+  /* Single source of truth for the two image filter states (focused vs non-focused), reused at
+     every spot they'd otherwise be repeated as raw values: the default, the duo resting state,
+     and the is-panel-2-active swap. */
+  --split-showcase-focused-filter: saturate(0.85) brightness(0.92);
+  --split-showcase-unfocused-filter: saturate(0.45) brightness(0.5);
 }
 
 /* Registered (typed) so the browser can smoothly INTERPOLATE it, not just swap it -- this is
@@ -2151,9 +2156,9 @@ section-container.color-scheme .circle-button:before {
    midpoint, and they have equal specificity (two classes each), so the one declared LAST wins
    the tie. With the mobile override declared after this rule (as it briefly was), that mobile
    rule won instead once is-panel-2-active got added mid-drag -- snapping --split-showcase-ratio
-   straight to the fixed resting 10% and completely overriding the live drag position, which is
-   exactly what read as the drag getting cancelled right at the 50% mark, mobile only (desktop
-   had no such override to lose the tie to). */
+   straight to the fixed resting value (15% on mobile) and completely overriding the live drag
+   position, which is exactly what read as the drag getting cancelled right at the 50% mark,
+   mobile only (desktop had no such override to lose the tie to). */
 .split-showcase--duo.is-dragging {
   --split-showcase-ratio: var(--split-showcase-live-ratio, 70%);
   transition: none;
@@ -2311,7 +2316,7 @@ section-container.color-scheme .circle-button:before {
   object-fit: cover;
   object-position: center;
   transition: filter 0.6s cubic-bezier(0.65, 0, 0.35, 1);
-  filter: saturate(0.85) brightness(0.92);
+  filter: var(--split-showcase-focused-filter);
 }
 
 .split-showcase__panel--last .split-showcase__image {
@@ -2322,7 +2327,7 @@ section-container.color-scheme .circle-button:before {
 /* Duo variant: first panel active by default (dim/bright split is a resting state, always on
    regardless of device -- see the persistent, unconditional block below for the swap). */
 .split-showcase--duo .split-showcase__panel--last .split-showcase__image {
-  filter: saturate(0.45) brightness(0.5);
+  filter: var(--split-showcase-unfocused-filter);
 }
 
 .split-showcase--duo .split-showcase__panel--last .split-showcase__dim {
@@ -2332,7 +2337,7 @@ section-container.color-scheme .circle-button:before {
 /* Driven by the .is-panel-2-active class (custom.js) -- what clicking, tapping and dragging the
    handle all set, the same way on every device. Unconditional: no hover handling on desktop. */
 .split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__image {
-  filter: saturate(0.45) brightness(0.5);
+  filter: var(--split-showcase-unfocused-filter);
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__dim {
@@ -2340,7 +2345,7 @@ section-container.color-scheme .circle-button:before {
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__image {
-  filter: saturate(0.85) brightness(0.92);
+  filter: var(--split-showcase-focused-filter);
 }
 
 .split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__dim {
@@ -2401,11 +2406,17 @@ section-container.color-scheme .circle-button:before {
   transition: none;
 }
 
-/* Deliberately NOT width: 100% of the panel: that would tie the content's width to the grid
-   column's live width while it animates (click/tap/drag focus swap), causing the text to
-   visibly re-wrap and the content box to change height mid-transition. Sized in vw instead --
-   independent of the animating column -- so wrapping/height stay constant and the
-   panel's own `overflow: hidden` clips it instead of it reflowing. */
+/* Width deliberately NOT 100% of the panel: that would tie it to the grid column's live width
+   while it animates (click/tap/drag focus swap), causing the text to visibly re-wrap and the
+   content box to change height mid-transition. Sized in vw instead -- independent of the
+   animating column -- so wrapping/height stay constant and the panel's own `overflow: hidden`
+   clips it instead of it reflowing.
+
+   Opacity, for the same underlying reason clipping/blurring the text was dropped in favor of a
+   fade: relying on the panel's overflow: hidden to hide non-focused text made responsive sizing
+   fragile (the content box had to stay narrower than whatever width the panel happens to be at
+   any viewport, or it visibly truncated). Fading via opacity instead means width no longer needs
+   to track the panel's live width as tightly, since it's invisible while inactive anyway. */
 .split-showcase__content {
   position: absolute;
   z-index: 2;
@@ -2413,14 +2424,6 @@ section-container.color-scheme .circle-button:before {
   inset-inline-start: 0;
   padding: clamp(1.25rem, 5vw, 2.5rem);
   width: min(78vw, 26rem);
-}
-
-/* Simpler than clipping/blurring the text via the panel's own overflow: hidden (which made
-   responsive sizing fragile -- the content box had to stay narrower than whatever width the
-   panel happens to be at any viewport, or it visibly truncated). Instead the non-focused
-   panel's text/button just fade out via opacity and fade back in when focused; width no longer
-   needs to track the panel's live width as tightly since it's invisible while inactive anyway. */
-.split-showcase__content {
   opacity: 1;
   transition: opacity 0.4s ease;
 }

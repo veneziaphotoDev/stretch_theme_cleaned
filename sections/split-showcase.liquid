@@ -6,16 +6,18 @@
   Full-width, edge-to-edge showcase split evenly into panels (built for exactly two products that are intrinsically
   linked -- e.g. a sunrise and a sunset departure of the same route -- but works with any number of "Panel" blocks).
   Each panel is a full-bleed background image with a tagline and title, plus a slot for an app block (Meety) so a
-  merchant can drop in a direct booking/scheduling button per panel. On hover, the hovered panel brightens and
-  gently zooms while the others dim, using :has() (no JS needed).
+  merchant can drop in a direct booking/scheduling button per panel.
+
+  Which panel is focused (brighter, wider, un-dimmed) is tracked by a single persistent
+  .is-panel-2-active class on the .split-showcase--duo container, kept in sync across three independent ways of
+  changing it -- clicking/tapping a panel, or dragging the handle between them -- identically on every device;
+  there's no hover-based behavior at all (custom.js).
 
   The panel itself (image/background, excluding the actions row) is the product link -- handled in custom.js
   rather than as a plain <a> so a booking app block can sit in the actions row without ending up nested inside an
-  anchor, and so the interaction can differ by input: on a real hover-capable pointer, hovering already previews
-  the panel, so a click always navigates straight away; on touch there's no hover preview, so the first tap on a
-  panel only brings it into focus (mirroring what hover does) and only a second tap on the now-focused panel
-  navigates -- otherwise tapping the non-focused panel to look at it would immediately and unintentionally send
-  you to its product page.
+  anchor. The first click/tap on a non-focused panel only brings it into focus; a second click/tap, now that it's
+  focused, navigates -- otherwise tapping the non-focused panel to bring it into view would immediately and
+  unintentionally send you to its product page.
 
   Each block pulls its product's title, featured image and tagline metafield by default; every field can be
   overridden per block if a merchant wants a custom image or copy instead.
@@ -29,11 +31,10 @@
 
   Duo variant only: a draggable handle sits on the boundary between the two panels (like a before/after image
   comparison slider) -- dragging it live-tracks the pointer between the two panels, snapping to whichever side's
-  focus state it ends closer to on release (custom.js). This is in addition to, not instead of, the existing
-  hover (desktop) / tap-to-focus (touch) swap -- all three ways of changing focus stay in sync via the same
-  .is-panel-2-active class. The handle carries a small vertical text prompt naming whichever panel is currently
-  NOT in focus, inviting a drag toward it; the two prompts are merchant-editable section settings since the
-  copy ("More an evening person?" / "More a morning person?") is specific to this sunrise/sunset pairing.
+  focus state it ends closer to on release (custom.js), the same .is-panel-2-active class described above. The
+  handle carries a small vertical text prompt naming whichever panel is currently NOT in focus, inviting a drag
+  toward it; the two prompts are merchant-editable section settings since the copy ("More an evening person?" /
+  "More a morning person?") is specific to this sunrise/sunset pairing.
 {%- endcomment -%}
 
 {%- liquid
@@ -128,12 +129,10 @@
               {%- endcomment -%}
               <span class="split-showcase__icon" aria-hidden="true">
                 {%- if panel_counter == 1 -%}
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                    <circle cx="12" cy="12" r="4.5" />
-                    <path d="M12 1.5v3M12 19.5v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1.5 12h3M19.5 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" />
-                  </svg>
+                  {%- render 'icon' with 'picto-sun' -%}
                 {%- else -%}
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  {%- comment -%} No moon icon in the theme's icon set -- inline SVG is the escape hatch here. {%- endcomment -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z" />
                   </svg>
                 {%- endif -%}

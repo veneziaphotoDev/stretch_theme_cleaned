@@ -217,16 +217,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     panels.forEach(function(panel, index) {
       panel.addEventListener('click', function(event) {
+        // Let clicks on the actual app block (Meety) act normally -- only the image/background
+        // itself drives focus/navigation. Checked first, before the drag-suppression flag below:
+        // a genuine tap on the button shouldn't get eaten just because it happens to land within
+        // that flag's window right after an unrelated drag on the same panel.
+        if (event.target.closest('.split-showcase__actions')) return;
+
         // Suppresses exactly one stray click right after a handle drag ends -- see the comment
         // on endDrag() in the drag-handling script below for why that's needed.
         if (container.dataset.splitShowcaseSuppressClick) {
           delete container.dataset.splitShowcaseSuppressClick;
           return;
         }
-
-        // Let clicks on the actual app block (Meety) act normally -- only the image/background
-        // itself drives focus/navigation.
-        if (event.target.closest('.split-showcase__actions')) return;
 
         const isActive = index === 1
           ? container.classList.contains('is-panel-2-active')
@@ -271,25 +273,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let dragging = false;
     let ticking = false;
-    let pendingRatio = 0.7;
+    let pendingClientX = 0;
 
-    function apply(ratio) {
+    // Both cached once per drag session (set at pointerdown), not re-read on every pointermove
+    // or recomputed twice per applied frame: the container's box doesn't change size mid-drag
+    // (only its internal grid ratio does), and the device class isn't going to flip mid-gesture
+    // either. Still re-read fresh at the START of every new drag, so an orientation change
+    // between drags is picked up correctly.
+    let rect = null;
+    let bounds = null;
+    let lastIsPanel2Active = null;
+
+    // Runs at most once per rendered frame (queued via rAF below) -- does the actual
+    // clientX-to-ratio math here rather than on every raw pointermove, since most of those
+    // never end up rendered anyway (pointermove commonly fires faster than the display refreshes).
+    function apply() {
+      const x = (pendingClientX - rect.left) / rect.width;
+      const ratio = Math.min(bounds.max, Math.max(bounds.min, x));
+
       container.style.setProperty('--split-showcase-live-ratio', (ratio * 100).toFixed(2) + '%');
-      container.classList.toggle('is-panel-2-active', ratio < 0.5);
+
+      const isPanel2Active = ratio < 0.5;
+      if (isPanel2Active !== lastIsPanel2Active) {
+        container.classList.toggle('is-panel-2-active', isPanel2Active);
+        lastIsPanel2Active = isPanel2Active;
+      }
 
       // Sun/moon icon opacity+scale, continuous with drag progress rather than snapping at the
       // midpoint: 0 = that panel is fully focused (icon hidden/small), 1 = fully non-focused
       // (icon full size). Each panel's own inactiveness is how close its ratio is to its own
       // min extreme.
-      const bounds = getBounds();
       const firstInactiveness = (bounds.max - ratio) / (bounds.max - bounds.min);
       const lastInactiveness = (ratio - bounds.min) / (bounds.max - bounds.min);
       container.style.setProperty('--split-showcase-icon-first', firstInactiveness.toFixed(3));
       container.style.setProperty('--split-showcase-icon-last', lastInactiveness.toFixed(3));
     }
 
-    function queueRatio(ratio) {
-      pendingRatio = ratio;
+    function queueUpdate(clientX) {
+      pendingClientX = clientX;
       if (!ticking) {
         ticking = true;
         window.requestAnimationFrame(function() {
@@ -300,21 +321,14 @@ document.addEventListener('DOMContentLoaded', function() {
           // is-panel-2-active) mid-transition -- a stray, delayed update fighting the animation
           // that already started, which is what read as a lag/desync right as it released.
           if (!dragging) return;
-          apply(pendingRatio);
+          apply();
         });
       }
     }
 
-    function ratioFromEvent(event) {
-      const rect = container.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width;
-      const bounds = getBounds();
-      return Math.min(bounds.max, Math.max(bounds.min, x));
-    }
-
     function onMove(event) {
       if (!dragging) return;
-      queueRatio(ratioFromEvent(event));
+      queueUpdate(event.clientX);
     }
 
     function endDrag() {
@@ -343,6 +357,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     handle.addEventListener('pointerdown', function(event) {
       dragging = true;
+      rect = container.getBoundingClientRect();
+      bounds = getBounds();
+      lastIsPanel2Active = container.classList.contains('is-panel-2-active');
+
       // Belt and suspenders: capture still helps on browsers where it's solid (keeps the
       // cursor/touch feedback associated with the handle). But move/up/cancel are tracked on
       // window, not the handle -- during a real drag the finger spends almost the whole gesture
@@ -358,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // fast tap-and-release) -- window-level tracking below doesn't depend on it anyway.
       }
       container.classList.add('is-dragging');
-      queueRatio(ratioFromEvent(event));
+      queueUpdate(event.clientX);
       event.preventDefault();
 
       window.addEventListener('pointermove', onMove);
