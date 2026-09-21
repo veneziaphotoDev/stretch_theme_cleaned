@@ -2128,14 +2128,6 @@ section-container.color-scheme .circle-button:before {
   --split-showcase-ratio: 30%;
 }
 
-/* Live-tracks the pointer while dragging the handle -- see --split-showcase-live-ratio, set on
-   every pointermove in custom.js. No transition here: it needs to follow 1:1, the transition
-   above would just fight the drag with lag. */
-.split-showcase--duo.is-dragging {
-  --split-showcase-ratio: var(--split-showcase-live-ratio, 70%);
-  transition: none;
-}
-
 /* Mobile gets a much more dramatic ratio -- the focused panel reads as essentially full-bleed,
    with just a sliver of the other showing. custom.js mirrors this exact 90/10 split for the
    drag bounds (MIN_RATIO/MAX_RATIO), matching this media query's breakpoint. */
@@ -2147,6 +2139,24 @@ section-container.color-scheme .circle-button:before {
   .split-showcase--duo.is-panel-2-active {
     --split-showcase-ratio: 10%;
   }
+}
+
+/* Live-tracks the pointer while dragging the handle -- see --split-showcase-live-ratio, set on
+   every pointermove in custom.js. No transition here: it needs to follow 1:1, the transition
+   above would just fight the drag with lag.
+
+   MUST be declared after every other rule above that also sets --split-showcase-ratio
+   (including the mobile media query's .is-panel-2-active override): .is-dragging and
+   .is-panel-2-active are BOTH present at once for the second half of any drag past the
+   midpoint, and they have equal specificity (two classes each), so the one declared LAST wins
+   the tie. With the mobile override declared after this rule (as it briefly was), that mobile
+   rule won instead once is-panel-2-active got added mid-drag -- snapping --split-showcase-ratio
+   straight to the fixed resting 10% and completely overriding the live drag position, which is
+   exactly what read as the drag getting cancelled right at the 50% mark, mobile only (desktop
+   had no such override to lose the tie to). */
+.split-showcase--duo.is-dragging {
+  --split-showcase-ratio: var(--split-showcase-live-ratio, 70%);
+  transition: none;
 }
 
 /* Generic (non-duo, N-panel) fallback stacks on narrow screens. */
