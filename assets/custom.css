@@ -2301,6 +2301,34 @@ section-container.color-scheme .circle-button:before {
   opacity: 0;
 }
 
+/* Sun/moon icon, centered over the darkened non-focused panel -- same opacity swap as the dim
+   layer above, just inverted (visible when the panel is NOT focused, not when it is). */
+.split-showcase__icon {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  opacity: 0;
+  filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.35));
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.split-showcase--duo .split-showcase__panel--last .split-showcase__icon {
+  opacity: 1;
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--first .split-showcase__icon {
+  opacity: 1;
+}
+
+.split-showcase--duo.is-panel-2-active .split-showcase__panel--last .split-showcase__icon {
+  opacity: 0;
+}
+
 /* Deliberately NOT width: 100% of the panel: that would tie the content's width to the grid
    column's live width while it animates (click/tap/drag focus swap), causing the text to
    visibly re-wrap and the content box to change height mid-transition. Sized in vw instead --
