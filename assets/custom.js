@@ -123,6 +123,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const video = item.querySelector('video');
     const muteButton = item.querySelector('.video-carousel__mute-toggle');
 
+    // The theme hides the poster as soon as play() is called, before the video has decoded a frame,
+    // which leaves a transparent (white) gap. Only let the poster fade out once frames are rendering.
+    if (media && video) {
+      video.addEventListener('playing', function() {
+        media.classList.add('is-ready');
+      }, { once: true });
+    }
+
     if (media) {
       item.addEventListener('mouseenter', function() {
         media.play();
