@@ -42,7 +42,7 @@
   assign panel_counter = 0
 -%}
 {%- if panel_blocks.size > 0 -%}
-  <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div {% if section.settings.anchor != blank %}id="{{ section.settings.anchor }}"{% endif %} class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
     {%- if section.settings.subheading != blank or section.settings.heading != blank -%}
       <div class="container">
         <div class="split-showcase__header prose prose-justify-start" data-animate>
@@ -184,6 +184,11 @@
     "groups": ["header", "custom.overlay"]
   },
   "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Section anchor"
+    },
     {
       "type": "color_scheme",
       "id": "color_scheme",

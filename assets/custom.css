@@ -2535,3 +2535,44 @@ section-container.color-scheme .circle-button:before {
   min-width: 0;
 }
 
+
+/* ------------------------------------------------------------------------------------------------
+   Booking CTAs -- one look for every "book" action
+   ------------------------------------------------------------------------------------------------
+   The Meety buttons (home split showcase + product page) take their colour and radius from the
+   app's own settings, but their font (Poppins / plain Helvetica) can't be set to the theme's, and
+   their radius drifts from the theme's square buttons whenever the app settings change, so they
+   never quite read as the same button as the theme's CTAs. Meety declares its custom
+   properties on :root and on its block wrappers; redefining them on the button itself wins
+   without touching the app's markup. */
+button.meety-block-button,
+a.meety-block-button {
+  --meety-block-button-border-radius: var(--button-border-radius);
+  --meety-block-button-font-family: var(--text-font-family);
+  --meety-block-button-font-size: var(--button-font-size);
+  letter-spacing: var(--button-letter-spacing);
+  transition: filter 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+
+/* Theme buttons have no hover feedback (button_animation: none) -- darken solid buttons slightly
+   so the CTA reacts under the cursor. filter works whatever the scheme's button colour is. */
+@media screen and (pointer: fine) {
+  .button:not(.button--outline):not([disabled]):hover,
+  button.meety-block-button:hover,
+  a.meety-block-button:hover {
+    filter: brightness(0.9);
+  }
+}
+
+.button:not([disabled]):active,
+button.meety-block-button:active,
+a.meety-block-button:active {
+  transform: translateY(1px);
+}
+
+/* Hero CTA: the main entry point to booking, so it gets a larger target than the default. */
+.slideshow .button {
+  --button-padding-block: 1rem;
+  --button-padding-inline: 2.5rem;
+  min-width: min(100%, 16rem);
+}
