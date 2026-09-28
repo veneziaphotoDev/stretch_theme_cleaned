@@ -403,6 +403,12 @@ height-observer {
 .video-carousel__media {
   overflow: hidden;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Keep the poster on top until the video actually renders frames (avoids a white flash on play) */
+.video-carousel__media:not(.is-ready) > img {
+  opacity: 1;
 }
 
 .video-carousel__mute-toggle {
