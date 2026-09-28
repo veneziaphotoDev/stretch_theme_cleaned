@@ -2093,6 +2093,9 @@ section-container.color-scheme .circle-button:before {
 
 .split-showcase {
   position: relative;
+  /* Own stacking context, so the handle's z-index only ranks it among the panels and never
+     lifts it above the sticky header. */
+  isolation: isolate;
   display: grid;
   grid-template-columns: repeat(var(--split-showcase-panel-count, 2), minmax(0, 1fr));
   /* Single source of truth for the two image filter states (focused vs non-focused), reused at
