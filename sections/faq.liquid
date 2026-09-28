@@ -17,6 +17,14 @@
       {%- endif -%}
     {%- endcapture -%}
 
+    {%- liquid
+      assign use_secondary_background = false
+
+      if section.settings.accordion_style == 'background' and section.settings.color_scheme.settings.background_gradient != blank or section.settings.color_scheme.settings.background != section.settings.color_scheme.settings.secondary_background
+        assign use_secondary_background = true
+      endif
+    -%}
+
     {%- capture section_content -%}
       <div class="faq">
         <div class="faq__content">
@@ -35,14 +43,40 @@
                   </div>
                 {%- endif -%}
   
+              {%- when 'faq_set' -%}
+                {%- comment -%}
+                  A "faq_set" metaobject (name, items -- a list of "faq_item": question, answer), the same one the
+                  experience products reference, so a set is written once in Content > Metaobjects and reused.
+                {%- endcomment -%}
+                {%- assign faq_set = block.settings.faq_set -%}
+
+                {%- if faq_set != blank -%}
+                  {%- if block.settings.show_title and faq_set.name != blank -%}
+                    <div class="faq__category">
+                      <p class="h6 text-start" {{ block.shopify_attributes }}>{{ faq_set.name.value }}</p>
+                    </div>
+                  {%- endif -%}
+
+                  {%- for item in faq_set.items.value -%}
+                    {%- liquid
+                      if item.question == blank or item.answer == blank
+                        continue
+                      endif
+
+                      assign answer = item.answer | metafield_tag
+                      assign subheading_title = false
+
+                      if section.settings.question_style == 'subheading'
+                        assign subheading_title = true
+                      endif
+
+                      render 'accordion', title: item.question.value, content: answer, prose_content: true, subheading_title: subheading_title, use_secondary_background: use_secondary_background
+                    -%}
+                  {%- endfor -%}
+                {%- endif -%}
+
               {%- when 'question' -%}
                 {%- liquid
-                  assign use_secondary_background = false
-
-                  if section.settings.accordion_style == 'background' and section.settings.color_scheme.settings.background_gradient != blank or section.settings.color_scheme.settings.background != section.settings.color_scheme.settings.secondary_background
-                    assign use_secondary_background = true
-                  endif
-
                   if block.settings.question != blank and block.settings.answer != blank
                     if section.settings.question_style == 'subheading'
                       render 'accordion', title: block.settings.question, content: block.settings.answer, prose_content: true, subheading_title: true, icon: block.settings.icon, custom_icon: block.settings.custom_icon, icon_width: block.settings.icon_width, mobile_icon_width: block.settings.mobile_icon_width, use_secondary_background: use_secondary_background, block: block
@@ -80,21 +114,40 @@
   {%- comment -%}We also output the content with JSON microdata for SEO{%- endcomment -%}
 
   <script type="application/ld+json">
-    {%- assign question_blocks = section.blocks | where: 'type', 'question' -%}
+    {%- assign separator = '' -%}
 
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": [
-        {%- for block in question_blocks -%}
-          {
-            "@type": "Question",
-            "name": {{ block.settings.question | json }},
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": {{ block.settings.answer | json }}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'question' and block.settings.question != blank and block.settings.answer != blank -%}
+            {{- separator -}}
+            {
+              "@type": "Question",
+              "name": {{ block.settings.question | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ block.settings.answer | json }}
+              }
             }
-          }{% unless forloop.last %},{% endunless %}
+            {%- assign separator = ',' -%}
+          {%- elsif block.type == 'faq_set' and block.settings.faq_set != blank -%}
+            {%- for item in block.settings.faq_set.items.value -%}
+              {%- if item.question != blank and item.answer != blank -%}
+                {{- separator -}}
+                {
+                  "@type": "Question",
+                  "name": {{ item.question.value | json }},
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": {{ item.answer | metafield_tag | json }}
+                  }
+                }
+                {%- assign separator = ',' -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
         {%- endfor -%}
       ]
     }
@@ -262,6 +315,24 @@
     }
   ],
   "blocks": [
+    {
+      "type": "faq_set",
+      "name": "FAQ set",
+      "settings": [
+        {
+          "type": "metaobject",
+          "id": "faq_set",
+          "label": "FAQ set",
+          "metaobject_type": "faq_set"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_title",
+          "label": "Show set name as category title",
+          "default": true
+        }
+      ]
+    },
     {
       "type": "category",
       "name": "t:sections.faq.blocks.category.name",
