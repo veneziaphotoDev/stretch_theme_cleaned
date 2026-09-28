@@ -73,7 +73,7 @@
         "image_EW3QRR": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/logo-natural-white.svg",
+            "image": "shopify://shop_images/ns--logo-white.svg",
             "image_width": 200,
             "link": "",
             "wide": false
